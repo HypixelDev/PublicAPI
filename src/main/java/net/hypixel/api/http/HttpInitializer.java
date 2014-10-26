@@ -7,11 +7,9 @@ import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import net.hypixel.api.util.Callback;
-import net.hypixel.api.util.TrustingX509Manager;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
-import javax.net.ssl.TrustManager;
 import java.util.concurrent.TimeUnit;
 
 public class HttpInitializer<T> extends ChannelInitializer<Channel> {
@@ -31,7 +29,7 @@ public class HttpInitializer<T> extends ChannelInitializer<Channel> {
         ch.pipeline().addLast("timeout", new ReadTimeoutHandler(5000, TimeUnit.MILLISECONDS));
         if (ssl) {
             SSLContext context = SSLContext.getInstance("TLS");
-            context.init(null, new TrustManager[]{new TrustingX509Manager()}, null);
+            context.init(null, null, null);
             SSLEngine engine = context.createSSLEngine();
             engine.setUseClientMode(true);
             ch.pipeline().addLast("ssl", new SslHandler(engine));
