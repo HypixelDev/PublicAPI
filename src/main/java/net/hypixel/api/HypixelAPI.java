@@ -147,7 +147,7 @@ public class HypixelAPI {
                 if (player != null) {
                     args = "name=" + StringEscapeUtils.escapeHtml4(player);
                 } else if (uuid != null) {
-                    args = "uuid=" + APIUtil.stripUuids(uuid);
+                    args = "uuid=" + APIUtil.stripDashes(uuid);
                 } else {
                     callback.callback(new HypixelAPIException("Neither player nor uuid was provided!"), null);
                     return;
