@@ -8,9 +8,6 @@
     <artifactId>PublicAPI</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>Example</module>
-    </modules>
 
     <dependencies>
         <dependency>
