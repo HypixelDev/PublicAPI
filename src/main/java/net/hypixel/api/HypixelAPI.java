@@ -167,7 +167,7 @@ public class HypixelAPI {
      */
     private boolean doKeyCheck(Callback<?> callback) {
         if (apiKey == null) {
-            callback.callback(new RuntimeException("API key hasn't been set yet!"), null);
+            callback.callback(new HypixelAPIException("API key hasn't been set yet!"), null);
             return false;
         } else {
             return true;
