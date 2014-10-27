@@ -21,11 +21,16 @@ API Information
 
 The Hypixel PublicAPI has a request limit of 60 queries per minute.
 
+API Authentication
+---------------
+
+Users can obtain API keys via doing /api when they log in. This key *must* be kept secret: any abuse can lead to API access being rescinded.
+
 
 Bug Reporting
 -------------
 
-You can post reports on the modification thread, or you can create an issue here on GitHub.
+You can create an issue here on GitHub to report a bug with the API or to suggest enhancements.
 
 
 Copyright
@@ -36,6 +41,5 @@ HypixelAPI (c) 2014
 
 TODO
 -----
-*   Add a proper readme<br>
-*   Add a proper copyright header to all files<br>
+*   Add a proper copyright header to all files
 *   Deploy to a public maven repo<br>
