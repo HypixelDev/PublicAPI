@@ -10,7 +10,7 @@ import java.util.UUID;
 public class GetGuildByPlayerExample {
     public static void main(String[] args) {
         HypixelAPI.getInstance().setApiKey(UUID.fromString("64bd424e-ccb0-42ed-8b66-6e42a135afb4"));
-        HypixelAPI.getInstance().findGuild("AYS", null, new Callback<FindGuildReply>(FindGuildReply.class) {
+        HypixelAPI.getInstance().findGuild("PainBall", null, new Callback<FindGuildReply>(FindGuildReply.class) {
             @Override
             public void callback(Throwable failCause, FindGuildReply result) {
                 if (failCause != null) {
