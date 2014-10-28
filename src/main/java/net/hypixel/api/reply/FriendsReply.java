@@ -13,7 +13,7 @@ public class FriendsReply extends AbstractReply {
     @Override
     public String toString() {
         return "FriendsReply{" +
-                "records=" + records + "," +
-                "super=" + super.toString() + "}";
+                "records=" + records +
+                ",super=" + super.toString() + "}";
     }
 }

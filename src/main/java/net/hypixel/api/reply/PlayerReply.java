@@ -13,7 +13,7 @@ public class PlayerReply extends AbstractReply {
     @Override
     public String toString() {
         return "PlayerReply{" +
-                "player=" + player + ","+
-                "super=" + super.toString() + "}";
+                "player=" + player +
+                ",super=" + super.toString() + "}";
     }
 }

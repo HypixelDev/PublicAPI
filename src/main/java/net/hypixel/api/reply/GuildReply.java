@@ -16,7 +16,7 @@ public class GuildReply extends AbstractReply {
     @Override
     public String toString() {
         return "GuildReply{" +
-                "guild=" + guild + ","+
-                "super=" + super.toString() + "}";
+                "guild=" + guild +
+                ",super=" + super.toString() + "}";
     }
 }

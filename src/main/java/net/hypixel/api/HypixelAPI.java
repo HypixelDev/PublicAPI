@@ -2,10 +2,7 @@ package net.hypixel.api;
 
 import com.google.common.base.Preconditions;
 import net.hypixel.api.http.HTTPClient;
-import net.hypixel.api.reply.FindGuildReply;
-import net.hypixel.api.reply.FriendsReply;
-import net.hypixel.api.reply.GuildReply;
-import net.hypixel.api.reply.PlayerReply;
+import net.hypixel.api.reply.*;
 import net.hypixel.api.util.APIUtil;
 import net.hypixel.api.util.Callback;
 import net.hypixel.api.util.HypixelAPIException;
@@ -60,6 +57,32 @@ public class HypixelAPI {
             this.apiKey = apiKey;
         } finally {
             lock.writeLock().unlock();
+        }
+    }
+
+    /**
+     * Call this method to get information about this API's key
+     *
+     * @param callback The callback to execute when finished
+     */
+    public void getKeyInfo(Callback<KeyReply> callback) {
+        getKeyInfo(apiKey, callback);
+    }
+
+    /**
+     * Call this method to get information about the provided API key
+     *
+     * @param apiKey   The key to get information about
+     * @param callback The callback to execute when finished
+     */
+    public void getKeyInfo(UUID apiKey, Callback<KeyReply> callback) {
+        lock.readLock().lock();
+        try {
+            if (doKeyCheck(callback)) {
+                httpClient.get(BASE_URL + "key?key=" + apiKey.toString(), callback);
+            }
+        } finally {
+            lock.readLock().unlock();
         }
     }
 
