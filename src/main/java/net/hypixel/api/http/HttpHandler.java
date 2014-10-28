@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
+import net.hypixel.api.reply.AbstractReply;
+import net.hypixel.api.util.APIThrottleException;
 import net.hypixel.api.util.Callback;
 
 import java.nio.charset.Charset;
@@ -55,7 +57,13 @@ public class HttpHandler<T> extends SimpleChannelInboundHandler<HttpObject> {
 
     private void done(ChannelHandlerContext ctx) {
         try {
-            callback.callback(null, gson.fromJson(buffer.toString(), callback.getClazz()));
+            T val = gson.fromJson(buffer.toString(), callback.getClazz());
+            Callback<T> c = callback;
+            if(val instanceof AbstractReply && ((AbstractReply) val).isThrottle()) {
+                c.callback(new APIThrottleException(), null);
+                return;
+            }
+            callback.callback(null, val);
         } catch (Throwable t) {
             throw new RuntimeException("Buffer "+buffer.toString(), t);
         } finally {

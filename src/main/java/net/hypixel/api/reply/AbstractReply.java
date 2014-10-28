@@ -3,8 +3,13 @@ package net.hypixel.api.reply;
 @SuppressWarnings("unused")
 public abstract class AbstractReply {
 
+    protected boolean throttle;
     protected boolean success;
     protected String cause;
+
+    public boolean isThrottle() {
+        return throttle;
+    }
 
     public boolean isSuccess() {
         return success;
@@ -17,7 +22,8 @@ public abstract class AbstractReply {
     @Override
     public String toString() {
         return "AbstractReply{" +
-                "success=" + success +
+                "throttle=" + throttle +
+                ",success=" + success +
                 ", cause='" + cause + '\'' +
                 '}';
     }
