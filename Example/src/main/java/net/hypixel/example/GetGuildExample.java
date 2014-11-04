@@ -19,7 +19,9 @@ public class GetGuildExample {
                     System.out.println(result);
                 }
                 HypixelAPI.getInstance().finish();
+                System.exit(0);
             }
         });
+        ExampleUtil.await(); // This is required because the API is asynchronous, so without this the program will exit.
     }
 }

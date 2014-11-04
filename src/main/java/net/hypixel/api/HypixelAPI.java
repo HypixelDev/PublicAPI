@@ -1,7 +1,9 @@
 package net.hypixel.api;
 
 import com.google.common.base.Preconditions;
-import net.hypixel.api.http.HTTPClient;
+import com.google.gson.Gson;
+import com.mastfrog.netty.http.client.HttpClient;
+import com.mastfrog.netty.http.client.ResponseHandler;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.util.APIUtil;
 import net.hypixel.api.util.Callback;
@@ -15,12 +17,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class HypixelAPI {
     private static final String BASE_URL = "https://api.hypixel.net/";
     private static HypixelAPI instance;
+    private final Gson gson;
     private final ReentrantReadWriteLock lock;
-    private final HTTPClient httpClient;
+    private final HttpClient httpClient;
     private UUID apiKey;
     private HypixelAPI() {
+        gson = new Gson();
         lock = new ReentrantReadWriteLock();
-        httpClient = new HTTPClient();
+        httpClient = new HttpClient();
     }
 
     /**
@@ -41,6 +45,7 @@ public class HypixelAPI {
      * the application will never exit.
      */
     public void finish() {
+        httpClient.shutdown();
         instance = null;
     }
 
@@ -78,7 +83,7 @@ public class HypixelAPI {
         lock.readLock().lock();
         try {
             if (doKeyCheck(callback)) {
-                httpClient.get(BASE_URL + "key?key=" + apiKey.toString(), callback);
+                get(BASE_URL + "key?key=" + apiKey.toString(), callback);
             }
         } finally {
             lock.readLock().unlock();
@@ -105,7 +110,7 @@ public class HypixelAPI {
                     callback.callback(new HypixelAPIException("Neither name nor player was provided!"), null);
                     return;
                 }
-                httpClient.get(BASE_URL + "findGuild?key=" + apiKey.toString() + "&" + args, callback);
+                get(BASE_URL + "findGuild?key=" + apiKey.toString() + "&" + args, callback);
             }
         } finally {
             lock.readLock().unlock();
@@ -125,7 +130,7 @@ public class HypixelAPI {
                 if (id == null) {
                     callback.callback(new HypixelAPIException("Guild id wasn't provided!"), null);
                 } else {
-                    httpClient.get(BASE_URL + "guild?key=" + apiKey.toString() + "&id=" + StringEscapeUtils.escapeHtml4(id), callback);
+                    get(BASE_URL + "guild?key=" + apiKey.toString() + "&id=" + StringEscapeUtils.escapeHtml4(id), callback);
                 }
             }
         } finally {
@@ -146,7 +151,7 @@ public class HypixelAPI {
                 if (player == null) {
                     callback.callback(new HypixelAPIException("No player was provided!"), null);
                 } else {
-                    httpClient.get(BASE_URL + "friends?key=" + apiKey.toString() + "&player=" + StringEscapeUtils.escapeHtml4(player), callback);
+                    get(BASE_URL + "friends?key=" + apiKey.toString() + "&player=" + StringEscapeUtils.escapeHtml4(player), callback);
                 }
             }
         } finally {
@@ -174,7 +179,7 @@ public class HypixelAPI {
                     callback.callback(new HypixelAPIException("Neither player nor uuid was provided!"), null);
                     return;
                 }
-                httpClient.get(BASE_URL + "player?key=" + apiKey.toString() + "&" + args, callback);
+                get(BASE_URL + "player?key=" + apiKey.toString() + "&" + args, callback);
             }
         } finally {
             lock.readLock().unlock();
@@ -194,5 +199,43 @@ public class HypixelAPI {
         } else {
             return true;
         }
+    }
+
+    /**
+     * Internal method
+     *
+     * @param callback The callback to execute
+     * @param <T> The class of the callback
+     * @return The ResponseHandler that wraps the callback
+     */
+    private <T> ResponseHandler<String> buildResponseHandler(final Callback<T> callback) {
+        return new ResponseHandler<String>(String.class) {
+            @Override
+            protected void receive(String obj) {
+                T value;
+                try {
+                    value = gson.fromJson(obj, callback.getClazz());
+                } catch (Throwable t) {
+                    callback.callback(t, null);
+                    return;
+                }
+                callback.callback(null, value);
+            }
+
+            @Override
+            protected void onError(Throwable err) {
+                callback.callback(err, null);
+            }
+        };
+    }
+
+    /**
+     * Internal method
+     *
+     * @param url The URL to send the request to
+     * @param callback The callback to execute
+     */
+    private void get(String url, Callback<?> callback) {
+        httpClient.get().setURL(url).execute(buildResponseHandler(callback));
     }
 }
