@@ -26,6 +26,9 @@ public class HypixelAPI {
         gson = new Gson();
         lock = new ReentrantReadWriteLock();
         httpClient = new HttpClient();
+        
+        //ogod we're all fucked 
+        //plsno
     }
 
     /**
