@@ -41,7 +41,6 @@ public class HypixelAPI {
      * the application will never exit.
      */
     public void finish() {
-        httpClient.close();
         instance = null;
     }
 
