@@ -10,6 +10,13 @@ public class KeyReply extends AbstractReply {
         return record;
     }
 
+    @Override
+    public String toString() {
+        return "KeyReply{" +
+                "record=" + record +
+                ",super=" + super.toString() + "}";
+    }
+
     public class Key {
         private String key;
         private String owner;
@@ -35,12 +42,5 @@ public class KeyReply extends AbstractReply {
                     ", queriesInPastMin=" + queriesInPastMin +
                     '}';
         }
-    }
-
-    @Override
-    public String toString() {
-        return "KeyReply{" +
-                "record=" + record +
-                ",super=" + super.toString()+"}";
     }
 }

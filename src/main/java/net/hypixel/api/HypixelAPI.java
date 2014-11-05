@@ -325,6 +325,63 @@ public class HypixelAPI {
     }
 
     /**
+     * Call this method to get a player's session
+     * This method is synchronous and will block the thread until the request is completed and returned.
+     * It is preferred to use the asynchronous counterpart to this method.
+     *
+     * @see #getSession(String, net.hypixel.api.util.Callback)
+     *
+     * @param player The player to get the session of
+     * @return The SessionReply from the API
+     */
+    public SessionReply getSessionSync(String player) {
+        lock.readLock().lock();
+        try {
+            SyncCallback<SessionReply> callback = new SyncCallback<>(SessionReply.class);
+            if (doKeyCheck(callback)) {
+                if (player == null) {
+                    throw new HypixelAPIException("No player was provided!");
+                } else {
+                    try {
+                        get(BASE_URL + "session?key=" + apiKey.toString() + "&player=" + StringEscapeUtils.escapeHtml4(player), callback).await();
+                    } catch (InterruptedException e) {
+                        throw new HypixelAPIException(e);
+                    }
+                }
+            }
+            if (callback.failCause != null) {
+                throw new HypixelAPIException(callback.failCause);
+            } else {
+                return callback.result;
+            }
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Call this method to get a player's session
+     * This method is asynchronous and is preferred over it's synchronous counterpart.
+     *
+     * @param player   The player to get the session of
+     * @param callback The callback to execute when finished
+     */
+    public void getSession(String player, Callback<SessionReply> callback) {
+        lock.readLock().lock();
+        try {
+            if (doKeyCheck(callback)) {
+                if (player == null) {
+                    callback.callback(new HypixelAPIException("No player was provided!"), null);
+                } else {
+                    get(BASE_URL + "session?key=" + apiKey.toString() + "&player=" + StringEscapeUtils.escapeHtml4(player), callback);
+                }
+            }
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    /**
      * Call this method to get a player's object
      * This method is synchronous and will block the thread until the request is completed and returned.
      * It is preferred to use the asynchronous counterpart to this method.
