@@ -8,7 +8,7 @@ Dependencies
 
 The Hypixel PublicAPI has the following dependencies:
 - GSON
-- Google Collections Libary
+- Google Collections Library
 
 
 Documentation
