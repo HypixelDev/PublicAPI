@@ -267,6 +267,54 @@ public class HypixelAPI {
     }
 
     /**
+     * Call this method to get the active boosters
+     * This method is synchronous and will block the thread until the request is completed and returned.
+     * It is preferred to use the asynchronous counterpart to this method.
+     *
+     * @see #getBoosters(net.hypixel.api.util.Callback) The asynchronous version of this method
+     *
+     * @return The BoostersReply from the API
+     * @throws HypixelAPIException A wrapper for any exceptions that occur.
+     */
+    public BoostersReply getBoostersSync() throws HypixelAPIException {
+        lock.readLock().lock();
+        try {
+            SyncCallback<BoostersReply> callback = new SyncCallback<>(BoostersReply.class);
+            if (doKeyCheck(callback)) {
+                try {
+                    get(BASE_URL + "boosters?key=" + apiKey.toString(), callback).await();
+                } catch (InterruptedException e) {
+                    throw new HypixelAPIException(e);
+                }
+            }
+            if(callback.failCause!=null) {
+                throw new HypixelAPIException(callback.failCause);
+            } else {
+                return callback.result;
+            }
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Call this method to get the active boosters
+     * This method is asynchronous and is preferred over it's synchronous counterpart.
+     *
+     * @param callback The callback to execute when finished
+     */
+    public void getBoosters(Callback<BoostersReply> callback) {
+        lock.readLock().lock();
+        try {
+            if (doKeyCheck(callback)) {
+                get(BASE_URL + "boosters?key=" + apiKey.toString(), callback);
+            }
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    /**
      * Call this method to get a player's friends
      * This method is synchronous and will block the thread until the request is completed and returned.
      * It is preferred to use the asynchronous counterpart to this method.
