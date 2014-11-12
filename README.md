@@ -9,6 +9,7 @@ Dependencies
 The Hypixel PublicAPI has the following dependencies:
 - GSON
 - Google Collections Library
+- netty-http-client (GitHub project by timboudreau)
 
 
 Documentation
