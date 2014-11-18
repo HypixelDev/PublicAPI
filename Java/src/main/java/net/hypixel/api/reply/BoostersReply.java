@@ -4,16 +4,16 @@ import com.google.gson.JsonArray;
 
 @SuppressWarnings("unused")
 public class BoostersReply extends AbstractReply {
-    private JsonArray records;
+    private JsonArray boosters;
 
-    public JsonArray getRecords() {
-        return records;
+    public JsonArray getBoosters() {
+        return boosters;
     }
 
     @Override
     public String toString() {
         return "BoostersReply{" +
-                "records=" + records +
+                "boosters=" + boosters +
                 ",super=" + super.toString() + "}";
     }
 }
