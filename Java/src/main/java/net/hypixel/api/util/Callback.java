@@ -1,6 +1,8 @@
 package net.hypixel.api.util;
 
-public abstract class Callback<T> {
+import net.hypixel.api.reply.AbstractReply;
+
+public abstract class Callback<T extends AbstractReply> {
     private final Class<T> clazz;
 
     public Callback(Class<T> clazz) {
