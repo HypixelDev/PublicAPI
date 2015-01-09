@@ -37,7 +37,7 @@ You can create an issue here on GitHub to report a bug with the API or to sugges
 Copyright
 -------
 
-HypixelAPI (c) 2014
+HypixelAPI (c) 2015
 
 
 TODO
