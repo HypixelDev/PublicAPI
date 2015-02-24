@@ -12,7 +12,8 @@ public enum GameType {
     ARCADE("Arcade", 14),
     ARENA("Arena", 17),
     MCGO("Cops and Crims", 21),
-    UHC("UHC Champions", 20);
+    UHC("UHC Champions", 20),
+    BATTLEGROUND("Warlords", 23);
 
     private static GameType[] v = values();
     private final String name;
@@ -78,6 +79,8 @@ public enum GameType {
                 return MCGO;
             case "UHC":
                 return UHC;
+            case "Battleground":
+                return BATTLEGROUND;
         }
         return null;
     }
