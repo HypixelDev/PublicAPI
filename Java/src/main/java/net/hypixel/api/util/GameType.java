@@ -79,7 +79,7 @@ public enum GameType {
                 return MCGO;
             case "UHC":
                 return UHC;
-            case "BATTLEGROUND":
+            case "Battleground":
                 return BATTLEGROUND;
         }
         return null;
