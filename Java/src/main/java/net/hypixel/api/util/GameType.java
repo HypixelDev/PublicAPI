@@ -5,14 +5,15 @@ public enum GameType {
     QUAKECRAFT("Quakecraft", 2),
     WALLS("Walls", 3),
     PAINTBALL("Paintball", 4),
-    SURVIVAL_GAMES("Blitz Survival Games",5),
+    SURVIVAL_GAMES("Blitz Survival Games", 5),
     TNTGAMES("TNTGames", 6),
     VAMPIREZ("VampireZ", 7),
     WALLS3("MegaWalls", 13),
     ARCADE("Arcade", 14),
     ARENA("Arena", 17),
     MCGO("Cops and Crims", 21),
-    UHC("UHC Champions", 20);
+    UHC("UHC Champions", 20),
+    BATTLEGROUND("Warlords", 22);
 
     private static GameType[] v = values();
     private final String name;
@@ -78,6 +79,8 @@ public enum GameType {
                 return MCGO;
             case "UHC":
                 return UHC;
+            case "BATTLEGROUND":
+                return BATTLEGROUND;
         }
         return null;
     }
