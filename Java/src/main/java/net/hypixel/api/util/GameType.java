@@ -5,7 +5,7 @@ public enum GameType {
     QUAKECRAFT("Quakecraft", 2),
     WALLS("Walls", 3),
     PAINTBALL("Paintball", 4),
-    SURVIVAL_GAMES("Blitz Survival Games",5),
+    SURVIVAL_GAMES("Blitz Survival Games", 5),
     TNTGAMES("TNTGames", 6),
     VAMPIREZ("VampireZ", 7),
     WALLS3("MegaWalls", 13),
