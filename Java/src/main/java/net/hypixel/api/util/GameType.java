@@ -13,7 +13,8 @@ public enum GameType {
     ARENA("Arena Brawl", 17),
     MCGO("Cops and Crims", 21),
     UHC("UHC Champions", 20),
-    BATTLEGROUND("Warlords", 23);
+    BATTLEGROUND("Warlords", 23),
+    TURBO_KART_RACERS("Turbo Kart Racers", 25);
 
     private static GameType[] v = values();
     private final String name;
