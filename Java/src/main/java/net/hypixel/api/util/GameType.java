@@ -82,6 +82,8 @@ public enum GameType {
                 return UHC;
             case "Battleground":
                 return BATTLEGROUND;
+            case "GingerBread":
+                return TURBO_KART_RACERS;
         }
         return null;
     }
