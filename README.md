@@ -5,6 +5,14 @@ This is a Java implementation of the Hypixel API
 ### Documentation
 Hypixel PublicAPI documentation is mostly contained within the source code and the [example code](https://github.com/HypixelDev/PublicAPI/tree/master/Example/src/main/java/net/hypixel/example).
 
+### Maven Repository
+```xml
+<repository>
+  <id>komp-repo</id>
+  <url>http://pomhub.uk/nexus/content/groups/public</url>
+</repository>
+```
+
 ### Query Limitations
 The API server has a request limit of 60 queries per minute. Abuse of the API will lead to your API key being banned.
 
@@ -25,4 +33,3 @@ HypixelAPI © 2015
 
 ### TODO
 * Add a proper copyright header to all files.
-* Deploy to a public maven repo.
