@@ -21,7 +21,7 @@ The Hypixel PublicAPI has the following dependencies:
 You can create an issue here on GitHub to report a bug with the API or to suggest enhancements.
 
 ### Copyright
-HypixelAPI © 2014
+HypixelAPI © 2015
 
 ### TODO
 * Add a proper copyright header to all files.
