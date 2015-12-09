@@ -3,7 +3,6 @@ package net.hypixel.api.reply;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-@SuppressWarnings("unused")
 public class GuildReply extends AbstractReply {
     private JsonElement guild;
 
