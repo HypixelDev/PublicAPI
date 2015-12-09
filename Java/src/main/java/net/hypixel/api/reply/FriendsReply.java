@@ -2,7 +2,6 @@ package net.hypixel.api.reply;
 
 import com.google.gson.JsonArray;
 
-@SuppressWarnings("unused")
 public class FriendsReply extends AbstractReply {
     private JsonArray records;
 
