@@ -1,7 +1,7 @@
 package net.hypixel.api.util;
 
-@SuppressWarnings("unused")
 public enum GameType {
+    
     QUAKECRAFT("Quakecraft", 2),
     WALLS("Walls", 3),
     PAINTBALL("Paintball", 4),
@@ -18,7 +18,6 @@ public enum GameType {
     SKYWARS("SkyWars", 51),
     TRUECOMBAT("Crazy Walls", 52);
 
-    private static GameType[] v = values();
     private final String name;
     private final int id;
 
@@ -46,8 +45,8 @@ public enum GameType {
      * @return The GameType associated with that id, or null if there isn't one.
      */
     public static GameType fromId(int id) {
-        for(GameType gameType : v) {
-            if(gameType.id==id) {
+        for(GameType gameType : values()) {
+            if(gameType.getId() == id) {
                 return gameType;
             }
         }
