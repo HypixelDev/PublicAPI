@@ -1,6 +1,5 @@
 package net.hypixel.api.reply;
 
-@SuppressWarnings("unused")
 public class FindGuildReply extends AbstractReply {
     private String guild;
 
