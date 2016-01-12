@@ -5,10 +5,12 @@ import com.google.gson.Gson;
 import com.mastfrog.netty.http.client.HttpClient;
 import com.mastfrog.netty.http.client.ResponseFuture;
 import com.mastfrog.netty.http.client.ResponseHandler;
+
 import net.hypixel.api.reply.*;
 import net.hypixel.api.util.APIUtil;
 import net.hypixel.api.util.Callback;
 import net.hypixel.api.util.HypixelAPIException;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.UUID;
@@ -551,7 +553,7 @@ public class HypixelAPI {
         return httpClient.get().setURL(url).execute(buildResponseHandler(callback));
     }
 
-    private class SyncCallback<T> extends Callback<T> {
+    private class SyncCallback<T extends AbstractReply> extends Callback<T> {
         private Throwable failCause;
         private T result;
 
