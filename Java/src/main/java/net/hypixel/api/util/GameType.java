@@ -14,6 +14,7 @@ public enum GameType {
     MCGO("Cops and Crims", 21),
     UHC("UHC Champions", 20),
     BATTLEGROUND("Warlords", 23),
+    SUPER_SMASH("Smash Heroes", 24),
     TURBO_KART_RACERS("Turbo Kart Racers", 25),
     SKYWARS("SkyWars", 51),
     TRUECOMBAT("Crazy Walls", 52);
@@ -90,6 +91,8 @@ public enum GameType {
                 return SKYWARS;
             case "TrueCombat":
                 return TRUECOMBAT;
+            case "SuperSmash":
+                return SUPER_SMASH;
         }
         return null;
     }
