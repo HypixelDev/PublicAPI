@@ -397,6 +397,40 @@ public class HypixelAPI {
     }
 
     /**
+     * Call this method to get a player's friends by its uuid
+     * This method is synchronous and will block the thread until the request is completed and returned.
+     * It is preferred to use the asynchronous counterpart to this method.
+     *
+     * @param uuid   The uuid of the player to find friends of
+     * @return The FriendsReply from the API
+     * @throws HypixelAPIException A wrapper for any exceptions that occur.
+     */
+    public FriendsReply getFriendsByUUIDSync(String uuid) throws HypixelAPIException {
+        lock.readLock().lock();
+        try {
+            SyncCallback<FriendsReply> callback = new SyncCallback<>(FriendsReply.class);
+            if (doKeyCheck(callback)) {
+                if (uuid == null) {
+                    throw new HypixelAPIException("No UUID was provided!");
+                } else {
+                    try {
+                        get(BASE_URL + "friends?key=" + apiKey.toString() + "&uuid=" + StringEscapeUtils.escapeHtml4(uuid), callback).await();
+                    } catch (InterruptedException e) {
+                        throw new HypixelAPIException(e);
+                    }
+                }
+            }
+            if (callback.failCause != null) {
+                throw new HypixelAPIException(callback.failCause);
+            } else {
+                return callback.result;
+            }
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    /**
      * Call this method to get a player's session
      * This method is synchronous and will block the thread until the request is completed and returned.
      * It is preferred to use the asynchronous counterpart to this method.
