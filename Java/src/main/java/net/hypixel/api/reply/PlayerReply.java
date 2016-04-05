@@ -8,7 +8,7 @@ public class PlayerReply extends AbstractReply {
     private JsonElement player;
 
     public JsonObject getPlayer() {
-        if(player.isJsonNull()) {
+        if(player == null || player.isJsonNull()) {
             return null;
         } else {
             return player.getAsJsonObject();

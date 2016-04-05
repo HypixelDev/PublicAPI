@@ -11,7 +11,7 @@ public class GuildReply extends AbstractReply {
      * @return The guild object, or null if one wasn't found
      */
     public JsonObject getGuild() {
-        if(guild.isJsonNull()) {
+        if(guild == null || guild.isJsonNull()) {
             return null;
         } else {
             return guild.getAsJsonObject();

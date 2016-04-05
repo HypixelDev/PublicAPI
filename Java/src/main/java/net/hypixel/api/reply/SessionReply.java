@@ -11,7 +11,7 @@ public class SessionReply extends AbstractReply {
      * @return The session, or null if one wasn't found
      */
     public JsonObject getSession() {
-        if(session.isJsonNull()) {
+        if(session == null || session.isJsonNull()) {
             return null;
         } else {
             return session.getAsJsonObject();

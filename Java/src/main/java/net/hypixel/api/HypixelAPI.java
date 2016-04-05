@@ -375,6 +375,62 @@ public class HypixelAPI {
     }
 
     /**
+     * Call this method to get a player's friends by its uuid
+     * This method is asynchronous and is preferred over it's synchronous counterpart.
+     *
+     * @param uuid   The uuid of the player to find friends of
+     * @param callback The callback to execute when finished
+     */
+    public void getFriendsByUUID(String uuid, Callback<FriendsReply> callback) {
+        lock.readLock().lock();
+        try {
+            if (doKeyCheck(callback)) {
+                if (uuid == null) {
+                    callback.callback(new HypixelAPIException("No player was provided!"), null);
+                } else {
+                    get(BASE_URL + "friends?key=" + apiKey.toString() + "&uuid=" + StringEscapeUtils.escapeHtml4(uuid), callback);
+                }
+            }
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Call this method to get a player's friends by its uuid
+     * This method is synchronous and will block the thread until the request is completed and returned.
+     * It is preferred to use the asynchronous counterpart to this method.
+     *
+     * @param uuid   The uuid of the player to find friends of
+     * @return The FriendsReply from the API
+     * @throws HypixelAPIException A wrapper for any exceptions that occur.
+     */
+    public FriendsReply getFriendsByUUIDSync(String uuid) throws HypixelAPIException {
+        lock.readLock().lock();
+        try {
+            SyncCallback<FriendsReply> callback = new SyncCallback<>(FriendsReply.class);
+            if (doKeyCheck(callback)) {
+                if (uuid == null) {
+                    throw new HypixelAPIException("No UUID was provided!");
+                } else {
+                    try {
+                        get(BASE_URL + "friends?key=" + apiKey.toString() + "&uuid=" + StringEscapeUtils.escapeHtml4(uuid), callback).await();
+                    } catch (InterruptedException e) {
+                        throw new HypixelAPIException(e);
+                    }
+                }
+            }
+            if (callback.failCause != null) {
+                throw new HypixelAPIException(callback.failCause);
+            } else {
+                return callback.result;
+            }
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    /**
      * Call this method to get a player's session
      * This method is synchronous and will block the thread until the request is completed and returned.
      * It is preferred to use the asynchronous counterpart to this method.
@@ -522,7 +578,7 @@ public class HypixelAPI {
      * @param <T> The class of the callback
      * @return The ResponseHandler that wraps the callback
      */
-    private <T> ResponseHandler<String> buildResponseHandler(final Callback<T> callback) {
+    private <T extends AbstractReply> ResponseHandler<String> buildResponseHandler(final Callback<T> callback) {
         return new ResponseHandler<String>(String.class) {
             @Override
             protected void receive(String obj) {
