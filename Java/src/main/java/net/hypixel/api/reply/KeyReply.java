@@ -2,7 +2,6 @@ package net.hypixel.api.reply;
 
 import java.util.UUID;
 
-@SuppressWarnings("unused")
 public class KeyReply extends AbstractReply {
     private Key record;
 

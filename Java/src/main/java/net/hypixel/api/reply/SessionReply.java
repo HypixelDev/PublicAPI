@@ -3,7 +3,6 @@ package net.hypixel.api.reply;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-@SuppressWarnings("unused")
 public class SessionReply extends AbstractReply {
     private JsonElement session;
 
@@ -11,11 +10,9 @@ public class SessionReply extends AbstractReply {
      * @return The session, or null if one wasn't found
      */
     public JsonObject getSession() {
-        if(session.isJsonNull()) {
+        if(session.isJsonNull())
             return null;
-        } else {
-            return session.getAsJsonObject();
-        }
+        return session.getAsJsonObject();
     }
 
     @Override
