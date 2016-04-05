@@ -23,7 +23,7 @@ public enum GameType {
     private final String name;
     private final int id;
 
-    private GameType(String name, int id) {
+    GameType(String name, int id) {
         this.name = name;
         this.id = id;
     }
