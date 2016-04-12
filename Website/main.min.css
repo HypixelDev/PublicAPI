@@ -1,0 +1,19 @@
+/*
+  ThorinDev
+*/
+.pageheader {
+  background: #16a085;
+  color: #fff;
+  height: 250px;
+  padding: 4rem 0;
+}
+.nav{
+  padding: 1rem;
+}
+.highlight {
+  background: #eee;
+  padding: 1rem;
+}
+.fa-link{
+  color: #ccc !important;
+}
