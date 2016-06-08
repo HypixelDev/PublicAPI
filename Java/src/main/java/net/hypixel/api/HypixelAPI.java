@@ -15,6 +15,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -93,18 +94,21 @@ public class HypixelAPI {
      */
     public <R extends AbstractReply> R getSync(Request request) throws HypixelAPIException {
         lock.readLock().lock();
+        SyncCallback<R> callback = new SyncCallback<>(request.getRequestType().getReplyClass());
         try {
-            SyncCallback<R> callback = new SyncCallback<>(request.getRequestType().getReplyClass());
             if (doKeyCheck(callback)) {
-                get(request, callback);
+                Future<HttpResponse> future = get(request, callback);
+                future.get();
             }
-            if (callback.failCause != null) {
-                throw new HypixelAPIException(callback.failCause);
-            } else {
-                return callback.result;
-            }
+        } catch (InterruptedException | ExecutionException e) {
+            callback.callback(e, null);
         } finally {
             lock.readLock().unlock();
+        }
+        if (callback.failCause != null) {
+            throw new HypixelAPIException(callback.failCause);
+        } else {
+            return callback.result;
         }
     }
 
