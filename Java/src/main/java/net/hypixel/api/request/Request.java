@@ -4,10 +4,6 @@ import net.hypixel.api.HypixelAPI;
 
 import java.util.Map;
 
-/**
- * @author Plancke
- * @since 6/7/2016
- */
 public class Request {
 
     private static final String BASE_URL = "https://api.hypixel.net/";
