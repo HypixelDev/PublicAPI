@@ -17,10 +17,10 @@ public enum RequestParam {
     GUILD_BY_PLAYER_UUID(RequestType.FIND_GUILD, "byUuid", UUID.class, APIUtil.UUID_STRIPPER),
     GUILD_BY_ID(RequestType.GUILD, "id", String.class),
 
-    FRIENDS_BY_NAME(RequestType.FRIENDS, "name", String.class),
+    FRIENDS_BY_NAME(RequestType.FRIENDS, "player", String.class),
     FRIENDS_BY_UUID(RequestType.FRIENDS, "uuid", UUID.class, APIUtil.UUID_STRIPPER),
 
-    SESSION_BY_NAME(RequestType.SESSION, "name", String.class),
+    SESSION_BY_NAME(RequestType.SESSION, "player", String.class),
     SESSION_BY_UUID(RequestType.SESSION, "uuid", UUID.class, APIUtil.UUID_STRIPPER);
 
     private static final RequestParam[] v = values();
