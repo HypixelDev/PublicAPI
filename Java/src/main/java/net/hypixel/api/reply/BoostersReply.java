@@ -1,6 +1,7 @@
 package net.hypixel.api.reply;
 
 import com.google.gson.JsonArray;
+import net.hypixel.api.request.RequestType;
 
 @SuppressWarnings("unused")
 public class BoostersReply extends AbstractReply {
@@ -8,6 +9,11 @@ public class BoostersReply extends AbstractReply {
 
     public JsonArray getBoosters() {
         return boosters;
+    }
+
+    @Override
+    public RequestType getRequestType() {
+        return RequestType.BOOSTERS;
     }
 
     @Override

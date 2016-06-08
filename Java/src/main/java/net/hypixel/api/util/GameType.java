@@ -2,30 +2,58 @@ package net.hypixel.api.util;
 
 @SuppressWarnings("unused")
 public enum GameType {
-    QUAKECRAFT("Quakecraft", 2),
-    WALLS("Walls", 3),
-    PAINTBALL("Paintball", 4),
-    SURVIVAL_GAMES("Blitz Survival Games",5),
-    TNTGAMES("The TNT Games", 6),
-    VAMPIREZ("VampireZ", 7),
-    WALLS3("Mega Walls", 13),
-    ARCADE("Arcade", 14),
-    ARENA("Arena Brawl", 17),
-    MCGO("Cops and Crims", 21),
-    UHC("UHC Champions", 20),
-    BATTLEGROUND("Warlords", 23),
-    SUPER_SMASH("Smash Heroes", 24),
-    TURBO_KART_RACERS("Turbo Kart Racers", 25),
-    SKYWARS("SkyWars", 51),
-    TRUECOMBAT("Crazy Walls", 52);
+    QUAKECRAFT("Quakecraft", "Quake", 2),
+    WALLS("Walls", "Walls", 3),
+    PAINTBALL("Paintball", "Paintball", 4),
+    SURVIVAL_GAMES("Blitz Survival Games", "HungerGames", 5),
+    TNTGAMES("The TNT Games", "TNTGames", 6),
+    VAMPIREZ("VampireZ", "VampireZ", 7),
+    WALLS3("Mega Walls", "Walls3", 13),
+    ARCADE("Arcade", "Arcade", 14),
+    ARENA("Arena Brawl", "Arena", 17),
+    MCGO("Cops and Crims", "MCGO", 21),
+    UHC("UHC Champions", "UHC", 20),
+    BATTLEGROUND("Warlords", "Battleground", 23),
+    SUPER_SMASH("Smash Heroes", "SuperSmash", 24),
+    TURBO_KART_RACERS("Turbo Kart Racers", "GingerBread", 25),
+    SKYWARS("SkyWars", "SkyWars", 51),
+    TRUECOMBAT("Crazy Walls", "TrueCombat", 52);
 
-    private static GameType[] v = values();
-    private final String name;
-    private final int id;
+    private static final GameType[] v = values();
 
-    GameType(String name, int id) {
+    private final String name, dbName;
+    private final Integer id;
+
+    GameType(String name, String dbName, Integer id) {
         this.name = name;
+        this.dbName = dbName;
         this.id = id;
+    }
+
+    /**
+     * @param id The internal id
+     * @return The GameType associated with that id, or null if there isn't one.
+     */
+    public static GameType fromId(int id) {
+        for (GameType gameType : v) {
+            if (gameType.id == id) {
+                return gameType;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param dbName The key used in the database
+     * @return The GameType associated with that key, or null if there isn't one.
+     */
+    public static GameType fromDatabase(String dbName) {
+        for (GameType gameType : v) {
+            if (gameType.dbName.equals(dbName)) {
+                return gameType;
+            }
+        }
+        return null;
     }
 
     /**
@@ -40,60 +68,5 @@ public enum GameType {
      */
     public int getId() {
         return id;
-    }
-
-    /**
-     * @param id The internal id
-     * @return The GameType associated with that id, or null if there isn't one.
-     */
-    public static GameType fromId(int id) {
-        for(GameType gameType : v) {
-            if(gameType.id==id) {
-                return gameType;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @param name The key used in the database
-     * @return The GameType associated with that key, or null if there isn't one.
-     */
-    public static GameType fromDatabase(String name) {
-        switch (name) {
-            case "Quake":
-                return QUAKECRAFT;
-            case "Walls":
-                return WALLS;
-            case "Paintball":
-                return PAINTBALL;
-            case "HungerGames":
-                return SURVIVAL_GAMES;
-            case "TNTGames":
-                return TNTGAMES;
-            case "VampireZ":
-                return VAMPIREZ;
-            case "Walls3":
-                return WALLS3;
-            case "Arcade":
-                return ARCADE;
-            case "Arena":
-                return ARENA;
-            case "MCGO":
-                return MCGO;
-            case "UHC":
-                return UHC;
-            case "Battleground":
-                return BATTLEGROUND;
-            case "GingerBread":
-                return TURBO_KART_RACERS;
-            case "SkyWars":
-                return SKYWARS;
-            case "TrueCombat":
-                return TRUECOMBAT;
-            case "SuperSmash":
-                return SUPER_SMASH;
-        }
-        return null;
     }
 }

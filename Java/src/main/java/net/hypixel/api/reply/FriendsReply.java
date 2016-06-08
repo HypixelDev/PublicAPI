@@ -1,6 +1,7 @@
 package net.hypixel.api.reply;
 
 import com.google.gson.JsonArray;
+import net.hypixel.api.request.RequestType;
 
 @SuppressWarnings("unused")
 public class FriendsReply extends AbstractReply {
@@ -8,6 +9,11 @@ public class FriendsReply extends AbstractReply {
 
     public JsonArray getRecords() {
         return records;
+    }
+
+    @Override
+    public RequestType getRequestType() {
+        return RequestType.FRIENDS;
     }
 
     @Override

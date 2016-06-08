@@ -3,27 +3,36 @@ package net.hypixel.example;
 import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.reply.FindGuildReply;
 import net.hypixel.api.reply.GuildReply;
+import net.hypixel.api.request.Request;
+import net.hypixel.api.request.RequestBuilder;
+import net.hypixel.api.request.RequestParam;
+import net.hypixel.api.request.RequestType;
 import net.hypixel.api.util.Callback;
-
-import java.util.UUID;
 
 public class GetGuildByPlayerExample {
     public static void main(String[] args) {
-        HypixelAPI.getInstance().setApiKey(UUID.fromString("64bd424e-ccb0-42ed-8b66-6e42a135afb4"));
-        HypixelAPI.getInstance().findGuild("AYS", null, new Callback<FindGuildReply>(FindGuildReply.class) {
+        HypixelAPI.getInstance().setApiKey(ExampleUtil.API_KEY);
+
+        Request request = RequestBuilder.newBuilder(RequestType.FIND_GUILD)
+                .addParam(RequestParam.GUILD_BY_NAME, "AYS")
+                .createRequest();
+        HypixelAPI.getInstance().getAsync(request, new Callback<FindGuildReply>(FindGuildReply.class) {
             @Override
             public void callback(Throwable failCause, FindGuildReply result) {
                 if (failCause != null) {
                     failCause.printStackTrace();
                 } else {
                     System.out.println(result);
-                    if(result.getGuild()==null) {
+                    if (result.getGuild() == null) {
                         System.out.println("No guild by that name/player!");
                     } else {
-                        HypixelAPI.getInstance().getGuild(result.getGuild(), new Callback<GuildReply>(GuildReply.class) {
+                        Request request = RequestBuilder.newBuilder(RequestType.GUILD)
+                                .addParam(RequestParam.GUILD_BY_ID, result.getGuild())
+                                .createRequest();
+                        HypixelAPI.getInstance().getAsync(request, new Callback<GuildReply>(GuildReply.class) {
                             @Override
                             public void callback(Throwable failCause, GuildReply result) {
-                                if(failCause!=null) {
+                                if (failCause != null) {
                                     failCause.printStackTrace();
                                 } else {
                                     System.out.println(result);

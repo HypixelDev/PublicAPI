@@ -1,4 +1,4 @@
-package net.hypixel.api.util;
+package net.hypixel.api.exceptions;
 
 public class APIThrottleException extends HypixelAPIException {
     public APIThrottleException() {
