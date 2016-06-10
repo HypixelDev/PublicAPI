@@ -43,9 +43,8 @@ public class HypixelAPI {
      * @return The HypixelAPI
      */
     public static HypixelAPI getInstance() {
-        if (instance == null) {
+        if (instance == null)
             instance = new HypixelAPI();
-        }
         return instance;
     }
 
@@ -122,9 +121,8 @@ public class HypixelAPI {
     public <R extends AbstractReply> void getAsync(Request request, Callback<R> callback) {
         lock.readLock().lock();
         try {
-            if (doKeyCheck(callback)) {
+            if (doKeyCheck(callback))
                 get(request, callback);
-            }
         } finally {
             lock.readLock().unlock();
         }
@@ -140,9 +138,8 @@ public class HypixelAPI {
         if (apiKey == null) {
             callback.callback(new HypixelAPIException("API key hasn't been set yet!"), null);
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**
@@ -175,11 +172,8 @@ public class HypixelAPI {
      * @param <T>   The class of the reply
      */
     public <T extends AbstractReply> void checkReply(T reply) {
-        if (reply != null) {
-            if (reply.isThrottle()) {
+        if (reply != null && reply.isThrottle())
                 throw new APIThrottleException();
-            }
-        }
     }
 
     /**
