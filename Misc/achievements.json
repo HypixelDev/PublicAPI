@@ -49,7 +49,7 @@
         },
         "MAKIN_SOME_ROOM": {
           "points": 10,
-          "name": "Makin’ Some Room",
+          "name": "Makin? Some Room",
           "description": "Salvage a Weapon."
         },
         "CAPTURE_THE_WIN": {
@@ -150,7 +150,7 @@
         "FEELING_SPECIAL": {
           "points": 10,
           "name": "Feeling Special!",
-          "description": "Change your weapon’s appearance using the Skin Selector."
+          "description": "Change your weapon?s appearance using the Skin Selector."
         },
         "GREEN_IS_LOVE": {
           "points": 10,
@@ -510,7 +510,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 1095
     },
     "housing": {
       "one_time": {
@@ -570,7 +571,8 @@
           "description": "Join a Youtuber's home."
         }
       },
-      "tiered": {}
+      "tiered": {},
+      "total_points": 55
     },
     "tntgames": {
       "one_time": {
@@ -729,7 +731,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 330
     },
     "paintball": {
       "one_time": {
@@ -883,7 +886,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 315
     },
     "arcade": {
       "one_time": {
@@ -973,7 +977,8 @@
           "description": "Ride a bat in Punch the Bat"
         }
       },
-      "tiered": {}
+      "tiered": {},
+      "total_points": 135
     },
     "arena": {
       "one_time": {
@@ -1198,7 +1203,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 395
     },
     "supersmash": {
       "one_time": {
@@ -1235,7 +1241,7 @@
         "SHOOP_CHALLENGE": {
           "points": 5,
           "name": "Shoop Challenge",
-          "description": "Kill at least 3 enemies with FIRIN’ MAH LAZOR"
+          "description": "Kill at least 3 enemies with FIRIN? MAH LAZOR"
         },
         "REACH_STARS": {
           "points": 15,
@@ -1453,7 +1459,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 420
     },
     "vampirez": {
       "one_time": {
@@ -1658,7 +1665,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 405
     },
     "skywars": {
       "one_time": {
@@ -2089,7 +2097,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 875
     },
     "walls3": {
       "one_time": {
@@ -2350,7 +2359,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 545
     },
     "copsandcrims": {
       "one_time": {
@@ -2645,7 +2655,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 555
     },
     "uhc": {
       "one_time": {
@@ -2751,7 +2762,7 @@
         },
         "DEATHS_SCYTHE": {
           "points": 10,
-          "name": "Death’s Scythe",
+          "name": "Death?s Scythe",
           "description": "Craft the Death's Scythe"
         },
         "AXE_OF_PERUN": {
@@ -2945,7 +2956,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 585
     },
     "general": {
       "one_time": {
@@ -3072,6 +3084,37 @@
             }
           ]
         },
+        "QUEST_MASTER": {
+          "name": "Quest Master",
+          "description": "Complete a total of %s quests",
+          "tiers": [
+            {
+              "tier": 1,
+              "points": 5,
+              "amount": 5
+            },
+            {
+              "tier": 2,
+              "points": 10,
+              "amount": 25
+            },
+            {
+              "tier": 3,
+              "points": 15,
+              "amount": 50
+            },
+            {
+              "tier": 4,
+              "points": 20,
+              "amount": 125
+            },
+            {
+              "tier": 5,
+              "points": 25,
+              "amount": 250
+            }
+          ]
+        },
         "COINS": {
           "name": "Ultimate Banker",
           "description": "Earn a total of %s coins",
@@ -3102,8 +3145,40 @@
               "amount": 250000
             }
           ]
+        },
+        "CHALLENGER": {
+          "name": "Challenger",
+          "description": "Complete a total of %s challenges",
+          "tiers": [
+            {
+              "tier": 1,
+              "points": 5,
+              "amount": 10
+            },
+            {
+              "tier": 2,
+              "points": 10,
+              "amount": 50
+            },
+            {
+              "tier": 3,
+              "points": 15,
+              "amount": 100
+            },
+            {
+              "tier": 4,
+              "points": 20,
+              "amount": 250
+            },
+            {
+              "tier": 5,
+              "points": 25,
+              "amount": 500
+            }
+          ]
         }
-      }
+      },
+      "total_points": 535
     },
     "blitz": {
       "one_time": {
@@ -3302,7 +3377,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 410
     },
     "walls": {
       "one_time": {
@@ -3491,7 +3567,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 365
     },
     "quake": {
       "one_time": {
@@ -3740,7 +3817,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 405
     },
     "truecombat": {
       "one_time": {
@@ -4017,7 +4095,8 @@
             }
           ]
         }
-      }
+      },
+      "total_points": 525
     }
   }
 }
