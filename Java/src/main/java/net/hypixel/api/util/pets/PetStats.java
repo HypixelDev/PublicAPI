@@ -6,19 +6,23 @@ import java.util.Map;
 
 public class PetStats {
 
-    private Map<String, Pet> petMap = Maps.newHashMap(); // TODO add PetType enum
+    private Map<PetType, Pet> petMap = Maps.newHashMap();
 
     public PetStats(Map<String, Map<String, Object>> petStats) {
         for (Map.Entry<String, Map<String, Object>> stringMapEntry : petStats.entrySet()) {
-            petMap.put(stringMapEntry.getKey(), new Pet(stringMapEntry.getValue()));
+            try {
+                petMap.put(PetType.valueOf(stringMapEntry.getKey()), new Pet(stringMapEntry.getValue()));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid pet! " + stringMapEntry.getKey());
+            }
         }
     }
 
-    public Pet getPet(String type) {
+    public Pet getPet(PetType type) {
         return petMap.get(type);
     }
 
-    public Map<String, Pet> getAllPets() {
+    public Map<PetType, Pet> getAllPets() {
         return petMap;
     }
 }
