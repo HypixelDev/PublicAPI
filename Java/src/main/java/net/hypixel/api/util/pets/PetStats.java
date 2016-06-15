@@ -25,4 +25,11 @@ public class PetStats {
     public Map<PetType, Pet> getAllPets() {
         return petMap;
     }
+
+    @Override
+    public String toString() {
+        return "PetStats{" +
+                "petMap=" + petMap +
+                '}';
+    }
 }

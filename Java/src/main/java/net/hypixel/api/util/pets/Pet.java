@@ -102,4 +102,13 @@ public class Pet {
         return experience - getExperienceUntilLevel(level);
     }
 
+    @Override
+    public String toString() {
+        return "Pet{" +
+                "stats=" + stats +
+                ", level=" + level +
+                ", experience=" + experience +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
