@@ -1,5 +1,7 @@
 package net.hypixel.api.reply;
 
+import net.hypixel.api.request.RequestType;
+
 @SuppressWarnings("unused")
 public class FindGuildReply extends AbstractReply {
     private String guild;
@@ -9,6 +11,11 @@ public class FindGuildReply extends AbstractReply {
      */
     public String getGuild() {
         return guild;
+    }
+
+    @Override
+    public RequestType getRequestType() {
+        return RequestType.FIND_GUILD;
     }
 
     @Override

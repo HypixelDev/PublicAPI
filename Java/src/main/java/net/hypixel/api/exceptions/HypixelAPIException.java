@@ -1,4 +1,4 @@
-package net.hypixel.api.util;
+package net.hypixel.api.exceptions;
 
 @SuppressWarnings("unused")
 public class HypixelAPIException extends RuntimeException {

@@ -1,5 +1,7 @@
 package net.hypixel.api.reply;
 
+import net.hypixel.api.request.RequestType;
+
 @SuppressWarnings("unused")
 public abstract class AbstractReply {
 
@@ -18,6 +20,8 @@ public abstract class AbstractReply {
     public String getCause() {
         return cause;
     }
+
+    public abstract RequestType getRequestType();
 
     @Override
     public String toString() {

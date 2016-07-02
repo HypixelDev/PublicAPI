@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>PublicAPI</artifactId>
@@ -9,12 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>APIExample</artifactId>
+    <artifactId>Example</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>net.hypixel</groupId>
-            <artifactId>PublicAPI</artifactId>
+            <artifactId>Java</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
