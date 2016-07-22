@@ -5,10 +5,6 @@ import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.util.UUID;
 
-/**
- * @author Plancke
- * @since 7/22/2016
- */
 public class UUIDTypeAdapter implements JsonDeserializer<UUID>, JsonSerializer<UUID> {
 
     @Override
