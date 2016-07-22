@@ -17,6 +17,7 @@ public enum RequestParam {
     GUILD_BY_PLAYER_UUID(RequestType.FIND_GUILD, "byUuid", UUID.class, APIUtil.UUID_STRIPPER),
     GUILD_BY_ID(RequestType.GUILD, "id", String.class),
 
+    @Deprecated
     FRIENDS_BY_NAME(RequestType.FRIENDS, "player", String.class),
     FRIENDS_BY_UUID(RequestType.FRIENDS, "uuid", UUID.class, APIUtil.UUID_STRIPPER),
 
