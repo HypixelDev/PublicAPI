@@ -1,13 +1,15 @@
 package net.hypixel.api.reply;
 
-import com.google.gson.JsonArray;
 import net.hypixel.api.request.RequestType;
+
+import java.util.List;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class FriendsReply extends AbstractReply {
-    private JsonArray records;
+    private List<FriendShip> records;
 
-    public JsonArray getRecords() {
+    public List<FriendShip> getFriendShips() {
         return records;
     }
 
@@ -19,7 +21,34 @@ public class FriendsReply extends AbstractReply {
     @Override
     public String toString() {
         return "FriendsReply{" +
-                "records=" + records +
+                "friendShips=" + records +
                 ",super=" + super.toString() + "}";
+    }
+
+    public class FriendShip {
+
+        private UUID uuidSender, uuidReceiver;
+        private long started;
+
+        public UUID getUuidSender() {
+            return uuidSender;
+        }
+
+        public UUID getUuidReceiver() {
+            return uuidReceiver;
+        }
+
+        public long getStarted() {
+            return started;
+        }
+
+        @Override
+        public String toString() {
+            return "FriendShip{" +
+                    "uuidSender=" + uuidSender +
+                    ", uuidReceiver=" + uuidReceiver +
+                    ", started=" + started +
+                    '}';
+        }
     }
 }

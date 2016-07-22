@@ -2,6 +2,8 @@ package net.hypixel.api;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.AbstractReply;
@@ -32,7 +34,9 @@ public class HypixelAPI {
     private UUID apiKey;
 
     private HypixelAPI() {
-        gson = new Gson();
+        gson = new GsonBuilder()
+                .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
+                .create();
         lock = new ReentrantReadWriteLock();
         httpClient = HttpClientBuilder.create().build();
     }
@@ -217,4 +221,5 @@ public class HypixelAPI {
             this.result = result;
         }
     }
+
 }
