@@ -20,6 +20,6 @@ public class BoostersReply extends AbstractReply {
     public String toString() {
         return "BoostersReply{" +
                 "boosters=" + boosters +
-                ",super=" + super.toString() + "}";
+                ", super=" + super.toString() + "}";
     }
 }

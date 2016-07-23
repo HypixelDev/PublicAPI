@@ -13,7 +13,7 @@ public class GetSessionExample {
         HypixelAPI.getInstance().setApiKey(ExampleUtil.API_KEY);
 
         Request request = RequestBuilder.newBuilder(RequestType.SESSION)
-                .addParam(RequestParam.SESSION_BY_NAME, "AgentKid")
+                .addParam(RequestParam.SESSION_BY_UUID, ExampleUtil.UUIDList.PLANCKE)
                 .createRequest();
         HypixelAPI.getInstance().getAsync(request, new Callback<SessionReply>(SessionReply.class) {
             @Override

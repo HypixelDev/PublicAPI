@@ -21,20 +21,25 @@ public class KeyReply extends AbstractReply {
     public String toString() {
         return "KeyReply{" +
                 "record=" + record +
-                ",super=" + super.toString() + "}";
+                ", super=" + super.toString() + "}";
     }
 
     public class Key {
-        private String key;
-        private String owner;
+        private UUID key;
+        private UUID ownerUuid;
+        private int totalQueries;
         private int queriesInPastMin;
 
         public UUID getKey() {
-            return UUID.fromString(key);
+            return key;
         }
 
-        public String getOwner() {
-            return owner;
+        public UUID getOwnerUuid() {
+            return ownerUuid;
+        }
+
+        public int getTotalQueries() {
+            return totalQueries;
         }
 
         public int getQueriesInPastMin() {
@@ -44,8 +49,9 @@ public class KeyReply extends AbstractReply {
         @Override
         public String toString() {
             return "Key{" +
-                    "key='" + key + '\'' +
-                    ", owner='" + owner + '\'' +
+                    "key=" + key +
+                    ", ownerUuid=" + ownerUuid +
+                    ", totalQueries=" + totalQueries +
                     ", queriesInPastMin=" + queriesInPastMin +
                     '}';
         }

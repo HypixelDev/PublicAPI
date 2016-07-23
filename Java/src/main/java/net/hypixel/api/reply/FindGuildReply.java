@@ -22,6 +22,6 @@ public class FindGuildReply extends AbstractReply {
     public String toString() {
         return "FindGuildReply{" +
                 "guild=" + guild +
-                ",super=" + super.toString() + "}";
+                ", super=" + super.toString() + "}";
     }
 }

@@ -22,7 +22,7 @@ public class FriendsReply extends AbstractReply {
     public String toString() {
         return "FriendsReply{" +
                 "friendShips=" + records +
-                ",super=" + super.toString() + "}";
+                ", super=" + super.toString() + "}";
     }
 
     public class FriendShip {
