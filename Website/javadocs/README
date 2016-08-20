@@ -1,1 +1,2 @@
-In production, this folder will have the actual javadocs.
+In production, this folder will have the actual javadocs.  
+Also I think someone is working on them but privately. As the `.gitignore` file contains Website/javadocs
