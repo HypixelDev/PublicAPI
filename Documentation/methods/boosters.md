@@ -1,8 +1,12 @@
-# boosters  
-## Description  
+# boosters
+
+## Description
+
 Returns list of boosters.
-## Parameters  
+
+## Parameters
 - key
+
 ## Example Booster
 ```php
 [
