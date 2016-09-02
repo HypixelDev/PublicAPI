@@ -13,7 +13,7 @@ public class FindGuildExample {
         HypixelAPI.getInstance().setApiKey(ExampleUtil.API_KEY);
 
         Request request = RequestBuilder.newBuilder(RequestType.FIND_GUILD)
-                .addParam(RequestParam.GUILD_BY_NAME, "AYS")
+                .addParam(RequestParam.GUILD_BY_PLAYER_UUID, ExampleUtil.UUIDList.HYPIXEL)
                 .createRequest();
         HypixelAPI.getInstance().getAsync(request, new Callback<FindGuildReply>(FindGuildReply.class) {
             @Override
