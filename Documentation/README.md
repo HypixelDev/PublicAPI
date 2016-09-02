@@ -6,3 +6,6 @@ Generally dates are stored as a Unix Epoch times in milliseconds.
 
 ## Response Format  
 Responses are served in JSON format.
+
+##UUID Parameters
+All uuid parameters are expected to have the UUID without dashes.

@@ -1,7 +1,19 @@
 # boosters  
 ## Description  
-This method will give you a (rather lengthy) list of boosters. the information about a single booster can contain who UUID of the purchaser, the multiplier it will cause, the game ID, the length of the booster and when it was activated.  
+Returns list of boosters.
 ## Parameters  
-**(required)** key: *Xx3XAMPL3K3YxX*  
-## example  
-[https://api.hypixel.net/boosters?key=Xx3XAMPL3K3YxX](https://api.hypixel.net/boosters?key=Xx3XAMPL3K3YxX)  
+- key
+## Example Booster
+```php
+[
+    {
+        "purchaserUuid": "",
+        "amount": 3, // multiplier
+        "originalLength": 3600,
+        "length": 2329, // length remaining
+        "gameType": 20, // GameType ID
+        "dateActivated": 1471657389139 // unix timestamp
+    },
+    ...
+]
+```
