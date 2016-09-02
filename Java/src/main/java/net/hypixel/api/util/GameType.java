@@ -16,9 +16,11 @@ public enum GameType {
     BATTLEGROUND("Warlords", "Battleground", 23),
     SUPER_SMASH("Smash Heroes", "SuperSmash", 24),
     TURBO_KART_RACERS("Turbo Kart Racers", "GingerBread", 25),
+    HOUSING("Housing", "Housing", 26),
     SKYWARS("SkyWars", "SkyWars", 51),
     TRUECOMBAT("Crazy Walls", "TrueCombat", 52),
-    SPEED_UHC("Speed UHC", "SpeedUHC", 54);
+    SPEED_UHC("Speed UHC", "SpeedUHC", 54),
+    SKYCLASH("SkyClash", "SkyClash", 54);
 
     private static final GameType[] v = values();
 

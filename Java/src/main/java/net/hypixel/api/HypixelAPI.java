@@ -3,12 +3,14 @@ package net.hypixel.api;
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.hypixel.api.adapters.GameTypeTypeAdapter;
 import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.AbstractReply;
 import net.hypixel.api.request.Request;
 import net.hypixel.api.util.Callback;
+import net.hypixel.api.util.GameType;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -36,6 +38,7 @@ public class HypixelAPI {
     private HypixelAPI() {
         gson = new GsonBuilder()
                 .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
+                .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
                 .create();
         lock = new ReentrantReadWriteLock();
         httpClient = HttpClientBuilder.create().build();
@@ -160,7 +163,8 @@ public class HypixelAPI {
         return obj -> {
             T value;
             try {
-                value = gson.fromJson(EntityUtils.toString(obj.getEntity(), "UTF-8"), callback.getClazz());
+                String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
+                value = gson.fromJson(content, callback.getClazz());
 
                 checkReply(value);
             } catch (Throwable t) {

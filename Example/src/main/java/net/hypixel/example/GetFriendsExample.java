@@ -13,8 +13,7 @@ public class GetFriendsExample {
         HypixelAPI.getInstance().setApiKey(ExampleUtil.API_KEY);
 
         Request request = RequestBuilder.newBuilder(RequestType.FRIENDS)
-                //.addParam(RequestParam.FRIENDS_BY_NAME, "AgentKid")
-                .addParam(RequestParam.FRIENDS_BY_UUID, ExampleUtil.UUIDList.PLANCKE)
+                .addParam(RequestParam.FRIENDS_BY_UUID, ExampleUtil.UUIDList.HYPIXEL)
                 .createRequest();
         HypixelAPI.getInstance().getAsync(request, new Callback<FriendsReply>(FriendsReply.class) {
             @Override

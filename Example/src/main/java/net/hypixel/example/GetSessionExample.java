@@ -8,12 +8,14 @@ import net.hypixel.api.request.RequestParam;
 import net.hypixel.api.request.RequestType;
 import net.hypixel.api.util.Callback;
 
+import java.util.UUID;
+
 public class GetSessionExample {
     public static void main(String[] args) {
         HypixelAPI.getInstance().setApiKey(ExampleUtil.API_KEY);
 
         Request request = RequestBuilder.newBuilder(RequestType.SESSION)
-                .addParam(RequestParam.SESSION_BY_UUID, ExampleUtil.UUIDList.PLANCKE)
+                .addParam(RequestParam.SESSION_BY_UUID, UUID.fromString("00975b18-697a-4eed-983e-f893b6144610"))
                 .createRequest();
         HypixelAPI.getInstance().getAsync(request, new Callback<SessionReply>(SessionReply.class) {
             @Override

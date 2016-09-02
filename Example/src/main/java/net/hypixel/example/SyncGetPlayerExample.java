@@ -11,7 +11,7 @@ public class SyncGetPlayerExample {
         HypixelAPI.getInstance().setApiKey(ExampleUtil.API_KEY);
 
         Request request = RequestBuilder.newBuilder(RequestType.PLAYER)
-                .addParam(RequestParam.PLAYER_BY_NAME, "Plancke")
+                .addParam(RequestParam.PLAYER_BY_UUID, ExampleUtil.UUIDList.HYPIXEL)
                 .createRequest();
         System.out.println(HypixelAPI.getInstance().getSync(request));
 
