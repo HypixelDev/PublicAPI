@@ -3,7 +3,8 @@ Hypixel Public API (Java)
 This is a Java implementation of the Hypixel API
 
 ### Documentation
-Hypixel PublicAPI documentation can be contained in the [Documentation](https://github.com/HypixelDev/PublicAPI/tree/master/Documentation).
+Hypixel PublicAPI documentation can be found in the [Documentation](https://github.com/HypixelDev/PublicAPI/tree/master/Documentation).
+Java documentation can be found mostly in the code or [JavaDocs](https://api.hypixel.net/javadocs/).
 
 ### Query Limitations
 The API server has a request limit of 120 queries per minute. Abuse of the API will lead to your API key being banned.
