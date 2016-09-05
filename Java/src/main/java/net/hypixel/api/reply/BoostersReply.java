@@ -2,8 +2,8 @@ package net.hypixel.api.reply;
 
 import net.hypixel.api.request.RequestType;
 import net.hypixel.api.util.GameType;
+import org.joda.time.DateTime;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +33,7 @@ public class BoostersReply extends AbstractReply {
         private int originalLength;
         private int length;
         private GameType gameType;
-        private Date dateActivated;
+        private DateTime dateActivated;
 
         public UUID getPurchaserUuid() {
             return purchaserUuid;
@@ -55,7 +55,7 @@ public class BoostersReply extends AbstractReply {
             return gameType;
         }
 
-        public Date getDateActivated() {
+        public DateTime getDateActivated() {
             return dateActivated;
         }
 

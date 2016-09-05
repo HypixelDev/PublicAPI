@@ -1,8 +1,8 @@
 package net.hypixel.api.reply;
 
 import net.hypixel.api.request.RequestType;
+import org.joda.time.DateTime;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +29,7 @@ public class FriendsReply extends AbstractReply {
     public class FriendShip {
 
         private UUID uuidSender, uuidReceiver;
-        private Date started;
+        private DateTime started;
 
         public UUID getUuidSender() {
             return uuidSender;
@@ -39,7 +39,7 @@ public class FriendsReply extends AbstractReply {
             return uuidReceiver;
         }
 
-        public Date getStarted() {
+        public DateTime getStarted() {
             return started;
         }
 
