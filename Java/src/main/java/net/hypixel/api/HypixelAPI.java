@@ -3,11 +3,11 @@ package net.hypixel.api;
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.hypixel.api.adapters.GameTypeTypeAdapter;
-import net.hypixel.api.adapters.UUIDTypeAdapter;
+import net.hypixel.api.adapters.*;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.AbstractReply;
+import net.hypixel.api.reply.GuildReply;
 import net.hypixel.api.request.Request;
 import net.hypixel.api.util.Callback;
 import net.hypixel.api.util.GameType;
@@ -17,6 +17,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.joda.time.DateTime;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -39,6 +40,13 @@ public class HypixelAPI {
         gson = new GsonBuilder()
                 .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
                 .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
+                .registerTypeAdapter(DateTime.class, new DateTimeTypeAdapter())
+
+                // guilds
+                .registerTypeAdapter(GuildReply.Guild.GuildCoinHistory.class, new GuildCoinHistoryAdapter())
+                .registerTypeAdapterFactory(new GuildCoinHistoryHoldingTypeAdapterFactory<>(GuildReply.Guild.class))
+                .registerTypeAdapterFactory(new GuildCoinHistoryHoldingTypeAdapterFactory<>(GuildReply.Guild.Member.class))
+
                 .create();
         lock = new ReentrantReadWriteLock();
         httpClient = HttpClientBuilder.create().build();
