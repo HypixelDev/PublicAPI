@@ -5,6 +5,10 @@ import net.hypixel.api.util.GameType;
 
 import java.lang.reflect.Type;
 
+/**
+ * We need this adapter because we note GameTypes
+ * as both the id and as it's enum name
+ */
 public class GameTypeTypeAdapter implements JsonDeserializer<GameType>, JsonSerializer<GameType> {
 
     @Override
