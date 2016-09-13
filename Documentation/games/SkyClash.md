@@ -8,7 +8,7 @@ Example Stats: https://gist.github.com/Plancke/5b5cbb93cf2241490391877a5538dd60
 ```json
 {
 	"kits": {
-		"__desc": "All available kits, if cost is not present the kit is unlocked by default. Else the player will have {package} in their packages.",
+		"__desc": "All available kits, if cost is not present the kit is unlocked by default. Else the player will have {package} in their packages. Total kit level is determined by upgrades stored as {{package}_{upgradeType}}",
 		"list": {
 			"ARCHER": {
 				"display": "Archer",
@@ -61,6 +61,19 @@ Example Stats: https://gist.github.com/Plancke/5b5cbb93cf2241490391877a5538dd60
 				"description": "Berserkers are offensive powerhouses, becoming even stronger when their health gets low.",
 				"cost": 1000
 			}
+		},
+		"upgradeCosts": {
+			"MINOR": [
+				2000,
+				4000,
+				10000,
+				20000,
+				50000,
+				100000,
+				250000
+			],
+			"MAJOR": -1,
+			"MASTER": 500000
 		}
 	},
 	"cards": {
@@ -247,11 +260,43 @@ Example Stats: https://gist.github.com/Plancke/5b5cbb93cf2241490391877a5538dd60
 				"tier": "LEGENDARY"
 			}
 		},
-		"duplicatesNeeded": [0, 2, 8, 32, 100]
+		"duplicatesNeeded": [
+			0,
+			2,
+			8,
+			32,
+			100
+		]
 	},
 	"trackedStats": {
 		"__desc": "Stats that are tracked in this gamemode, stored globally as {field} and per kit as {{field}_{kitPackage}}",
-		"list": ["kills", "melee_kills", "bow_kills", "void_kills", "mob_kills", "longest_bow_shot", "longest_bow_kill", "bow_shots", "bow_hits", "mobs_killed", "fastest_win_solo", "fastest_win_doubles", "fastest_win_four_teams", "fastest_win_team_war", "most_kills_game", "enderchests_opened", "solo_wins", "doubles_wins", "four_teams_wins", "team_war_wins", "games_played", "assists", "deaths", "damage", "quits"]
+		"list": [
+			"kills",
+			"melee_kills",
+			"bow_kills",
+			"void_kills",
+			"mob_kills",
+			"longest_bow_shot",
+			"longest_bow_kill",
+			"bow_shots",
+			"bow_hits",
+			"mobs_killed",
+			"fastest_win_solo",
+			"fastest_win_doubles",
+			"fastest_win_four_teams",
+			"fastest_win_team_war",
+			"most_kills_game",
+			"enderchests_opened",
+			"solo_wins",
+			"doubles_wins",
+			"four_teams_wins",
+			"team_war_wins",
+			"games_played",
+			"assists",
+			"deaths",
+			"damage",
+			"quits"
+		]
 	}
 }
 ```
