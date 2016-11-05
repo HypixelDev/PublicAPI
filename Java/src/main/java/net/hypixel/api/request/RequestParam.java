@@ -17,18 +17,8 @@ public enum RequestParam {
     GUILD_BY_PLAYER_UUID(RequestType.FIND_GUILD, "byUuid", UUID.class, APIUtil.UUID_STRIPPER),
     GUILD_BY_ID(RequestType.GUILD, "id", String.class),
 
-    /**
-     * Will only return pre name change friendships
-     */
-    @Deprecated
-    FRIENDS_BY_NAME(RequestType.FRIENDS, "player", String.class),
     FRIENDS_BY_UUID(RequestType.FRIENDS, "uuid", UUID.class, APIUtil.UUID_STRIPPER),
 
-    /**
-     * Sessions by name has been completely removed
-     */
-    @Deprecated
-    SESSION_BY_NAME(RequestType.SESSION, "player", String.class),
     SESSION_BY_UUID(RequestType.SESSION, "uuid", UUID.class, APIUtil.UUID_STRIPPER);
 
     private static final RequestParam[] v = values();
