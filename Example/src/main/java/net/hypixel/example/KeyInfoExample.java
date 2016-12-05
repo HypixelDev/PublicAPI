@@ -12,17 +12,14 @@ public class KeyInfoExample {
         HypixelAPI.getInstance().setApiKey(ExampleUtil.API_KEY);
 
         Request request = RequestBuilder.newBuilder(RequestType.KEY).createRequest();
-        HypixelAPI.getInstance().getAsync(request, new Callback<KeyReply>(KeyReply.class) {
-            @Override
-            public void callback(Throwable failCause, KeyReply result) {
-                if (failCause != null) {
-                    failCause.printStackTrace();
-                } else {
-                    System.out.println(result);
-                }
-                HypixelAPI.getInstance().finish();
-                System.exit(0);
+        HypixelAPI.getInstance().getAsync(request, (Callback<KeyReply>) (failCause, result) -> {
+            if (failCause != null) {
+                failCause.printStackTrace();
+            } else {
+                System.out.println(result);
             }
+            HypixelAPI.getInstance().finish();
+            System.exit(0);
         });
         ExampleUtil.await(); // This is required because the API is asynchronous, so without this the program will exit.
     }

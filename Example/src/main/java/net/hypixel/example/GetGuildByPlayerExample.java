@@ -16,35 +16,29 @@ public class GetGuildByPlayerExample {
         Request request = RequestBuilder.newBuilder(RequestType.FIND_GUILD)
                 .addParam(RequestParam.GUILD_BY_PLAYER_UUID, ExampleUtil.UUIDList.HYPIXEL)
                 .createRequest();
-        HypixelAPI.getInstance().getAsync(request, new Callback<FindGuildReply>(FindGuildReply.class) {
-            @Override
-            public void callback(Throwable failCause, FindGuildReply result) {
-                if (failCause != null) {
-                    failCause.printStackTrace();
+        HypixelAPI.getInstance().getAsync(request, (Callback<FindGuildReply>) (failCause, result) -> {
+            if (failCause != null) {
+                failCause.printStackTrace();
+            } else {
+                System.out.println(result);
+                if (result.getGuild() == null) {
+                    System.out.println("No guild by that name/player!");
                 } else {
-                    System.out.println(result);
-                    if (result.getGuild() == null) {
-                        System.out.println("No guild by that name/player!");
-                    } else {
-                        Request request = RequestBuilder.newBuilder(RequestType.GUILD)
-                                .addParam(RequestParam.GUILD_BY_ID, result.getGuild())
-                                .createRequest();
-                        HypixelAPI.getInstance().getAsync(request, new Callback<GuildReply>(GuildReply.class) {
-                            @Override
-                            public void callback(Throwable failCause, GuildReply result) {
-                                if (failCause != null) {
-                                    failCause.printStackTrace();
-                                } else {
-                                    System.out.println(result);
-                                }
-                            }
-                        });
-                        return;
-                    }
+                    Request grequest = RequestBuilder.newBuilder(RequestType.GUILD)
+                            .addParam(RequestParam.GUILD_BY_ID, result.getGuild())
+                            .createRequest();
+                    HypixelAPI.getInstance().getAsync(grequest, (Callback<GuildReply>) (gfailCause, gresult) -> {
+                        if (gfailCause != null) {
+                            gfailCause.printStackTrace();
+                        } else {
+                            System.out.println(gresult);
+                        }
+                    });
+                    return;
                 }
-                HypixelAPI.getInstance().finish();
-                System.exit(0);
             }
+            HypixelAPI.getInstance().finish();
+            System.exit(0);
         });
         ExampleUtil.await(); // This is required because the API is asynchronous, so without this the program will exit.
     }

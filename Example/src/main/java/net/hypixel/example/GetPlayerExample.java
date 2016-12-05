@@ -15,17 +15,14 @@ public class GetPlayerExample {
         Request request = RequestBuilder.newBuilder(RequestType.PLAYER)
                 .addParam(RequestParam.PLAYER_BY_UUID, ExampleUtil.UUIDList.HYPIXEL)
                 .createRequest();
-        HypixelAPI.getInstance().getAsync(request, new Callback<PlayerReply>(PlayerReply.class) {
-            @Override
-            public void callback(Throwable failCause, PlayerReply result) {
-                if (failCause != null) {
-                    failCause.printStackTrace();
-                } else {
-                    System.out.println(result);
-                }
-                HypixelAPI.getInstance().finish();
-                System.exit(0);
+        HypixelAPI.getInstance().getAsync(request, (Callback<PlayerReply>) (failCause, result) -> {
+            if (failCause != null) {
+                failCause.printStackTrace();
+            } else {
+                 System.out.println(result);
             }
+            HypixelAPI.getInstance().finish();
+            System.exit(0); 
         });
         ExampleUtil.await(); // This is required because the API is asynchronous, so without this the program will exit.
     }

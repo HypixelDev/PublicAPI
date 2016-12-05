@@ -15,9 +15,7 @@ public class FindGuildExample {
         Request request = RequestBuilder.newBuilder(RequestType.FIND_GUILD)
                 .addParam(RequestParam.GUILD_BY_PLAYER_UUID, ExampleUtil.UUIDList.HYPIXEL)
                 .createRequest();
-        HypixelAPI.getInstance().getAsync(request, new Callback<FindGuildReply>(FindGuildReply.class) {
-            @Override
-            public void callback(Throwable failCause, FindGuildReply result) {
+        HypixelAPI.getInstance().getAsync(request, (Callback<FindGuildReply>) (failCause, result) -> {
                 if (failCause != null) {
                     failCause.printStackTrace();
                 } else {
@@ -25,7 +23,7 @@ public class FindGuildExample {
                 }
                 HypixelAPI.getInstance().finish();
                 System.exit(0);
-            }
+            
         });
         ExampleUtil.await(); // This is required because the API is asynchronous, so without this the program will exit.
     }

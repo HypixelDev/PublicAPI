@@ -12,17 +12,14 @@ public class GetBoostersExample {
         HypixelAPI.getInstance().setApiKey(ExampleUtil.API_KEY);
 
         Request request = RequestBuilder.newBuilder(RequestType.BOOSTERS).createRequest();
-        HypixelAPI.getInstance().getAsync(request, new Callback<BoostersReply>(BoostersReply.class) {
-            @Override
-            public void callback(Throwable failCause, BoostersReply result) {
-                if (failCause != null) {
-                    failCause.printStackTrace();
-                } else {
-                    System.out.println(result);
-                }
-                HypixelAPI.getInstance().finish();
-                System.exit(0);
+        HypixelAPI.getInstance().getAsync(request, (Callback<BoostersReply>) (failCause, result) -> {
+            if (failCause != null) {
+                failCause.printStackTrace();
+            } else {
+                System.out.println(result);
             }
+            HypixelAPI.getInstance().finish();
+            System.exit(0);
         });
         ExampleUtil.await(); // This is required because the API is asynchronous, so without this the program will exit.
     }

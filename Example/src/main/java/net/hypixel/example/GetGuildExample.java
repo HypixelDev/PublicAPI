@@ -15,17 +15,14 @@ public class GetGuildExample {
         Request request = RequestBuilder.newBuilder(RequestType.GUILD)
                 .addParam(RequestParam.GUILD_BY_ID, "53790cd7ed505dab83dad144")
                 .createRequest();
-        HypixelAPI.getInstance().getAsync(request, new Callback<GuildReply>(GuildReply.class) {
-            @Override
-            public void callback(Throwable failCause, GuildReply result) {
-                if (failCause != null) {
-                    failCause.printStackTrace();
-                } else {
-                    System.out.println(result);
-                }
-                HypixelAPI.getInstance().finish();
-                System.exit(0);
+        HypixelAPI.getInstance().getAsync(request, (Callback<GuildReply>) (failCause, result) -> {
+            if (failCause != null) {
+                failCause.printStackTrace();
+            } else {
+                 System.out.println(result);
             }
+            HypixelAPI.getInstance().finish();
+            System.exit(0);
         });
         ExampleUtil.await(); // This is required because the API is asynchronous, so without this the program will exit.
     }
