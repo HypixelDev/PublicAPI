@@ -1,16 +1,12 @@
 package net.hypixel.api;
 
-import com.google.common.base.Preconditions;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import net.hypixel.api.adapters.*;
-import net.hypixel.api.exceptions.APIThrottleException;
-import net.hypixel.api.exceptions.HypixelAPIException;
-import net.hypixel.api.reply.AbstractReply;
-import net.hypixel.api.reply.GuildReply;
-import net.hypixel.api.request.Request;
-import net.hypixel.api.util.Callback;
-import net.hypixel.api.util.GameType;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -19,12 +15,22 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import com.google.common.base.Preconditions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import net.hypixel.api.adapters.DateTimeTypeAdapter;
+import net.hypixel.api.adapters.GameTypeTypeAdapter;
+import net.hypixel.api.adapters.GuildCoinHistoryAdapter;
+import net.hypixel.api.adapters.GuildCoinHistoryHoldingTypeAdapterFactory;
+import net.hypixel.api.adapters.UUIDTypeAdapter;
+import net.hypixel.api.exceptions.APIThrottleException;
+import net.hypixel.api.exceptions.HypixelAPIException;
+import net.hypixel.api.reply.AbstractReply;
+import net.hypixel.api.reply.GuildReply;
+import net.hypixel.api.request.Request;
+import net.hypixel.api.util.Callback;
+import net.hypixel.api.util.GameType;
 
 @SuppressWarnings("unused")
 public class HypixelAPI {
@@ -109,7 +115,7 @@ public class HypixelAPI {
      */
     public <R extends AbstractReply> R getSync(Request request) throws HypixelAPIException {
         lock.readLock().lock();
-        SyncCallback<R> callback = new SyncCallback<>(request.getRequestType().getReplyClass());
+        SyncCallback<R> callback = new SyncCallback<>();
         try {
             if (doKeyCheck(callback)) {
                 Future<HttpResponse> future = get(request, callback);
@@ -163,16 +169,17 @@ public class HypixelAPI {
     /**
      * Internal method
      *
+     * @param request The request to get
      * @param callback The callback to execute
      * @param <T>      The class of the callback
      * @return The ResponseHandler that wraps the callback
      */
-    private <T extends AbstractReply> ResponseHandler<HttpResponse> buildResponseHandler(Callback<T> callback) {
+    private <T extends AbstractReply> ResponseHandler<HttpResponse> buildResponseHandler(Request request, Callback<T> callback) {
         return obj -> {
             T value;
             try {
                 String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                value = gson.fromJson(content, callback.getClazz());
+                value = gson.fromJson(content, request.getRequestType().getReplyClass());
 
                 checkReply(value);
             } catch (Throwable t) {
@@ -205,33 +212,18 @@ public class HypixelAPI {
      * @param callback The callback to execute
      */
     private Future<HttpResponse> get(Request request, Callback<?> callback) {
-        return get(request.getURL(this), callback);
+        return exService.submit(() -> httpClient.execute(new HttpGet(request.getURL(this)), buildResponseHandler(request, callback)));
     }
 
-    /**
-     * Internal method
-     *
-     * @param url      The URL to send the request to
-     * @param callback The callback to execute
-     */
-    private Future<HttpResponse> get(String url, Callback<?> callback) {
-        return exService.submit(() -> httpClient.execute(new HttpGet(url), buildResponseHandler(callback)));
-    }
-
-    private class SyncCallback<T extends AbstractReply> extends Callback<T> {
+    private class SyncCallback<T extends AbstractReply> implements Callback<T> {
+        
         private Throwable failCause;
         private T result;
-
-        private SyncCallback(Class<? extends AbstractReply> clazz) {
-            //noinspection unchecked
-            super((Class<T>) clazz);
-        }
-
+        
         @Override
         public void callback(Throwable failCause, T result) {
             this.failCause = failCause;
             this.result = result;
         }
     }
-
 }
