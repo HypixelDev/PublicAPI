@@ -166,7 +166,7 @@ public class HypixelAPI {
         }
     }
 
-    /**
+      /**
      * Internal method
      *
      * @param request The request to get
@@ -174,12 +174,13 @@ public class HypixelAPI {
      * @param <T>      The class of the callback
      * @return The ResponseHandler that wraps the callback
      */
+    @SuppressWarnings("unchecked")
     private <T extends AbstractReply> ResponseHandler<HttpResponse> buildResponseHandler(Request request, Callback<T> callback) {
         return obj -> {
             T value;
             try {
                 String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                value = gson.fromJson(content, request.getRequestType().getReplyClass());
+                value = gson.fromJson(content, (Class<T>) request.getRequestType().getReplyClass());
 
                 checkReply(value);
             } catch (Throwable t) {
