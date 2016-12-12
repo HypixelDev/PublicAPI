@@ -1,12 +1,16 @@
 package net.hypixel.api;
 
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
+import com.google.common.base.Preconditions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import net.hypixel.api.adapters.*;
+import net.hypixel.api.exceptions.APIThrottleException;
+import net.hypixel.api.exceptions.HypixelAPIException;
+import net.hypixel.api.reply.AbstractReply;
+import net.hypixel.api.reply.GuildReply;
+import net.hypixel.api.request.Request;
+import net.hypixel.api.util.Callback;
+import net.hypixel.api.util.GameType;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -15,22 +19,12 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 
-import com.google.common.base.Preconditions;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import net.hypixel.api.adapters.DateTimeTypeAdapter;
-import net.hypixel.api.adapters.GameTypeTypeAdapter;
-import net.hypixel.api.adapters.GuildCoinHistoryAdapter;
-import net.hypixel.api.adapters.GuildCoinHistoryHoldingTypeAdapterFactory;
-import net.hypixel.api.adapters.UUIDTypeAdapter;
-import net.hypixel.api.exceptions.APIThrottleException;
-import net.hypixel.api.exceptions.HypixelAPIException;
-import net.hypixel.api.reply.AbstractReply;
-import net.hypixel.api.reply.GuildReply;
-import net.hypixel.api.request.Request;
-import net.hypixel.api.util.Callback;
-import net.hypixel.api.util.GameType;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @SuppressWarnings("unused")
 public class HypixelAPI {
@@ -166,10 +160,10 @@ public class HypixelAPI {
         }
     }
 
-      /**
+    /**
      * Internal method
      *
-     * @param request The request to get
+     * @param request  The request to get
      * @param callback The callback to execute
      * @param <T>      The class of the callback
      * @return The ResponseHandler that wraps the callback
@@ -217,10 +211,10 @@ public class HypixelAPI {
     }
 
     private class SyncCallback<T extends AbstractReply> implements Callback<T> {
-        
+
         private Throwable failCause;
         private T result;
-        
+
         @Override
         public void callback(Throwable failCause, T result) {
             this.failCause = failCause;

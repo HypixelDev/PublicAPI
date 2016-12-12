@@ -19,7 +19,7 @@ public class GetGuildExample {
             if (failCause != null) {
                 failCause.printStackTrace();
             } else {
-                 System.out.println(result);
+                System.out.println(result);
             }
             HypixelAPI.getInstance().finish();
             System.exit(0);
