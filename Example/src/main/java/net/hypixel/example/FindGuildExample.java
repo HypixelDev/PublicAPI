@@ -16,14 +16,13 @@ public class FindGuildExample {
                 .addParam(RequestParam.GUILD_BY_PLAYER_UUID, ExampleUtil.UUIDList.HYPIXEL)
                 .createRequest();
         HypixelAPI.getInstance().getAsync(request, (Callback<FindGuildReply>) (failCause, result) -> {
-                if (failCause != null) {
-                    failCause.printStackTrace();
-                } else {
-                    System.out.println(result);
-                }
-                HypixelAPI.getInstance().finish();
-                System.exit(0);
-            
+            if (failCause != null) {
+                failCause.printStackTrace();
+            } else {
+                System.out.println(result);
+            }
+            HypixelAPI.getInstance().finish();
+            System.exit(0);
         });
         ExampleUtil.await(); // This is required because the API is asynchronous, so without this the program will exit.
     }

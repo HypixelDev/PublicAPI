@@ -141,6 +141,26 @@ public class GuildReply extends AbstractReply {
                     '}';
         }
 
+        public enum GuildRank {
+            GUILDMASTER, OFFICER, MEMBER
+        }
+
+        public static class GuildCoinHistory {
+
+            private Map<DateTime, Integer> coinHistory = Maps.newHashMap();
+
+            public Map<DateTime, Integer> getCoinHistory() {
+                return coinHistory;
+            }
+
+            @Override
+            public String toString() {
+                return "GuildCoinHistory{" +
+                        "coinHistory=" + coinHistory +
+                        '}';
+            }
+        }
+
         public class Member implements GuildCoinHistoryHolding {
             private UUID uuid;
             private GuildRank rank;
@@ -172,26 +192,6 @@ public class GuildReply extends AbstractReply {
                         ", guildCoinHistory=" + guildCoinHistory +
                         '}';
             }
-        }
-
-        public static class GuildCoinHistory {
-
-            private Map<DateTime, Integer> coinHistory = Maps.newHashMap();
-
-            public Map<DateTime, Integer> getCoinHistory() {
-                return coinHistory;
-            }
-
-            @Override
-            public String toString() {
-                return "GuildCoinHistory{" +
-                        "coinHistory=" + coinHistory +
-                        '}';
-            }
-        }
-
-        public enum GuildRank {
-            GUILDMASTER, OFFICER, MEMBER
         }
     }
 }

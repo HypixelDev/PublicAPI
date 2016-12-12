@@ -1,7 +1,5 @@
 package net.hypixel.example;
 
-import java.util.UUID;
-
 import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.reply.SessionReply;
 import net.hypixel.api.request.Request;
@@ -9,6 +7,8 @@ import net.hypixel.api.request.RequestBuilder;
 import net.hypixel.api.request.RequestParam;
 import net.hypixel.api.request.RequestType;
 import net.hypixel.api.util.Callback;
+
+import java.util.UUID;
 
 public class GetSessionExample {
     public static void main(String[] args) {
