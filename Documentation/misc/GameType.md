@@ -5,11 +5,11 @@
 | 3  | WALLS          | Walls         | Walls                |
 | 4  | PAINTBALL      | Paintball     | Paintball            |
 | 5  | SURVIVAL_GAMES | HungerGames   | Blitz Survival Games |
-| 7  | TNTGAMES       | TNTGames      | TNT Games            |
-| 13 | VAMPIREZ       | VampireZ      | VampireZ             |
-| 14 | WALLS3         | Walls3        | Mega Walls           |
-| 17 | ARCADE         | Arcade        | Arcade               |
-| 21 | ARENA          | Arena         | Arena                |
+| 6  | TNTGAMES       | TNTGames      | TNT Games            |
+| 7  | VAMPIREZ       | VampireZ      | VampireZ             |
+| 13 | WALLS3         | Walls3        | Mega Walls           |
+| 14 | ARCADE         | Arcade        | Arcade               |
+| 17 | ARENA          | Arena         | Arena                |
 | 20 | UHC            | UHC           | UHC Champions        |
 | 21 | MCGO           | MCGO          | Cops and Crims       |
 | 23 | BATTLEGROUND   | Battleground  | Warlords             |
