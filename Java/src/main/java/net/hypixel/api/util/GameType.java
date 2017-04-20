@@ -20,7 +20,8 @@ public enum GameType {
     SKYWARS("SkyWars", "SkyWars", 51),
     TRUE_COMBAT("Crazy Walls", "TrueCombat", 52),
     SPEED_UHC("Speed UHC", "SpeedUHC", 54),
-    SKYCLASH("SkyClash", "SkyClash", 55);
+    SKYCLASH("SkyClash", "SkyClash", 55),
+    LEGACY("Classic Games", "Legacy", 56);
 
     private static final GameType[] v = values();
 
