@@ -20,6 +20,7 @@
 | 52 | TRUE_COMBAT    | TrueCombat    | Crazy Walls          |
 | 54 | SPEED_UHC      | SpeedUHC      | Speed UHC            |
 | 55 | SKYCLASH       | SkyClash      | SkyClash             |
+| 56 | LEGACY         | Legacy        | Classic Games        |
 
 ### Storage
 Games store their respective stats and data in a Player's `stats` collection. The game's specific data is held within a JSON object named after it's `Database Name` (seen above.)
