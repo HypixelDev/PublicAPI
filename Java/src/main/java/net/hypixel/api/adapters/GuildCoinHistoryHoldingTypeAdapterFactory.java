@@ -41,7 +41,7 @@ public class GuildCoinHistoryHoldingTypeAdapterFactory<T extends GuildReply.Guil
 
         JsonObject coinHistory = new JsonObject();
         // insert as millisecond string so we can use our standard milli -> datetime conversion
-        history.getCoinHistory().entrySet().forEach(entry -> coinHistory.addProperty(String.valueOf(entry.getKey().getMillis()), entry.getValue()));
+        history.getCoinHistory().entrySet().forEach(entry -> coinHistory.addProperty(String.valueOf(entry.getKey().toInstant().toEpochMilli()), entry.getValue()));
 
         // load into the json
         obj.add("guildCoinHistory", coinHistory);

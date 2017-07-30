@@ -1,8 +1,8 @@
 package net.hypixel.api.util;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -21,7 +21,7 @@ public class APIUtil {
         return UUID.fromString(uuidPattern.matcher(stripped).replaceAll("$1-$2-$3-$4-$5"));
     }
 
-    public static DateTime getDateTime(long timeStamp) {
-        return new DateTime(timeStamp, DateTimeZone.forID("America/New_York"));
+    public static ZonedDateTime getDateTime(long timeStamp) {
+        return Instant.ofEpochMilli(timeStamp).atZone(ZoneId.of("America/New_York"));
     }
 }

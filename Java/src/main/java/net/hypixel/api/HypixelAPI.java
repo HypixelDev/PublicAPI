@@ -17,9 +17,9 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.joda.time.DateTime;
 
 import java.lang.reflect.Type;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -41,7 +41,7 @@ public class HypixelAPI {
         gson = new GsonBuilder()
                 .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
                 .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
-                .registerTypeAdapter(DateTime.class, new DateTimeTypeAdapter())
+                .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
 
                 // guilds
                 .registerTypeAdapter(GuildReply.Guild.GuildCoinHistory.class, new GuildCoinHistoryAdapter())
