@@ -2,9 +2,9 @@ package net.hypixel.api.adapters;
 
 import com.google.gson.*;
 import net.hypixel.api.util.APIUtil;
-import org.joda.time.DateTime;
 
 import java.lang.reflect.Type;
+import java.time.ZonedDateTime;
 
 /**
  * Our dates are always saved as a timestamp
@@ -12,15 +12,15 @@ import java.lang.reflect.Type;
  * it in here as well by just using some more
  * parsing.
  */
-public class DateTimeTypeAdapter implements JsonDeserializer<DateTime>, JsonSerializer<DateTime> {
+public class DateTimeTypeAdapter implements JsonDeserializer<ZonedDateTime>, JsonSerializer<ZonedDateTime> {
 
     @Override
-    public JsonElement serialize(DateTime src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.getMillis());
+    public JsonElement serialize(ZonedDateTime src, Type typeOfSrc, JsonSerializationContext context) {
+        return new JsonPrimitive(src.toInstant().toEpochMilli());
     }
 
     @Override
-    public DateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public ZonedDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         return APIUtil.getDateTime(Long.parseLong(json.getAsString()));
     }
 

@@ -3,8 +3,8 @@ package net.hypixel.api.reply;
 import com.google.common.collect.Maps;
 import net.hypixel.api.request.RequestType;
 import net.hypixel.api.util.Banner;
-import org.joda.time.DateTime;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -47,7 +47,7 @@ public class GuildReply extends AbstractReply {
         private GuildCoinHistory guildCoinHistory;
         private int coins;
         private int coinsEver;
-        private DateTime created;
+        private ZonedDateTime created;
         private Boolean joinable;
         private int memberSizeLevel;
         private int bankSizeLevel;
@@ -91,7 +91,7 @@ public class GuildReply extends AbstractReply {
             return coinsEver;
         }
 
-        public DateTime getCreated() {
+        public ZonedDateTime getCreated() {
             return created;
         }
 
@@ -147,9 +147,9 @@ public class GuildReply extends AbstractReply {
 
         public static class GuildCoinHistory {
 
-            private Map<DateTime, Integer> coinHistory = Maps.newHashMap();
+            private Map<ZonedDateTime, Integer> coinHistory = Maps.newHashMap();
 
-            public Map<DateTime, Integer> getCoinHistory() {
+            public Map<ZonedDateTime, Integer> getCoinHistory() {
                 return coinHistory;
             }
 
@@ -164,7 +164,7 @@ public class GuildReply extends AbstractReply {
         public class Member implements GuildCoinHistoryHolding {
             private UUID uuid;
             private GuildRank rank;
-            private DateTime joined;
+            private ZonedDateTime joined;
             private GuildCoinHistory guildCoinHistory;
 
             public UUID getUuid() {
@@ -175,7 +175,7 @@ public class GuildReply extends AbstractReply {
                 return rank;
             }
 
-            public DateTime getJoined() {
+            public ZonedDateTime getJoined() {
                 return joined;
             }
 
