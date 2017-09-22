@@ -23,6 +23,7 @@
 | 56 | LEGACY         | Legacy        | Classic Games        |
 | 57 | PROTOTYPE      | Prototype     | Prototype            |
 | 58 | BEDWARS        | Bedwars       | Bed Wars             |
+| 59 | MURDER_MYSTERY | MurderMystery | Murder Mystery       |
 
 ### Storage
 Games store their respective stats and data in a Player's `stats` collection. The game's specific data is held within a JSON object named after it's `Database Name` (seen above.)
