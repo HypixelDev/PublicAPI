@@ -21,7 +21,10 @@ public enum GameType {
     TRUE_COMBAT("Crazy Walls", "TrueCombat", 52),
     SPEED_UHC("Speed UHC", "SpeedUHC", 54),
     SKYCLASH("SkyClash", "SkyClash", 55),
-    LEGACY("Classic Games", "Legacy", 56);
+    LEGACY("Classic Games", "Legacy", 56),
+    PROTOTYPE("Prototype", "Prototype", 57),
+    BEDWARS("Bed Wars", "Bedwars", 58),
+    MURDER_MYSTERY("Murder Mystery", "MurderMystery", 59);
 
     private static final GameType[] v = values();
 
