@@ -1,3 +1,4 @@
+/* © 2017 Hypixel Inc. All Rights Reserved. */
 package net.hypixel.api.request;
 
 import net.hypixel.api.HypixelAPI;

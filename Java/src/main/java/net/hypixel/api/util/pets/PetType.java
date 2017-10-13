@@ -1,3 +1,4 @@
+/* © 2017 Hypixel Inc. All Rights Reserved. */
 package net.hypixel.api.util.pets;
 
 import net.hypixel.api.util.Rarity;

@@ -1,3 +1,4 @@
+/* © 2017 Hypixel Inc. All Rights Reserved. */
 package net.hypixel.api.util;
 
 import java.time.Instant;
