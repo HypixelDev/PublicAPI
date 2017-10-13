@@ -27,5 +27,5 @@ You can create an issue here on GitHub to report a bug with the API or to sugges
 © 2017 Hypixel Inc. All Rights Reserved.
 
 ### TODO
-* Add a proper copyright header to all files. ✔️ ([View](https://github.com/HypixelDev/PublicAPI/pull/57))
+* Add a proper copyright header to all files. [✔️](https://github.com/HypixelDev/PublicAPI/pull/57)
 * Deploy to a public maven repo.
