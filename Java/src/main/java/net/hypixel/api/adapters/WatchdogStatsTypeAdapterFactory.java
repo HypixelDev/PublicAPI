@@ -67,6 +67,7 @@ public class WatchdogStatsTypeAdapterFactory extends CustomizedTypeAdapterFactor
                 statsobj.addProperty(k, jfield.getAsInt());
             }
         });
+        fields.forEach(jobject::remove);
         jobject.add("stats", statsobj);
     }
 }
