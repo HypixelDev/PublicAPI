@@ -8,6 +8,7 @@ import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.AbstractReply;
 import net.hypixel.api.reply.GuildReply;
+import net.hypixel.api.reply.WatchdogStatsReply;
 import net.hypixel.api.request.Request;
 import net.hypixel.api.util.Callback;
 import net.hypixel.api.util.GameType;
@@ -43,6 +44,9 @@ public class HypixelAPI {
                 .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
                 .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
 
+                // watchdog
+                .registerTypeAdapterFactory(new WatchdogStatsTypeAdapterFactory(WatchdogStatsReply.class))
+                
                 // guilds
                 .registerTypeAdapter(GuildReply.Guild.GuildCoinHistory.class, new GuildCoinHistoryAdapter())
                 .registerTypeAdapterFactory(new GuildCoinHistoryHoldingTypeAdapterFactory<>(GuildReply.Guild.class))
