@@ -6,7 +6,6 @@ import net.hypixel.api.request.RequestType;
 
 @SuppressWarnings("unused")
 public class WatchdogStatsReply extends AbstractReply {
-
     private WatchdogStats stats;
 
     public WatchdogStats getStats() {
@@ -26,7 +25,6 @@ public class WatchdogStatsReply extends AbstractReply {
     }
 
     public class WatchdogStats {
-
         @SerializedName("watchdog_lastMinute")
         private int watchdogBansLastMinute;
         @SerializedName("staff_rollingDaily")

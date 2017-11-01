@@ -16,7 +16,6 @@ import net.hypixel.api.reply.WatchdogStatsReply;
  * Also the field names aren't really nice.
  */
 public class WatchdogStatsTypeAdapterFactory extends CustomizedTypeAdapterFactory<WatchdogStatsReply> {
-
     private final List<String> fields;
 
     public WatchdogStatsTypeAdapterFactory(Class<WatchdogStatsReply> customizedClass) {
@@ -29,10 +28,10 @@ public class WatchdogStatsTypeAdapterFactory extends CustomizedTypeAdapterFactor
         Field[] cfields = WatchdogStatsReply.WatchdogStats.class.getDeclaredFields();
         for (Field field : cfields) {
             String name;
-            try {
-                SerializedName annotation = field.getAnnotation(SerializedName.class);
+            SerializedName annotation = field.getAnnotation(SerializedName.class);
+            if (annotation != null) {
                 name = annotation.value();
-            } catch (NullPointerException e) {
+            } else {
                 name = field.getName();
                 // ignore the outer class instance reference in inner class.
                 if (name.startsWith("this$")) {
