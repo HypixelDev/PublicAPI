@@ -3,7 +3,7 @@ Hypixel Public API (Java)
 This is a Java implementation of the Hypixel API
 
 ### Documentation
-Hypixel PublicAPI documentation can be found in the [Documentation](https://github.com/HypixelDev/PublicAPI/tree/master/Documentation).
+Hypixel PublicAPI documentation can be found in the [Documentation](https://github.com/HypixelDev/PublicAPI/tree/master/Documentation) and [Wiki](https://github.com/HypixelDev/PublicAPI/wiki).
 Java documentation can be found mostly in the code or [JavaDocs](https://api.hypixel.net/javadocs/).
 
 ### Query Limitations
