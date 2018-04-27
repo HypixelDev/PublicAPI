@@ -23,5 +23,4 @@ public class DateTimeTypeAdapter implements JsonDeserializer<ZonedDateTime>, Jso
     public ZonedDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         return APIUtil.getDateTime(Long.parseLong(json.getAsString()));
     }
-
 }

@@ -11,7 +11,9 @@ public enum RequestType {
     FRIENDS("friends", FriendsReply.class),
     SESSION("session", SessionReply.class),
     KEY("key", KeyReply.class),
-    BOOSTERS("boosters", BoostersReply.class);
+    BOOSTERS("boosters", BoostersReply.class),
+    WATCHDOG_STATS("watchdogstats", WatchdogStatsReply.class),
+    LEADERBOARDS("leaderboards", LeaderboardsReply.class);
 
     private final String key;
     private final Class<? extends AbstractReply> replyClass;
