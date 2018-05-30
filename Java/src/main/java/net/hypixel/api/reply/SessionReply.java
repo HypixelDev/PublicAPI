@@ -55,10 +55,12 @@ public class SessionReply extends AbstractReply {
             return gameType;
         }
 
+        @Deprecated
         public String getServer() {
             return server;
         }
 
+        @Deprecated
         public Set<UUID> getPlayers() {
             return players;
         }
