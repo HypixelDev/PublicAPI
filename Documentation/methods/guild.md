@@ -25,8 +25,8 @@ See [`GuildPermissions.json`](/Documentation/misc/GuildPermissions.json) for a J
 		"created": 1399507406038, // Timestamp that this guild was created at
 		"memberSizeLevel": 6, // Size level of members this guild can have - Deprecated
 		"members": [{ // Member list
-			"uuid": "e72660b18b88424ea23f2cdd3597c581", // Non-dashed UUID
-			"rank": "GUILDMASTER",
+			"uuid": "e72660b18b88424ea23f2cdd3597c581", // This user's non-dashed UUID
+			"rank": "GUILDMASTER", // This user's rank in this guild
 			"joined": 1512200875108, // Timestamp the member joined
 			"dailyCoins-12-6-2018": 1560, // Guild coins earned by this user on any given day - Deprecated
 			"questParticipation": 4 // The number of challenges completed that count towards the current quest
@@ -41,12 +41,12 @@ See [`GuildPermissions.json`](/Documentation/misc/GuildPermissions.json) for a J
 		}
     		// ...
     		],
-		"name": "Froggy",
+		"name": "Froggy", // Name of this guild
 		"tagColor": "GOLD", // Color of this guild's guild tag, if set
 		"joinable": false, // Whether this guild can be joined using /g join
 		"legacyRanking": 10446, // Ranking in the number of guild coins owned in the legacy guild system (0-indexed)
 		"exp": 619178, // Total experience this guild has
-		"discord": "https://discord.gg/ZWquWcs",
+		"discord": "https://discord.gg/ZWquWcs", // Link to this Guild's discord server (/g discord)
 		"description": "Private guild", // Description of this guild that appears in the guild list and /g info
 		"dailyCoins-27-6-2018": 20000, // The number of guild coins earned on any given day - Deprecated
 		"achievements": { // Guild achievements earned and the current progress
