@@ -22,8 +22,8 @@ Returns information about given guild.
 		"created": 1399507406038, // Timestamp that this guild was created at
 		"memberSizeLevel": 6, // Size level of members this guild can have - Deprecated
 		"members": [{ // Member list
-			"uuid": "e72660b18b88424ea23f2cdd3597c581", // UUID of the member
-			"rank": "GUILDMASTER", // Rank of the member
+			"uuid": "e72660b18b88424ea23f2cdd3597c581", // Non-dashed UUID
+			"rank": "GUILDMASTER",
 			"joined": 1512200875108, // Timestamp the member joined
 			"dailyCoins-12-6-2018": 1560, // Guild coins earned by this user on any given day - Deprecated
 			"questParticipation": 4 // Usage unclear - Perhaps the number of challeneges completed on the server
@@ -38,12 +38,12 @@ Returns information about given guild.
 		}
     // ...
     ],
-		"name": "Froggy", // Name of this guild
+		"name": "Froggy",
 		"tagColor": "GOLD", // Color of this guild's guild tag, if set
 		"joinable": false, // Whether this guild can be joined using /g join
 		"legacyRanking": 10446, // Ranking in the number of guild coins owned in the legacy guild system (0-indexed)
 		"exp": 619178, // Total experience this guild has
-		"discord": "https://discord.gg/ZWquWcs", // Link to the Guild discord
+		"discord": "https://discord.gg/ZWquWcs",
 		"description": "Private guild", // Description of this guild that appears in the guild list and /g info
 		"dailyCoins-27-6-2018": 20000, // The number of guild coins earned on any given day - Deprecated
 		"achievements": { // Guild achievements earned and the current progress
@@ -53,9 +53,9 @@ Returns information about given guild.
 		},
 		"ranks": [{
 			"name": "Member", // Display name
-			"permissions": [], // Permissions this rank has in 
+			"permissions": [], // Array of the IDs of permissions this rank has
 			"default": true, // Whether this rank is the defualt rank a user gets when they join a guild
-			"tag": null, // Rank tag that appears in guild chat
+			"tag": null, // Rank tag that appears in guild chat, or null if none
 			"created": 1532713597406, // Timestamp of rank creation
 			"priority": 1 // Rank priority - Higher number = higher up in the heirarchy 
 		}, {
@@ -72,7 +72,7 @@ Returns information about given guild.
                 // See https://minecraft.gamepedia.com/Banner/Patterns for pattern IDs
 			"Base": "0", // Base color
 			"Patterns": [{ // Array of each layer on the banner pattern
-				"Pattern": "vhr", // Pattern for this layer
+				"Pattern": "vhr", // Pattern ID for this layer
 				"Color": "15" // Color of this layer (16-color 0-indexed pallete)
 			}, {
 				"Pattern": "vh",
