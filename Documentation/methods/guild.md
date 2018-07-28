@@ -3,8 +3,8 @@
 ## Description
 Returns information about given guild.
 
-See [`GuildAchievements.json`](https://github.com/HypixelDev/PublicAPI/blob/master/Documentation/misc/GuildAchievements.json) for a JSON list of Guild achievements<br>
-See [`GuildPermissions.json`](https://github.com/HypixelDev/PublicAPI/blob/master/Documentation/misc/GuildPermissions.json) for a JSON list of Guild permissions.
+See [`GuildAchievements.json`](/Documentation/misc/GuildAchievements.json) for a JSON list of Guild achievements<br>
+See [`GuildPermissions.json`](/Documentation/misc/GuildPermissions.json) for a JSON list of Guild permissions.
 
 ## Parameters
 - key
