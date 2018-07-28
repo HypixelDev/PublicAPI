@@ -82,8 +82,6 @@ Returns information about given guild.
       				// ...
       			]
 		},
-		"vipCount": 8, // The number of VIP and VIP+'s in this guild
-		"mvpCount": 80, // The number of MVP, MVP+, and MVP++'s in this guild
 		"tag": "HYPIXL", // This guild's Guild tag
 		"preferredGames": ["ARCADE", "SPEED_UHC", "UHC"], // This guild's set preferred games
 		"chatThrottle": 10000, // Number of milliseconds users must wait between messages
