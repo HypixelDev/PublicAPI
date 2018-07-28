@@ -29,7 +29,8 @@ See [`GuildPermissions.json`](/Documentation/misc/GuildPermissions.json) for a J
 			"rank": "GUILDMASTER", // This user's rank in this guild
 			"joined": 1512200875108, // Timestamp the member joined
 			"dailyCoins-12-6-2018": 1560, // Guild coins earned by this user on any given day - Deprecated
-			"questParticipation": 4 // The number of challenges completed that count towards the current quest
+			"questParticipation": 4, // The number of challenges completed that count towards the current quest
+			"mutedTill":1532797185516 // Timestamp that this user will be unmuted at
 		}, {
 			"uuid": "6407035ace144175a731fac937d410cd",
 			"rank": "Co-Owner",
@@ -88,7 +89,10 @@ See [`GuildPermissions.json`](/Documentation/misc/GuildPermissions.json) for a J
 		"tag": "HYPIXL", // This guild's Guild tag
 		"preferredGames": ["ARCADE", "SPEED_UHC", "UHC"], // This guild's set preferred games
 		"chatThrottle": 10000, // Number of milliseconds users must wait between messages
-		"publiclyListed": false // Whether the guild is listed in the Guild Finder or not
+		"vipCount": 22, // The number of players in the guild with VIP or VIP+ (Unreliable)
+		"mvpCount": 39, // The number of players in the guild with MVP or higher (Unreliable)
+		"publiclyListed": false, // Whether the guild is listed in the Guild Finder or not
+		"chatMute": 1532797565473 // Timestamp that the entire guild chat will be unmuted at
 	}
 }
 ```
