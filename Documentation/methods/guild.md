@@ -29,7 +29,7 @@ See [`GuildPermissions.json`](https://github.com/HypixelDev/PublicAPI/blob/maste
 			"rank": "GUILDMASTER",
 			"joined": 1512200875108, // Timestamp the member joined
 			"dailyCoins-12-6-2018": 1560, // Guild coins earned by this user on any given day - Deprecated
-			"questParticipation": 4 // Usage unclear - Perhaps the number of challeneges completed on the server
+			"questParticipation": 4 // The number of challenges completed that count towards the current quest
 		}, {
 			"uuid": "6407035ace144175a731fac937d410cd",
 			"rank": "Co-Owner",
