@@ -71,14 +71,15 @@ Returns information about given guild.
     		"banner": { // This guild's Minecraft banner - Displayed on the Hypixel forums page
                 	    // See https://minecraft.gamepedia.com/Banner/Patterns for pattern IDs
 			"Base": "0", // Base color
-			"Patterns": [{ // Array of each layer on the banner pattern
-				"Pattern": "vhr", // Pattern ID for this layer
-				"Color": "15" // Color of this layer (16-color 0-indexed pallete)
-			}, {
-				"Pattern": "vh",
-				"Color": "15"
-			}
-      			// ...
+			"Patterns": [
+				{ // Array of each layer on the banner pattern
+					"Pattern": "vhr", // Pattern ID for this layer
+					"Color": "15" // Color of this layer (16-color 0-indexed pallete)
+				}, {
+					"Pattern": "vh",
+					"Color": "15"
+				}
+      				// ...
       			]
 		},
 		"vipCount": 8, // The number of VIP and VIP+'s in this guild
