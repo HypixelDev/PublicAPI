@@ -36,8 +36,8 @@ Returns information about given guild.
 				"uuid": "e72660b18b88424ea23f2cdd3597c581" // User the rank was changed by
 			}
 		}
-    // ...
-    ],
+    		// ...
+    		],
 		"name": "Froggy",
 		"tagColor": "GOLD", // Color of this guild's guild tag, if set
 		"joinable": false, // Whether this guild can be joined using /g join
@@ -49,7 +49,7 @@ Returns information about given guild.
 		"achievements": { // Guild achievements earned and the current progress
 			"WINNERS": 803,
 			"EXPERIENCE_KINGS": 243576,
-      // ...
+      			// ...
 		},
 		"ranks": [{
 			"name": "Member", // Display name
@@ -66,10 +66,10 @@ Returns information about given guild.
 			"created": 1532715059862,
 			"priority": 2
 		}
-    // ...
-    ],
-    "banner": { // This guild's Minecraft banner - Displayed on the Hypixel forums page
-                // See https://minecraft.gamepedia.com/Banner/Patterns for pattern IDs
+    		// ...
+    		],
+    		"banner": { // This guild's Minecraft banner - Displayed on the Hypixel forums page
+                	    // See https://minecraft.gamepedia.com/Banner/Patterns for pattern IDs
 			"Base": "0", // Base color
 			"Patterns": [{ // Array of each layer on the banner pattern
 				"Pattern": "vhr", // Pattern ID for this layer
@@ -78,8 +78,8 @@ Returns information about given guild.
 				"Pattern": "vh",
 				"Color": "15"
 			}
-      // ...
-      ]
+      			// ...
+      			]
 		},
 		"vipCount": 8, // The number of VIP and VIP+'s in this guild
 		"mvpCount": 80, // The number of MVP, MVP+, and MVP++'s in this guild
