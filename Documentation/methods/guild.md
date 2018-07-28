@@ -48,7 +48,7 @@ Returns information about given guild.
 		"dailyCoins-27-6-2018": 20000, // The number of guild coins earned on any given day - Deprecated
 		"achievements": { // Guild achievements earned and the current progress
 			"WINNERS": 803,
-			"EXPERIENCE_KINGS": 243576,
+			"EXPERIENCE_KINGS": 243576
       			// ...
 		},
 		"ranks": [{
