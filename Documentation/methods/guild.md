@@ -3,6 +3,9 @@
 ## Description
 Returns information about given guild.
 
+See [`GuildAchievements.json`](https://github.com/HypixelDev/PublicAPI/blob/master/Documentation/misc/GuildAchievements.json) for a JSON list of Guild achievements<br>
+See [`GuildPermissions.json`](https://github.com/HypixelDev/PublicAPI/blob/master/Documentation/misc/GuildPermissions.json) for a JSON list of Guild permissions.
+
 ## Parameters
 - key
 - id _Guild id returned by [findGuild](https://github.com/HypixelDev/PublicAPI/blob/master/Documentation/methods/findGuild.md)_
