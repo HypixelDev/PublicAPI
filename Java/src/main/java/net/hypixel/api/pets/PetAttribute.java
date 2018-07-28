@@ -1,4 +1,4 @@
-package net.hypixel.api.util.pets;
+package net.hypixel.api.pets;
 
 public enum PetAttribute {
 

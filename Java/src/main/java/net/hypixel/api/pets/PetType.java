@@ -1,4 +1,4 @@
-package net.hypixel.api.util.pets;
+package net.hypixel.api.pets;
 
 import net.hypixel.api.util.Rarity;
 
