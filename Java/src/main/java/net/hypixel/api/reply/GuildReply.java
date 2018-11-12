@@ -49,6 +49,7 @@ public class GuildReply extends AbstractReply {
         private int coinsEver;
         private ZonedDateTime created;
         private Boolean joinable;
+        private long exp;
         private int memberSizeLevel;
         private int bankSizeLevel;
         private Boolean canTag;
@@ -99,6 +100,10 @@ public class GuildReply extends AbstractReply {
             return joinable;
         }
 
+        public long getExp() {
+            return exp;
+        }
+
         public int getMemberSizeLevel() {
             return memberSizeLevel;
         }
@@ -133,6 +138,7 @@ public class GuildReply extends AbstractReply {
                     ", coinsEver=" + coinsEver +
                     ", created=" + created +
                     ", joinable=" + joinable +
+                    ", exp=" + exp +
                     ", memberSizeLevel=" + memberSizeLevel +
                     ", bankSizeLevel=" + bankSizeLevel +
                     ", canTag=" + canTag +
