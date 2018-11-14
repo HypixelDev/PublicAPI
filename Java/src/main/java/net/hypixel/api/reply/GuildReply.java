@@ -147,10 +147,6 @@ public class GuildReply extends AbstractReply {
                     '}';
         }
 
-        public enum GuildRank {
-            GUILDMASTER, OFFICER, MEMBER
-        }
-
         public static class GuildCoinHistory {
 
             private Map<ZonedDateTime, Integer> coinHistory = Maps.newHashMap();
@@ -169,7 +165,7 @@ public class GuildReply extends AbstractReply {
 
         public class Member implements GuildCoinHistoryHolding {
             private UUID uuid;
-            private GuildRank rank;
+            private String rank;
             private ZonedDateTime joined;
             private GuildCoinHistory guildCoinHistory;
 
@@ -177,7 +173,7 @@ public class GuildReply extends AbstractReply {
                 return uuid;
             }
 
-            public GuildRank getRank() {
+            public String getRank() {
                 return rank;
             }
 
