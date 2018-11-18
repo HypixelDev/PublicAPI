@@ -16,14 +16,9 @@ See [`GuildPermissions.json`](/Documentation/misc/GuildPermissions.json) for a J
 	"success": true,
 	"guild": {
 		"_id": "536ac9ceed5032e412eb2ae1", // Guild ID
-		"bankSizeLevel": 2, // Size of the guild's coin bank - Deprecated
-		"canMotd": true, // Whether this guild can have an MOTD - Deprecated
-		"canParty": true, // Whether this guild can start a guild party - Deprecated
-		"canTag": true, // Whether this guild can set a guild tag - Deprecated
 		"coins": 459178, // Number of coins this guild has - Deprecated
 		"coinsEver": 619178, // Number of coins this guild has ever earned - Deprecated
 		"created": 1399507406038, // Timestamp that this guild was created at
-		"memberSizeLevel": 6, // Size level of members this guild can have - Deprecated
 		"members": [{ // Member list
 			"uuid": "e72660b18b88424ea23f2cdd3597c581", // This user's non-dashed UUID
 			"rank": "GUILDMASTER", // This user's rank in this guild
@@ -43,13 +38,12 @@ See [`GuildPermissions.json`](/Documentation/misc/GuildPermissions.json) for a J
     		// ...
     		],
 		"name": "Froggy", // Name of this guild
-		"tagColor": "GOLD", // Color of this guild's guild tag, if set
+		"name_lower": "froggy" // Name of this guild in all lower case
+		"tagColor": "DARK_GREEN", // Color of this guild's guild tag, if set
 		"joinable": false, // Whether this guild can be joined using /g join
 		"legacyRanking": 10446, // Ranking in the number of guild coins owned in the legacy guild system (0-indexed)
 		"exp": 619178, // Total experience this guild has
-		"discord": "https://discord.gg/ZWquWcs", // Link to this Guild's discord server (/g discord)
-		"description": "Private guild", // Description of this guild that appears in the guild list and /g info
-		"dailyCoins-27-6-2018": 20000, // The number of guild coins earned on any given day - Deprecated
+		"description": "This guild is cool \u0026 fun!", // Description of this guild that appears in the guild list and /g info
 		"achievements": { // Guild achievements earned and the current progress
 			"WINNERS": 803,
 			"EXPERIENCE_KINGS": 243576
@@ -85,6 +79,12 @@ See [`GuildPermissions.json`](/Documentation/misc/GuildPermissions.json) for a J
 				}
       				// ...
       			]
+		},
+		"guildExpByGameType": { // Amount of EXP earned for this guild by which game it was earned in
+			"SKYWARS": 173,
+			"PROTOTYPE": 3100,
+			"BUILD_BATTLE": 46095
+			// ...
 		},
 		"tag": "HYPIXL", // This guild's Guild tag
 		"preferredGames": ["ARCADE", "SPEED_UHC", "UHC"], // This guild's set preferred games
