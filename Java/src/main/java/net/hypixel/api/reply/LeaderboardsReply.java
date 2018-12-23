@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@SuppressWarnings("unused")
 public class LeaderboardsReply extends AbstractReply {
     private Map<GameType, List<Leaderboard>> leaderboards;
 

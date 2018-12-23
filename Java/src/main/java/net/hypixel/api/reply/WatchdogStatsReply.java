@@ -2,7 +2,6 @@ package net.hypixel.api.reply;
 
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("unused")
 public class WatchdogStatsReply extends AbstractReply {
     @SerializedName("staff_rollingDaily")
     private int staffRollingDaily;

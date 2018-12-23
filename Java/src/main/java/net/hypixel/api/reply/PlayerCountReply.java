@@ -1,6 +1,5 @@
 package net.hypixel.api.reply;
 
-@SuppressWarnings("unused")
 public class PlayerCountReply extends AbstractReply {
     private int playerCount;
 

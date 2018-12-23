@@ -6,7 +6,6 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@SuppressWarnings("unused")
 public class GuildReply extends AbstractReply {
     private Guild guild;
 

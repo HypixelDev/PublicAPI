@@ -1,6 +1,5 @@
 package net.hypixel.api.reply;
 
-@SuppressWarnings("unused")
 public abstract class AbstractReply {
 
     protected boolean throttle;

@@ -5,8 +5,6 @@ import net.hypixel.api.util.GameType;
 import java.util.Set;
 import java.util.UUID;
 
-
-@SuppressWarnings("unused")
 public class SessionReply extends AbstractReply {
     private Session session;
 

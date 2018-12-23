@@ -7,6 +7,7 @@ import net.hypixel.api.adapters.DateTimeTypeAdapter;
 import net.hypixel.api.adapters.GameTypeTypeAdapter;
 import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.exceptions.APIThrottleException;
+import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.util.GameType;
 import org.apache.http.client.HttpClient;
@@ -20,7 +21,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@SuppressWarnings("unused")
 public class HypixelAPI {
 
     private static final Gson GSON = new GsonBuilder()
@@ -208,6 +208,8 @@ public class HypixelAPI {
         if (reply != null) {
             if (reply.isThrottle()) {
                 throw new APIThrottleException();
+            } else if (!reply.isSuccess()) {
+                throw new HypixelAPIException(reply.getCause());
             }
         }
     }
