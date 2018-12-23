@@ -8,33 +8,9 @@ Java documentation can be found mostly in the code or [JavaDocs](https://api.hyp
 
 ### Usage
 You can use this API as a dependency via JitPack. In the future it will be deployed to a public maven repo.
-#### Maven
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-```
-```xml
-<dependency>
-    <groupId>com.github.HypixelDev.PublicAPI</groupId>
-    <artifactId>Java</artifactId>
-    <version>2.0.0</version>
-</dependency>
-```
-#### Gradle
-```gradle
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-```
-```gradle
-dependencies {
-    compile 'com.github.HypixelDev.PublicAPI:Java:2.0.0'
-}
-```
+
+[![](https://jitpack.io/v/HypixelDev/PublicAPI.svg)](https://jitpack.io/#HypixelDev/PublicAPI)
+
 ### Query Limitations
 The API server has a request limit of 120 queries per minute. Abuse of the API will lead to your API key being banned.
 
