@@ -1,6 +1,5 @@
 package net.hypixel.api.util;
 
-@SuppressWarnings("unused")
 public enum GameType {
     QUAKECRAFT("Quakecraft", "Quake", 2),
     WALLS("Walls", "Walls", 3),

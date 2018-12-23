@@ -20,8 +20,7 @@ public class GameTypeTypeAdapter implements JsonDeserializer<GameType>, JsonSeri
     public GameType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         String raw = json.getAsString();
         try {
-            Integer intType = Integer.parseInt(raw);
-            return GameType.fromId(intType);
+            return GameType.fromId(Integer.parseInt(raw));
         } catch (NumberFormatException ignored) {
         }
         return GameType.valueOf(raw);

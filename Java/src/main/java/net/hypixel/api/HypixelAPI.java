@@ -1,82 +1,55 @@
 package net.hypixel.api;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.hypixel.api.adapters.*;
+import net.hypixel.api.adapters.BoostersTypeAdapterFactory;
+import net.hypixel.api.adapters.DateTimeTypeAdapter;
+import net.hypixel.api.adapters.GameTypeTypeAdapter;
+import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
-import net.hypixel.api.reply.AbstractReply;
-import net.hypixel.api.reply.GuildReply;
-import net.hypixel.api.request.Request;
-import net.hypixel.api.util.Callback;
+import net.hypixel.api.reply.*;
 import net.hypixel.api.util.GameType;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
-import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-@SuppressWarnings("unused")
 public class HypixelAPI {
 
-    private static HypixelAPI instance;
-    private final Gson gson;
-    private final ReentrantReadWriteLock lock;
-    private final ExecutorService exService = Executors.newCachedThreadPool();
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
+            .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
+            .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
+
+            .registerTypeAdapterFactory(new BoostersTypeAdapterFactory<>(BoostersReply.Booster.class))
+
+            .create();
+    private static final String BASE_URL = "https://api.hypixel.net/";
+
+    private final UUID apiKey;
+
+    private final ExecutorService executorService;
     private final HttpClient httpClient;
-    private UUID apiKey;
 
-    private HypixelAPI() {
-        gson = new GsonBuilder()
-                .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
-                .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
-                .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
+    public HypixelAPI(UUID apiKey) {
+        this.apiKey = apiKey;
 
-                // guilds
-                .registerTypeAdapter(GuildReply.Guild.GuildCoinHistory.class, new GuildCoinHistoryAdapter())
-                .registerTypeAdapterFactory(new GuildCoinHistoryHoldingTypeAdapterFactory<>(GuildReply.Guild.class))
-                .registerTypeAdapterFactory(new GuildCoinHistoryHoldingTypeAdapterFactory<>(GuildReply.Guild.Member.class))
-
-                .create();
-        lock = new ReentrantReadWriteLock();
-        httpClient = HttpClientBuilder.create().build();
+        this.executorService = Executors.newCachedThreadPool();
+        this.httpClient = HttpClientBuilder.create().build();
     }
 
     /**
-     * Gets the existing HypixelAPI, or constructs a new one
-     *
-     * @return The HypixelAPI
+     * Shuts down the internal executor service
      */
-    public static HypixelAPI getInstance() {
-        if (instance == null) {
-            instance = new HypixelAPI();
-        }
-        return instance;
-    }
-
-    /**
-     * Call this method when you're finished requesting anything from the API.
-     * The API maintains it's own internal threadpool, so if you don't call this
-     * the application will never exit.
-     */
-    public void finish() {
-        try {
-            exService.shutdown();
-            instance = null;
-        } catch (Exception e) {
-            throw new HypixelAPIException(e);
-        }
+    public void shutdown() {
+        executorService.shutdown();
     }
 
     /**
@@ -86,104 +59,160 @@ public class HypixelAPI {
         return apiKey;
     }
 
-    /**
-     * Call this method to set the API key
-     *
-     * @param apiKey The API key to set
-     */
-    public void setApiKey(UUID apiKey) {
-        Preconditions.checkNotNull(apiKey);
-        lock.writeLock().lock();
-        try {
-            this.apiKey = apiKey;
-        } finally {
-            lock.writeLock().unlock();
-        }
+    public CompletableFuture<BoostersReply> getBoosters() {
+        return get(BoostersReply.class, "boosters");
+    }
+
+    public CompletableFuture<LeaderboardsReply> getLeaderboards() {
+        return get(LeaderboardsReply.class, "leaderboards");
+    }
+
+    public CompletableFuture<LeaderboardsReply> getWatchdogStats() {
+        return get(LeaderboardsReply.class, "leaderboards");
+    }
+
+    public CompletableFuture<PlayerCountReply> getPlayerCount() {
+        return get(PlayerCountReply.class, "playerCount");
     }
 
     /**
-     * Use this method to pull data off of the Public API
-     *
-     * @param request Request object to pull from API
-     * @param <R>     The class of the reply
-     * @throws HypixelAPIException
+     * Session endpoint is bound to be removed at some point,
+     * data is mainly internal and highly inaccurate for online checking
      */
-    public <R extends AbstractReply> R getSync(Request request) throws HypixelAPIException {
-        lock.readLock().lock();
-        SyncCallback<R> callback = new SyncCallback<>();
-        try {
-            if (doKeyCheck(callback)) {
-                Future<HttpResponse> future = get(request, callback);
-                future.get();
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            callback.callback(e, null);
-        } finally {
-            lock.readLock().unlock();
-        }
-        if (callback.failCause != null) {
-            throw new HypixelAPIException(callback.failCause);
-        } else {
-            return callback.result;
-        }
+    @Deprecated
+    public CompletableFuture<SessionReply> getSessionByUuid(UUID player) {
+        return get(SessionReply.class, "session", "uuid", player);
+    }
+
+    /**
+     * Session endpoint is bound to be removed at some point,
+     * data is mainly internal and highly inaccurate for online checking
+     */
+    @Deprecated
+    public CompletableFuture<SessionReply> getSessionByUuid(String player) {
+        return get(SessionReply.class, "session", "uuid", player);
+    }
+
+    public CompletableFuture<PlayerReply> getPlayerByUuid(UUID player) {
+        return get(PlayerReply.class, "player", "uuid", player);
+    }
+
+    /**
+     * @param player uuid of a player in string format, can be both dashed or undashed.
+     * @return the future
+     */
+    public CompletableFuture<PlayerReply> getPlayerByUuid(String player) {
+        return get(PlayerReply.class, "player", "uuid", player);
+    }
+
+    @Deprecated
+    public CompletableFuture<PlayerReply> getPlayerByName(String player) {
+        return get(PlayerReply.class, "player", "name", player);
+    }
+
+    public CompletableFuture<FriendsReply> getFriends(UUID player) {
+        return get(FriendsReply.class, "friends", "uuid", player);
+    }
+
+    /**
+     * @param player uuid of a player in string format, can be both dashed or undashed.
+     * @return the future
+     */
+    public CompletableFuture<FriendsReply> getFriends(String player) {
+        return get(FriendsReply.class, "friends", "uuid", player);
+    }
+
+    public CompletableFuture<GuildReply> getGuildByPlayer(UUID player) {
+        return get(GuildReply.class, "guild", "player", player);
+    }
+
+    /**
+     * @param player uuid of a player in string format, can be both dashed or undashed.
+     * @return the future
+     */
+    public CompletableFuture<GuildReply> getGuildByPlayer(String player) {
+        return get(GuildReply.class, "guild", "player", player);
+    }
+
+    public CompletableFuture<GuildReply> getGuildByName(String name) {
+        return get(GuildReply.class, "guild", "name", name);
+    }
+
+    /**
+     * @param id mongo id hex string
+     * @return the future
+     */
+    public CompletableFuture<GuildReply> getGuildById(String id) {
+        return get(GuildReply.class, "guild", "id", id);
+    }
+
+    /**
+     * You can directly get the guild using {@link HypixelAPI#getGuildByPlayer(UUID)}
+     */
+    @Deprecated
+    public CompletableFuture<FindGuildReply> findGuildByPlayer(UUID player) {
+        return get(FindGuildReply.class, "findGuild", "byUuid", player);
+    }
+
+    /**
+     * You can directly get the guild using {@link HypixelAPI#getGuildByPlayer(String)}
+     */
+    @Deprecated
+    public CompletableFuture<FindGuildReply> findGuildByPlayer(String player) {
+        return get(FindGuildReply.class, "findGuild", "byUuid", player);
+    }
+
+    /**
+     * You can directly get the guild using {@link HypixelAPI#getGuildByName(String)})}
+     */
+    @Deprecated
+    public CompletableFuture<GuildReply> findGuildByName(String name) {
+        return get(GuildReply.class, "findGuild", "byName", name);
+    }
+
+    public CompletableFuture<KeyReply> getKey() {
+        return get(KeyReply.class, "key");
     }
 
     /**
      * Execute Request asynchronously, executes Callback when finished
      *
-     * @param request  Request to get
-     * @param callback Callback to execute
-     * @param <R>      Class of the reply
+     * @param request Request to get
      */
-    public <R extends AbstractReply> void getAsync(Request request, Callback<R> callback) {
-        lock.readLock().lock();
+    // TODO use a map of string to object?
+    private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request, Object... params) {
+        CompletableFuture<R> future = new CompletableFuture<>();
         try {
-            if (doKeyCheck(callback)) {
-                get(request, callback);
+            if (params.length % 2 != 0)
+                throw new IllegalArgumentException("Need both key and value for parameters");
+
+            StringBuilder url = new StringBuilder(BASE_URL);
+
+            url.append(request);
+            url.append("?key=").append(apiKey);
+
+            for (int i = 0; i < params.length - 1; i += 2) {
+                url.append("&").append(params[i]).append("=").append(params[i + 1]);
             }
-        } finally {
-            lock.readLock().unlock();
+
+            executorService.submit(() -> {
+                try {
+                    R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
+                        String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
+                        return GSON.fromJson(content, clazz);
+                    });
+
+                    checkReply(response);
+
+                    future.complete(response);
+                } catch (Throwable t) {
+                    future.completeExceptionally(t);
+                }
+            });
+        } catch (Throwable throwable) {
+            future.completeExceptionally(throwable);
         }
-    }
-
-    /**
-     * Internal method
-     *
-     * @param callback The callback to fail to
-     * @return True if we should continue
-     */
-    private boolean doKeyCheck(Callback<?> callback) {
-        if (apiKey == null) {
-            callback.callback(new HypixelAPIException("API key hasn't been set yet!"), null);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Internal method
-     *
-     * @param request  The request to get
-     * @param callback The callback to execute
-     * @param <T>      The class of the callback
-     * @return The ResponseHandler that wraps the callback
-     */
-    private <T extends AbstractReply> ResponseHandler<HttpResponse> buildResponseHandler(Request request, Callback<T> callback) {
-        return obj -> {
-            T value;
-            try {
-                String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                value = gson.fromJson(content, (Type) request.getRequestType().getReplyClass());
-
-                checkReply(value);
-            } catch (Throwable t) {
-                callback.callback(t, null);
-                return obj;
-            }
-            callback.callback(null, value);
-            return obj;
-        };
+        return future;
     }
 
     /**
@@ -192,33 +221,13 @@ public class HypixelAPI {
      * @param reply The reply to check
      * @param <T>   The class of the reply
      */
-    public <T extends AbstractReply> void checkReply(T reply) {
+    private <T extends AbstractReply> void checkReply(T reply) {
         if (reply != null) {
             if (reply.isThrottle()) {
                 throw new APIThrottleException();
+            } else if (!reply.isSuccess()) {
+                throw new HypixelAPIException(reply.getCause());
             }
-        }
-    }
-
-    /**
-     * Internal method
-     *
-     * @param request  The request to get
-     * @param callback The callback to execute
-     */
-    private Future<HttpResponse> get(Request request, Callback<?> callback) {
-        return exService.submit(() -> httpClient.execute(new HttpGet(request.getURL(this)), buildResponseHandler(request, callback)));
-    }
-
-    private class SyncCallback<T extends AbstractReply> implements Callback<T> {
-
-        private Throwable failCause;
-        private T result;
-
-        @Override
-        public void callback(Throwable failCause, T result) {
-            this.failCause = failCause;
-            this.result = result;
         }
     }
 }
