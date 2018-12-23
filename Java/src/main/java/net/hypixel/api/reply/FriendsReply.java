@@ -1,7 +1,5 @@
 package net.hypixel.api.reply;
 
-import net.hypixel.api.request.RequestType;
-
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -12,11 +10,6 @@ public class FriendsReply extends AbstractReply {
 
     public List<FriendShip> getFriendShips() {
         return records;
-    }
-
-    @Override
-    public RequestType getRequestType() {
-        return RequestType.FRIENDS;
     }
 
     @Override

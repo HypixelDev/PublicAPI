@@ -1,7 +1,5 @@
 package net.hypixel.api.reply;
 
-import net.hypixel.api.request.RequestType;
-
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -10,11 +8,6 @@ public class KeyReply extends AbstractReply {
 
     public Key getRecord() {
         return record;
-    }
-
-    @Override
-    public RequestType getRequestType() {
-        return RequestType.KEY;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package net.hypixel.api.reply;
 
-import net.hypixel.api.request.RequestType;
 import net.hypixel.api.util.GameType;
 
 import java.time.ZonedDateTime;
@@ -10,36 +9,54 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class BoostersReply extends AbstractReply {
     private List<Booster> boosters;
+    private BoosterState boosterState;
 
     public List<Booster> getBoosters() {
         return boosters;
     }
 
-    @Override
-    public RequestType getRequestType() {
-        return RequestType.BOOSTERS;
+    public BoosterState getBoosterState() {
+        return boosterState;
     }
 
     @Override
     public String toString() {
         return "BoostersReply{" +
                 "boosters=" + boosters +
-                ", super=" + super.toString() + "}";
+                ", boosterState=" + boosterState +
+                '}';
     }
 
-    public class Booster {
+    public static class BoosterState {
+        private boolean decrementing;
+
+        public boolean isDecrementing() {
+            return decrementing;
+        }
+
+        @Override
+        public String toString() {
+            return "BoosterState{" +
+                    "decrementing=" + decrementing +
+                    '}';
+        }
+    }
+
+    public static class Booster {
         private UUID purchaserUuid;
-        private int amount;
+        private double amount;
         private int originalLength;
         private int length;
         private GameType gameType;
         private ZonedDateTime dateActivated;
+        private List<UUID> stacked;
+        private boolean queuedToStack;
 
         public UUID getPurchaserUuid() {
             return purchaserUuid;
         }
 
-        public int getAmount() {
+        public double getAmount() {
             return amount;
         }
 
@@ -59,6 +76,14 @@ public class BoostersReply extends AbstractReply {
             return dateActivated;
         }
 
+        public List<UUID> getStacked() {
+            return stacked;
+        }
+
+        public boolean isQueuedToStack() {
+            return queuedToStack;
+        }
+
         @Override
         public String toString() {
             return "Booster{" +
@@ -68,6 +93,8 @@ public class BoostersReply extends AbstractReply {
                     ", length=" + length +
                     ", gameType=" + gameType +
                     ", dateActivated=" + dateActivated +
+                    ", stacked=" + stacked +
+                    ", queuedToStack=" + queuedToStack +
                     '}';
         }
     }

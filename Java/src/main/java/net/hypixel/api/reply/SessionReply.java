@@ -1,6 +1,5 @@
 package net.hypixel.api.reply;
 
-import net.hypixel.api.request.RequestType;
 import net.hypixel.api.util.GameType;
 
 import java.util.Set;
@@ -20,11 +19,6 @@ public class SessionReply extends AbstractReply {
      */
     public Session getSession() {
         return session;
-    }
-
-    @Override
-    public RequestType getRequestType() {
-        return RequestType.SESSION;
     }
 
     @Override

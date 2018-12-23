@@ -1,7 +1,7 @@
 package net.hypixel.api.adapters;
 
 import com.google.gson.*;
-import net.hypixel.api.util.APIUtil;
+import net.hypixel.api.util.Utilities;
 
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
@@ -21,7 +21,7 @@ public class DateTimeTypeAdapter implements JsonDeserializer<ZonedDateTime>, Jso
 
     @Override
     public ZonedDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return APIUtil.getDateTime(Long.parseLong(json.getAsString()));
+        return Utilities.getDateTime(Long.parseLong(json.getAsString()));
     }
 
 }
