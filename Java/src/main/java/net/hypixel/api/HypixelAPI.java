@@ -178,8 +178,6 @@ public class HypixelAPI {
                 url.append("&").append(params[i]).append("=").append(params[i + 1]);
             }
 
-            System.out.println(url);
-
             executorService.submit(() -> {
                 try {
                     R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
