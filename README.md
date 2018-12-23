@@ -21,7 +21,7 @@ You can use this API as a dependency via JitPack. In the future it will be deplo
 <dependency>
     <groupId>com.github.HypixelDev.PublicAPI</groupId>
     <artifactId>Java</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 #### Gradle
@@ -32,7 +32,7 @@ repositories {
 ```
 ```gradle
 dependencies {
-    compile 'com.github.HypixelDev.PublicAPI:Java:2.0-SNAPSHOT'
+    compile 'com.github.HypixelDev.PublicAPI:Java:2.0.0'
 }
 ```
 ### Query Limitations
