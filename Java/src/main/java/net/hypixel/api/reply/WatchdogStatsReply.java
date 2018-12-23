@@ -42,6 +42,6 @@ public class WatchdogStatsReply extends AbstractReply {
                 ", watchdogTotal=" + watchdogTotal +
                 ", watchdogLastMinute=" + watchdogLastMinute +
                 ", watchdogRollingDaily=" + watchdogRollingDaily +
-                '}';
+                "} " + super.toString();
     }
 }

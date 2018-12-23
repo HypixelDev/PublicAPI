@@ -13,7 +13,7 @@ public class KeyReply extends AbstractReply {
     public String toString() {
         return "KeyReply{" +
                 "record=" + record +
-                ", super=" + super.toString() + "}";
+                "} " + super.toString();
     }
 
     public class Key {

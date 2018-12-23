@@ -17,7 +17,7 @@ public class LeaderboardsReply extends AbstractReply {
     public String toString() {
         return "LeaderboardsReply{" +
                 "leaderboards=" + leaderboards +
-                ", super=" + super.toString() + "}";
+                "} " + super.toString();
     }
 
     public class Leaderboard {

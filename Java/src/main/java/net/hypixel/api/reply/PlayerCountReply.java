@@ -11,6 +11,6 @@ public class PlayerCountReply extends AbstractReply {
     public String toString() {
         return "PlayerCountReply{" +
                 "playerCount=" + playerCount +
-                '}';
+                "} " + super.toString();
     }
 }

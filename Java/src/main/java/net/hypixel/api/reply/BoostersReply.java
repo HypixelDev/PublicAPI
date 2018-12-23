@@ -23,7 +23,7 @@ public class BoostersReply extends AbstractReply {
         return "BoostersReply{" +
                 "boosters=" + boosters +
                 ", boosterState=" + boosterState +
-                '}';
+                "} " + super.toString();
     }
 
     public static class BoosterState {

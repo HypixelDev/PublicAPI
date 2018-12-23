@@ -23,7 +23,7 @@ public class SessionReply extends AbstractReply {
     public String toString() {
         return "SessionReply{" +
                 "session=" + session +
-                ",super=" + super.toString() + "}";
+                "} " + super.toString();
     }
 
     public class Session {

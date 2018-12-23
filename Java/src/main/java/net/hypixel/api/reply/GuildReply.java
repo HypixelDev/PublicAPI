@@ -17,7 +17,7 @@ public class GuildReply extends AbstractReply {
     public String toString() {
         return "GuildReply{" +
                 "guild=" + guild +
-                ", super=" + super.toString() + "}";
+                "} " + super.toString();
     }
 
     public static class Guild {

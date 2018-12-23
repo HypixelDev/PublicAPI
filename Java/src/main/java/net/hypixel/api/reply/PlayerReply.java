@@ -18,6 +18,6 @@ public class PlayerReply extends AbstractReply {
     public String toString() {
         return "PlayerReply{" +
                 "player=" + player +
-                ", super=" + super.toString() + "}";
+                "} " + super.toString();
     }
 }
