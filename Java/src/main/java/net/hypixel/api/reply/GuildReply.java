@@ -24,6 +24,7 @@ public class GuildReply extends AbstractReply {
         private String _id;
 
         private String name;
+        private String description;
         private String tag;
         private Boolean publiclyListed;
         private Banner banner;
@@ -38,6 +39,7 @@ public class GuildReply extends AbstractReply {
         private Boolean canTag;
         private Boolean canParty;
         private Boolean canMotd;
+        private int legacyRanking;
 
         public String get_id() {
             return _id;
@@ -45,6 +47,10 @@ public class GuildReply extends AbstractReply {
 
         public String getName() {
             return name;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         public String getTag() {
@@ -103,11 +109,16 @@ public class GuildReply extends AbstractReply {
             return canMotd;
         }
 
+        public String getLegacyRanking() {
+            return legacyRanking;
+        }
+
         @Override
         public String toString() {
             return "Guild{" +
                     "_id='" + _id + '\'' +
                     ", name='" + name + '\'' +
+                    ", description='" + description + '\'' +
                     ", tag='" + tag + '\'' +
                     ", publiclyListed=" + publiclyListed +
                     ", banner=" + banner +
@@ -122,6 +133,7 @@ public class GuildReply extends AbstractReply {
                     ", canTag=" + canTag +
                     ", canParty=" + canParty +
                     ", canMotd=" + canMotd +
+                    ", legacyRanking=" + legacyRanking +
                     '}';
         }
 
