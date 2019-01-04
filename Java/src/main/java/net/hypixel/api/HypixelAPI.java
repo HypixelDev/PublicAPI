@@ -67,8 +67,8 @@ public class HypixelAPI {
         return get(LeaderboardsReply.class, "leaderboards");
     }
 
-    public CompletableFuture<LeaderboardsReply> getWatchdogStats() {
-        return get(LeaderboardsReply.class, "leaderboards");
+    public CompletableFuture<WatchdogStatsReply> getWatchdogStats() {
+        return get(WatchdogStatsReply.class, "watchdogStats");
     }
 
     public CompletableFuture<PlayerCountReply> getPlayerCount() {
