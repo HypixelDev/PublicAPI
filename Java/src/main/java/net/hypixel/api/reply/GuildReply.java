@@ -109,7 +109,7 @@ public class GuildReply extends AbstractReply {
             return canMotd;
         }
 
-        public String getLegacyRanking() {
+        public int getLegacyRanking() {
             return legacyRanking;
         }
 
