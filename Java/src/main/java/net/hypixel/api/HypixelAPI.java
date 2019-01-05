@@ -174,6 +174,10 @@ public class HypixelAPI {
         return get(KeyReply.class, "key");
     }
 
+    public CompletableFuture<GameCountsReply> getGameCounts() {
+        return get(GameCountsReply.class, "gameCounts");
+    }
+
     /**
      * Execute Request asynchronously, executes Callback when finished
      *
