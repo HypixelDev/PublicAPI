@@ -20,7 +20,6 @@ You can obtain an API key by joining ```mc.hypixel.net``` with a valid Minecraft
 ### Dependencies
 The Hypixel PublicAPI has the following dependencies:
 * Google Gson library
-* Guava: Google Core Libraries for Java
 * Apache HttpClient
 
 ### Bug Reporting
