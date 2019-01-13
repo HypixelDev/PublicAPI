@@ -1,12 +1,11 @@
 package net.hypixel.api.pets;
 
-import com.google.common.collect.Maps;
-
+import java.util.HashMap;
 import java.util.Map;
 
 public class PetStats {
 
-    private Map<PetType, Pet> petMap = Maps.newHashMap();
+    private Map<PetType, Pet> petMap = new HashMap<>();
 
     public PetStats(Map<String, Map<String, Object>> petStats) {
         for (Map.Entry<String, Map<String, Object>> stringMapEntry : petStats.entrySet()) {
