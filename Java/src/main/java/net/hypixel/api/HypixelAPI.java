@@ -71,6 +71,10 @@ public class HypixelAPI {
         return get(WatchdogStatsReply.class, "watchdogStats");
     }
 
+    /**
+     * This is now included inside {@link HypixelAPI#getGameCounts()}
+     */
+    @Deprecated
     public CompletableFuture<PlayerCountReply> getPlayerCount() {
         return get(PlayerCountReply.class, "playerCount");
     }

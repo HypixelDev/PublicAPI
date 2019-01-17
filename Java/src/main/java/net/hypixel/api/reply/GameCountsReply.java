@@ -4,9 +4,14 @@ import java.util.Map;
 
 public class GameCountsReply extends AbstractReply {
     private Map<String, GameCount> games;
+    private int playerCount;
 
     public Map<String, GameCount> getGames() {
         return games;
+    }
+
+    public int getPlayerCount() {
+        return playerCount;
     }
 
     public static class GameCount {
@@ -34,6 +39,7 @@ public class GameCountsReply extends AbstractReply {
     public String toString() {
         return "GameCountsReply{" +
                 "games=" + games +
+                ", playerCount=" + playerCount +
                 "} " + super.toString();
     }
 }
