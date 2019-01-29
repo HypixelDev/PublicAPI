@@ -29,10 +29,14 @@ public abstract class AbstractReply {
 
   @Override
   public String toString() {
-    return "AbstractReply{" +
-      "throttle=" + throttle +
-      ", success=" + success +
-      ", cause='" + cause + '\'' +
-      '}';
+    return "AbstractReply{"
+        + "throttle="
+        + throttle
+        + ", success="
+        + success
+        + ", cause='"
+        + cause
+        + '\''
+        + '}';
   }
 }

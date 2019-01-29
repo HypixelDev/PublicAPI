@@ -1,13 +1,11 @@
 package net.hypixel.api.pets;
 
 public enum PetAttribute {
+  HUNGER,
+  THIRST,
+  EXERCISE;
 
-    HUNGER,
-    THIRST,
-    EXERCISE;
-
-    public int getDecay() {
-        return 1;
-    }
-
+  public int getDecay() {
+    return 1;
+  }
 }
