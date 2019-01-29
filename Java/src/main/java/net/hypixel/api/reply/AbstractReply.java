@@ -2,28 +2,37 @@ package net.hypixel.api.reply;
 
 public abstract class AbstractReply {
 
-    protected boolean throttle;
-    protected boolean success;
-    protected String cause;
+  protected boolean throttle;
+  protected boolean success;
+  protected String cause;
 
-    public boolean isThrottle() {
-        return throttle;
-    }
+  public final boolean isThrottle() {
+    return throttle;
+  }
 
-    public boolean isSuccess() {
-        return success;
-    }
+  public final boolean isSuccess() {
+    return success;
+  }
 
-    public String getCause() {
-        return cause;
-    }
+  public final String getCause() {
+    return cause;
+  }
 
-    @Override
-    public String toString() {
-        return "AbstractReply{" +
-                "throttle=" + throttle +
-                ", success=" + success +
-                ", cause='" + cause + '\'' +
-                '}';
+  public final void ensureValidity() {
+    if (isThrottle()) {
+      throw new APIThrottleException();
     }
+    if (!isSuccess()) {
+      throw new HypixelApiException(getCause());
+    }
+  }
+
+  @Override
+  public String toString() {
+    return "AbstractReply{" +
+      "throttle=" + throttle +
+      ", success=" + success +
+      ", cause='" + cause + '\'' +
+      '}';
+  }
 }
