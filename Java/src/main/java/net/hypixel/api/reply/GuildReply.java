@@ -34,11 +34,6 @@ public class GuildReply extends AbstractReply {
         private ZonedDateTime created;
         private Boolean joinable;
         private long exp;
-        private int memberSizeLevel;
-        private int bankSizeLevel;
-        private Boolean canTag;
-        private Boolean canParty;
-        private Boolean canMotd;
         private int legacyRanking;
 
         public String get_id() {
@@ -89,26 +84,6 @@ public class GuildReply extends AbstractReply {
             return exp;
         }
 
-        public int getMemberSizeLevel() {
-            return memberSizeLevel;
-        }
-
-        public int getBankSizeLevel() {
-            return bankSizeLevel;
-        }
-
-        public Boolean getCanTag() {
-            return canTag;
-        }
-
-        public Boolean getCanParty() {
-            return canParty;
-        }
-
-        public Boolean getCanMotd() {
-            return canMotd;
-        }
-
         public int getLegacyRanking() {
             return legacyRanking;
         }
@@ -128,11 +103,6 @@ public class GuildReply extends AbstractReply {
                     ", created=" + created +
                     ", joinable=" + joinable +
                     ", exp=" + exp +
-                    ", memberSizeLevel=" + memberSizeLevel +
-                    ", bankSizeLevel=" + bankSizeLevel +
-                    ", canTag=" + canTag +
-                    ", canParty=" + canParty +
-                    ", canMotd=" + canMotd +
                     ", legacyRanking=" + legacyRanking +
                     '}';
         }
