@@ -40,6 +40,12 @@ public class GuildReply extends AbstractReply {
         private Boolean canParty;
         private Boolean canMotd;
         private int legacyRanking;
+        private List<Rank> ranks;
+
+        /**
+         * @see #addRanksToMembers()
+         */
+        private boolean isRankToMembersAdded = false;
 
         public String get_id() {
             return _id;
@@ -66,6 +72,8 @@ public class GuildReply extends AbstractReply {
         }
 
         public List<Member> getMembers() {
+            addRanksToMembers();
+
             return members;
         }
 
@@ -113,8 +121,14 @@ public class GuildReply extends AbstractReply {
             return legacyRanking;
         }
 
+        public List<Rank> getRanks() {
+            return ranks;
+        }
+
         @Override
         public String toString() {
+            addRanksToMembers();
+
             return "Guild{" +
                     "_id='" + _id + '\'' +
                     ", name='" + name + '\'' +
@@ -134,24 +148,56 @@ public class GuildReply extends AbstractReply {
                     ", canParty=" + canParty +
                     ", canMotd=" + canMotd +
                     ", legacyRanking=" + legacyRanking +
+                    ", ranks=" + ranks +
                     '}';
         }
 
-        public enum GuildRank {
-            GUILDMASTER, OFFICER, MEMBER
+        private void addRanksToMembers() {
+            if (!isRankToMembersAdded) {
+
+                // GuildMaster rank is not included in {@link #ranks} list from hypixel network
+                // So, we must add it
+                Rank guildMasterRank = new Rank();
+                guildMasterRank.name = "GUILDMASTER";
+                guildMasterRank.created = getCreated(); // the rank is created when the guild is created?
+                guildMasterRank.priority = 10; // must be higher than all the other ranks (max 5)
+                ranks.add(guildMasterRank);
+
+                // associate the members to their rank
+
+                // Ranks names are saved either as "member", "Member" or "MEMBER"
+                // So we need to lowercase all the ranks names, THEN compare them
+                for (Rank rank : getRanks()) {
+                    rank.lower_name = rank.name.toLowerCase();
+                }
+
+                for (Member member : members) {
+                    String memberRank = member.rank.toLowerCase();
+
+                    for (Rank rank : getRanks()) {
+                        if (memberRank.equals(rank.lower_name)) {
+                            member.rankInstance = rank;
+                        }
+                    }
+                }
+
+                isRankToMembersAdded = true;
+            }
         }
 
         public class Member {
             private UUID uuid;
-            private GuildRank rank;
+            private String rank;
             private ZonedDateTime joined;
+
+            private Rank rankInstance;
 
             public UUID getUuid() {
                 return uuid;
             }
 
-            public GuildRank getRank() {
-                return rank;
+            public Rank getRank() {
+                return rankInstance;
             }
 
             public ZonedDateTime getJoined() {
@@ -164,6 +210,47 @@ public class GuildReply extends AbstractReply {
                         "uuid=" + uuid +
                         ", rank=" + rank +
                         ", joined=" + joined +
+                        '}';
+            }
+        }
+
+        public class Rank {
+            private String name;
+            private boolean default_;
+            private String tag;
+            private ZonedDateTime created;
+            private byte priority;
+
+            private String lower_name;
+
+            public String getName() {
+                return name;
+            }
+
+            public boolean getDefault() {
+                return default_;
+            }
+
+            public byte getPriority() {
+                return priority;
+            }
+
+            public String getTag() {
+                return tag;
+            }
+
+            public ZonedDateTime getCreated() {
+                return created;
+            }
+
+            @Override
+            public String toString() {
+                return "Rank{" +
+                        "name=" + name +
+                        ", default=" + default_ +
+                        ", tag=" + tag +
+                        ", created=" + created +
+                        ", priority" + priority +
                         '}';
             }
         }
