@@ -4,7 +4,7 @@ This is a Java implementation of the Hypixel API
 
 ### Documentation
 Hypixel PublicAPI documentation can be found in the [Documentation](https://github.com/HypixelDev/PublicAPI/tree/master/Documentation).
-Java documentation can be found mostly in the code or [JavaDocs](https://api.hypixel.net/javadocs/).
+Java documentation can be found in the code.
 
 ### Usage
 You can use this API as a dependency via JitPack. In the future it will be deployed to a public maven repo.
