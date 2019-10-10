@@ -9,6 +9,10 @@ import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.*;
+import net.hypixel.api.reply.skyblock.SkyBlockCollectionsReply;
+import net.hypixel.api.reply.skyblock.SkyBlockNewsReply;
+import net.hypixel.api.reply.skyblock.SkyBlockProfileReply;
+import net.hypixel.api.reply.skyblock.SkyBlockSkillsReply;
 import net.hypixel.api.util.GameType;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -180,6 +184,22 @@ public class HypixelAPI {
 
     public CompletableFuture<GameCountsReply> getGameCounts() {
         return get(GameCountsReply.class, "gameCounts");
+    }
+
+    public CompletableFuture<SkyBlockProfileReply> getSkyBlockProfile(String profile) {
+        return get(SkyBlockProfileReply.class, "skyblock/profile", "profile", profile);
+    }
+
+    public CompletableFuture<SkyBlockNewsReply> getSkyBlockNews() {
+        return get(SkyBlockNewsReply.class, "skyblock/news");
+    }
+
+    public CompletableFuture<SkyBlockCollectionsReply> getSkyBlockCollections() {
+        return get(SkyBlockCollectionsReply.class, "skyblock/collections");
+    }
+
+    public CompletableFuture<SkyBlockSkillsReply> getSkyBlockSkills() {
+        return get(SkyBlockSkillsReply.class, "skyblock/skills");
     }
 
     /**

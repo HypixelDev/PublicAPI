@@ -5,6 +5,10 @@ import net.hypixel.api.util.GameType;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * This method is deprecated and will be removed soon.
+ */
+@Deprecated
 public class SessionReply extends AbstractReply {
     private Session session;
 

@@ -1,7 +1,8 @@
 # session
+**Note**: This method is deprecated and will be removed at a later date.
 
 ## Description
-Returns session information for given player
+Returns session information for given player.
 
 ## Parameters
 - key
