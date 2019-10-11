@@ -2,6 +2,7 @@ package net.hypixel.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import net.hypixel.api.adapters.BoostersTypeAdapterFactory;
 import net.hypixel.api.adapters.DateTimeTypeAdapter;
 import net.hypixel.api.adapters.GameTypeTypeAdapter;
@@ -9,10 +10,9 @@ import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.*;
-import net.hypixel.api.reply.skyblock.SkyBlockCollectionsReply;
+import net.hypixel.api.reply.skyblock.ResourceReply;
 import net.hypixel.api.reply.skyblock.SkyBlockNewsReply;
 import net.hypixel.api.reply.skyblock.SkyBlockProfileReply;
-import net.hypixel.api.reply.skyblock.SkyBlockSkillsReply;
 import net.hypixel.api.util.GameType;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -194,12 +194,8 @@ public class HypixelAPI {
         return get(SkyBlockNewsReply.class, "skyblock/news");
     }
 
-    public CompletableFuture<SkyBlockCollectionsReply> getSkyBlockCollections() {
-        return get(SkyBlockCollectionsReply.class, "skyblock/collections");
-    }
-
-    public CompletableFuture<SkyBlockSkillsReply> getSkyBlockSkills() {
-        return get(SkyBlockSkillsReply.class, "skyblock/skills");
+    public CompletableFuture<ResourceReply> getResource(String resource) {
+        return requestResource(resource);
     }
 
     /**
@@ -227,7 +223,37 @@ public class HypixelAPI {
                 try {
                     R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                        return GSON.fromJson(content, clazz);
+                        if (clazz == ResourceReply.class) {
+                            return (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
+                        } else {
+                            return GSON.fromJson(content, clazz);
+                        }
+                    });
+
+                    checkReply(response);
+
+                    future.complete(response);
+                } catch (Throwable t) {
+                    future.completeExceptionally(t);
+                }
+            });
+        } catch (Throwable throwable) {
+            future.completeExceptionally(throwable);
+        }
+        return future;
+    }
+
+    private CompletableFuture<ResourceReply> requestResource(String resource) {
+        CompletableFuture<ResourceReply> future = new CompletableFuture<>();
+        try {
+            StringBuilder url = new StringBuilder(BASE_URL);
+            url.append("resources/").append(resource);
+
+            executorService.submit(() -> {
+                try {
+                    ResourceReply response = httpClient.execute(new HttpGet(url.toString()), obj -> {
+                        String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
+                        return new ResourceReply(GSON.fromJson(content, JsonObject.class));
                     });
 
                     checkReply(response);
