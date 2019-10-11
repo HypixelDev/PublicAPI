@@ -2,9 +2,9 @@
 
 ## Description
 
-Provides an endpoint to retrieve resources which don't change often. All resources return `lastUpdated` field which is a Unix milliseconds value of when the file was last updated.
+Provides an endpoint to retrieve resources which don't change often. This does _not_ require an API key.
 
-Some files, such as for SkyBlock will also return the game version they were generated for.
+All resources return `lastUpdated` field which is a Unix milliseconds value of when the file was last updated. Some files, such as for SkyBlock will also return the game version they were generated for.
 
 ## Supported Resources
 - achievements
