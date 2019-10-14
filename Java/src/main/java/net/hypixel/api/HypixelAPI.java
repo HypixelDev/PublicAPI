@@ -11,6 +11,7 @@ import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.ResourceReply;
+import net.hypixel.api.reply.skyblock.SkyBlockAuctionsReply;
 import net.hypixel.api.reply.skyblock.SkyBlockNewsReply;
 import net.hypixel.api.reply.skyblock.SkyBlockProfileReply;
 import net.hypixel.api.util.GameType;
@@ -192,6 +193,10 @@ public class HypixelAPI {
 
     public CompletableFuture<SkyBlockNewsReply> getSkyBlockNews() {
         return get(SkyBlockNewsReply.class, "skyblock/news");
+    }
+
+    public CompletableFuture<SkyBlockAuctionsReply> getSkyBlockAuctions(int page) {
+        return get(SkyBlockAuctionsReply.class, "skyblock/auctions", "page", page);
     }
 
     public CompletableFuture<ResourceReply> getResource(String resource) {
