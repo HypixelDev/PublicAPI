@@ -1,4 +1,4 @@
-# skyblock/profile
+# skyblock/auctions
 
 ## Description
 Returns SkyBlock auctions that are currently active in the in-game Auction House. This method uses pagination due to the amount of results returned. Each page will return up to 1,000 results.
