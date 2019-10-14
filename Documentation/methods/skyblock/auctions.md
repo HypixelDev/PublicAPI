@@ -11,8 +11,9 @@ Returns SkyBlock auctions that are currently active in the in-game Auction House
 ```php
 {
     success: true,
-    total: 31267, // Total amount of results in the auction house
-    pages: 32, // Total amount of pages avaliable
+    page: 0, // The current page
+    totalPages: 32, // Total amount of pages avaliable
+    totalAuctions: 31267, // Total amount of results in the auction house
     lastUpdated: 1571065561345, // Unix timestamp in milliseconds of when the data last updated in the API
     auctions: [ // The auctions themselves
         {
