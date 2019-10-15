@@ -9,3 +9,7 @@ Responses are served in JSON format.
 
 ## UUID Parameters
 All uuid parameters are expected to have the UUID without dashes.
+
+## SkyBlock items and inventories
+Items and inventory data are stored as a base64 encoded string containing gzipped nbt data.
+If a method is missing important information about an item or inventory, you should try checking this!
