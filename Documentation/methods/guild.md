@@ -3,8 +3,7 @@
 ## Description
 Returns information about given guild.
 
-See [`GuildAchievements.json`](/Documentation/misc/GuildAchievements.json) for a JSON list of Guild achievements<br>
-See [`GuildPermissions.json`](/Documentation/misc/GuildPermissions.json) for a JSON list of Guild permissions.
+See [`resources.md`](/Documentation/methods/resources.md) for a JSON list of Guild achievements and a JSON list of Guild permissions
 
 ## Parameters
 - key
@@ -25,7 +24,10 @@ See [`GuildPermissions.json`](/Documentation/misc/GuildPermissions.json) for a J
 			"joined": 1512200875108, // Timestamp the member joined
 			"dailyCoins-12-6-2018": 1560, // Guild coins earned by this user on any given day - Deprecated
 			"questParticipation": 4, // The number of challenges completed that count towards the current quest
-			"mutedTill":1532797185516 // Timestamp that this user will be unmuted at
+			"mutedTill":1532797185516, // Timestamp that this user will be unmuted at
+            "expHistory": {
+                "2019-10-17": 17260 // Last 7 days of exp earned for this member
+            }
 		}, {
 			"uuid": "6407035ace144175a731fac937d410cd",
 			"rank": "Co-Owner",
@@ -33,7 +35,10 @@ See [`GuildPermissions.json`](/Documentation/misc/GuildPermissions.json) for a J
 			"last_rank_modification": { // Data for last changes to this users rank
 				"at": 1532715237290, // Timestamp the rank was changed
 				"uuid": "e72660b18b88424ea23f2cdd3597c581" // User the rank was changed by
-			}
+			},
+            "expHistory": {
+                "2019-10-17": 15812
+            }
 		}
     		// ...
     		],
