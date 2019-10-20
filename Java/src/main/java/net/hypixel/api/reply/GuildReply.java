@@ -107,20 +107,16 @@ public class GuildReply extends AbstractReply {
                     '}';
         }
 
-        public enum GuildRank {
-            GUILDMASTER, OFFICER, MEMBER
-        }
-
         public class Member {
             private UUID uuid;
-            private GuildRank rank;
+            private String rank;
             private ZonedDateTime joined;
 
             public UUID getUuid() {
                 return uuid;
             }
 
-            public GuildRank getRank() {
+            public String getRank() {
                 return rank;
             }
 
