@@ -8,6 +8,8 @@ See [`resources.md`](/Documentation/methods/resources.md) for a JSON list of Gui
 ## Parameters
 - key
 - id _Guild id returned by [findGuild](https://github.com/HypixelDev/PublicAPI/blob/master/Documentation/methods/findGuild.md)_
+- player (Lookup by Player UUID)
+- name (Lookup by Guild name)
 
 ## Example
 ```php
