@@ -12,8 +12,8 @@ Returns SkyBlock auctions by either player, profile or auction uuid.
 ## Example Response
 ```php
 {
-    success: true,
-    auctions: [
+    "success": true,
+    "auctions": [
         {
             "uuid": "bc581ce675e94a0c88ac9deae06090f0",
             "auctioneer": "96a7c06732f54c1382ab6a2515dbb960",

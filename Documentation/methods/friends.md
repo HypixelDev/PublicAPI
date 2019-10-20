@@ -11,9 +11,9 @@ Returns friendships for given player.
 ```php
 [
     {
-        uuidSender: "", 
-        uuidReceiver: "", 
-        started: 1376865614794 // unix timestamp
+        "uuidSender": "", 
+        "uuidReceiver": "", 
+        "started": 1376865614794 // unix timestamp
     },
     ...
 ]    
