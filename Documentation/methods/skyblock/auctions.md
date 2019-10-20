@@ -10,12 +10,12 @@ Returns SkyBlock auctions that are currently active in the in-game Auction House
 ## Example Response
 ```php
 {
-    success: true,
-    page: 0, // The current page
-    totalPages: 32, // Total amount of pages avaliable
-    totalAuctions: 31267, // Total amount of results in the auction house
-    lastUpdated: 1571065561345, // Unix timestamp in milliseconds of when the data last updated in the API
-    auctions: [ // The auctions themselves
+    "success": true,
+    "page": 0, // The current page
+    "totalPages": 32, // Total amount of pages avaliable
+    "totalAuctions": 31267, // Total amount of results in the auction house
+    "lastUpdated": 1571065561345, // Unix timestamp in milliseconds of when the data last updated in the API
+    "auctions": [ // The auctions themselves
         {
             "uuid": "bc581ce675e94a0c88ac9deae06090f0",
             "auctioneer": "96a7c06732f54c1382ab6a2515dbb960",
