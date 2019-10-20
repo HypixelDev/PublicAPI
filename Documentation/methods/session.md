@@ -11,8 +11,8 @@ Returns session information for given player.
 ## Example Response
 ```php
 {
-    gameType: "", // GameType string
-    server: "mini32F", // server name
-    players: [] // Set of not dashed uuids
+    "gameType": "", // GameType string
+    "server": "mini32F", // server name
+    "players": [] // Set of not dashed uuids
 }
 ```

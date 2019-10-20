@@ -9,9 +9,9 @@ Returns information regarding given key.
 ## Example Response
 ```php
 {
-key: "", 
-ownerUuid: "", // not dashed
-totalQueries: 142028083,
-queriesInPastMin: 68
+    "key": "", 
+    "ownerUuid": "", // not dashed
+    "totalQueries": 142028083,
+    "queriesInPastMin": 68
 } 
 ```
