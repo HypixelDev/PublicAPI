@@ -26,6 +26,8 @@
 | 59 | MURDER_MYSTERY | MurderMystery | Murder Mystery       |
 | 60 | BUILD_BATTLE   | BuildBattle   | Build Battle         |
 | 61 | DUELS          | Duels         | Duels                |
+| 63 | SKYBLOCK       | SkyBlock      | SkyBlock             |
+| 64 | PIT            | Pit           | Pit                  |
 
 ### Storage
 Games store their respective stats and data in a Player's `stats` collection. The game's specific data is held within a JSON object named after it's `Database Name` (seen above.)

@@ -25,7 +25,9 @@ public enum GameType {
     BEDWARS("Bed Wars", "Bedwars", 58),
     MURDER_MYSTERY("Murder Mystery", "MurderMystery", 59),
     BUILD_BATTLE("Build Battle", "BuildBattle", 60),
-    DUELS("Duels", "Duels", 61);
+    DUELS("Duels", "Duels", 61),
+    SKYBLOCK("SkyBlock", "SkyBlock", 63),
+    PIT("Pit", "Pit", 64);
 
     private static final GameType[] VALUES = values();
 
