@@ -1,6 +1,7 @@
 package net.hypixel.api.reply;
 
 import net.hypixel.api.util.Banner;
+import net.hypixel.api.util.TagColor;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -26,7 +27,7 @@ public class GuildReply extends AbstractReply {
         private String name;
         private String description;
         private String tag;
-        private String tagColor;
+        private TagColor tagColor;
         private Boolean publiclyListed;
         private Banner banner;
         private List<Member> members;
@@ -53,7 +54,7 @@ public class GuildReply extends AbstractReply {
             return tag;
         }
 
-        public String getTagColor() {
+        public TagColor getTagColor() {
             return tagColor;
         }
 
