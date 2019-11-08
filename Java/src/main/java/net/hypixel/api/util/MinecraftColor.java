@@ -2,7 +2,7 @@ package net.hypixel.api.util;
 
 import java.awt.*;
 
-public enum TagColor {
+public enum MinecraftColor {
     BLACK(new Color(0x0)),
     DARK_BLUE(new Color(0xAA)),
     DARK_GREEN(new Color(0xAA00)),
@@ -26,7 +26,7 @@ public enum TagColor {
         return color;
     }
 
-    TagColor(Color color) {
+    MinecraftColor(Color color) {
         this.color = color;
     }
 }
