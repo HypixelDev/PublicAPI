@@ -7,11 +7,11 @@ import net.hypixel.api.reply.AbstractReply;
 public class SkyBlockNewsReply extends AbstractReply {
     private JsonElement items;
 
-    public JsonObject getItems() {
+    public JsonArray getItems() {
         if (items == null || items.isJsonNull()) {
             return null;
         } else {
-            return items.getAsJsonObject();
+            return items.getAsJsonArray();
         }
     }
 
