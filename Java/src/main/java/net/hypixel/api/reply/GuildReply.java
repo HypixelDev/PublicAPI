@@ -3,6 +3,7 @@ package net.hypixel.api.reply;
 import net.hypixel.api.util.Banner;
 
 import java.time.ZonedDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -111,6 +112,7 @@ public class GuildReply extends AbstractReply {
             private UUID uuid;
             private String rank;
             private ZonedDateTime joined;
+            private LinkedHashMap<String, Long> expHistory;
 
             public UUID getUuid() {
                 return uuid;
@@ -124,12 +126,17 @@ public class GuildReply extends AbstractReply {
                 return joined;
             }
 
+            public LinkedHashMap<String, Long> getExpHistory() {
+                return expHistory;
+            }
+
             @Override
             public String toString() {
                 return "Member{" +
                         "uuid=" + uuid +
                         ", rank=" + rank +
                         ", joined=" + joined +
+                        ", expHistory=" + expHistory.toString() +
                         '}';
             }
         }
