@@ -1,7 +1,7 @@
 # skyblock/auction
 
 ## Description
-Returns SkyBlock auctions by either player, profile or auction uuid.
+Returns SkyBlock auctions by either player, profile or auction uuid. Only "active" auctions are returned, these are auctions that are still open or that have not had all bids/items claimed.
 
 ## Parameters
 - key
