@@ -18,7 +18,7 @@ quick_status is a computed summary of the live state of the product (used for ad
 - movingWeek is the historic *transacted* volume from last 7d + live state
 - orders is the count of active orders
 
-historic_weekly is a list of data points at a 30 minutes interval from the last 7 days, used in the graphs in-game:
+week_historic is a list of data points at a 30 minutes interval from the last 7 days, used in the graphs in-game:
 - sells/buys is the number of instant sell/buys
 - buyVolume is the sum of *transacted* item amounts for this transaction type
 - buyCoins is the sum of *transacted* (volume x unit price) for this transaction type
