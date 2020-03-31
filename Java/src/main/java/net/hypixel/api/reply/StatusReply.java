@@ -27,8 +27,8 @@ public class StatusReply extends AbstractReply {
 
         /**
          * Boolean if player is online.
-         * Will be false if it is a staff account or if the player
-         * has it disabled in settings
+         * May be disabled in the player their settings, so may vary from player to player
+         
          */
         private boolean online;
 
