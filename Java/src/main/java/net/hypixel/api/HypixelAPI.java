@@ -199,6 +199,26 @@ public class HypixelAPI {
         return get(SkyBlockAuctionsReply.class, "skyblock/auctions", "page", page);
     }
 
+    /**
+     * Gets the current status of the player with information about the server they are in
+     * at that moment.
+     * In case the person is in limbo, result will be the last known server
+     *
+     * @param uuid of player
+     * @return CompletableFuture with status reply
+     */
+    public CompletableFuture<StatusReply> getStatus(UUID uuid) {
+        return get(StatusReply.class, "status", "uuid", uuid);
+    }
+
+    /**
+     * @param player uuid of player
+     * @return CompletableFuture with status reply
+     */
+    public CompletableFuture<StatusReply> getStatus(String player) {
+        return get(StatusReply.class, "status", "uuid", player);
+    }
+
     public CompletableFuture<ResourceReply> getResource(String resource) {
         return requestResource(resource);
     }
