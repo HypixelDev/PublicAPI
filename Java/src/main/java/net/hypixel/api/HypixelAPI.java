@@ -14,6 +14,7 @@ import net.hypixel.api.reply.skyblock.ResourceReply;
 import net.hypixel.api.reply.skyblock.SkyBlockAuctionsReply;
 import net.hypixel.api.reply.skyblock.SkyBlockNewsReply;
 import net.hypixel.api.reply.skyblock.SkyBlockProfileReply;
+import net.hypixel.api.reply.skyblock.bazaar.BazaarProductsReply;
 import net.hypixel.api.util.GameType;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -197,6 +198,26 @@ public class HypixelAPI {
 
     public CompletableFuture<SkyBlockAuctionsReply> getSkyBlockAuctions(int page) {
         return get(SkyBlockAuctionsReply.class, "skyblock/auctions", "page", page);
+    }
+
+    /**
+     * Get active bazaar products from SkyBlock.
+     * This list gets updated rarely.
+     *
+     * @return CompletableFuture with Bazaar product id's
+     */
+    public CompletableFuture<BazaarProductsReply> getBazaarProducts() {
+        return get(BazaarProductsReply.class, "skyblock/bazaar/products");
+    }
+
+    /**
+     * Retrieve resources which don't change often.
+     *
+     * @param resource to be requested
+     * @return CompletableFuture with resource reply
+     */
+    public CompletableFuture<ResourceReply> getResource(ResourceType resource) {
+        return getResource(resource.getPath());
     }
 
     public CompletableFuture<ResourceReply> getResource(String resource) {
