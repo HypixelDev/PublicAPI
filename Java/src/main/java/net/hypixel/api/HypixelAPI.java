@@ -15,6 +15,7 @@ import net.hypixel.api.reply.skyblock.SkyBlockAuctionsReply;
 import net.hypixel.api.reply.skyblock.SkyBlockNewsReply;
 import net.hypixel.api.reply.skyblock.SkyBlockProfileReply;
 import net.hypixel.api.reply.skyblock.bazaar.BazaarProductsReply;
+import net.hypixel.api.reply.skyblock.bazaar.BazaarProductReply;
 import net.hypixel.api.util.GameType;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -211,13 +212,13 @@ public class HypixelAPI {
     }
 
     /**
-     * Retrieve resources which don't change often.
+     * Requests information about products in bazaar.
      *
-     * @param resource to be requested
-     * @return CompletableFuture with resource reply
+     * @param productId to request
+     * @return CompletableFuture with BazaarProductsReply
      */
-    public CompletableFuture<ResourceReply> getResource(ResourceType resource) {
-        return getResource(resource.getPath());
+    public CompletableFuture<BazaarProductReply> getBazaarProduct(String productId) {
+        return get(BazaarProductReply.class, "skyblock/bazaar/product", "productId", productId);
     }
 
     public CompletableFuture<ResourceReply> getResource(String resource) {
