@@ -28,7 +28,6 @@ public class StatusReply extends AbstractReply {
         /**
          * Boolean if player is online.
          * May be disabled in the player their settings, so may vary from player to player
-         
          */
         private boolean online;
 
