@@ -1,7 +1,10 @@
 # skyblock/bazaar/product
+ **Note**: This method is deprecated and will be removed at a later date.
 
 ## Description
-Returns information about a bazaar product by product id.
+Returns information about a bazaar product by product id. 
+
+Due to the way the data is stored in the backend, the "buy" and "sell" fields are all the wrong way round so these will need to be flipped. This is not the case on the new [skyblock/bazaar](https://github.com/HypixelDev/PublicAPI/blob/master/Documentation/methods/skyblock/bazaar.md) endpoint.
 
 The returned info has 4 main fields:
 - buy_summary

@@ -1,4 +1,5 @@
 # skyblock/bazaar/products
+ **Note**: This method is deprecated and will be removed at a later date.
 
 ## Description
 Returns the list of product ids in the Bazaar as a JSON array.
