@@ -201,6 +201,18 @@ public class HypixelAPI {
     }
 
     /**
+     * Gets the current status of the player with information about the server they are in
+     * at that moment.
+     * In case the person is in limbo, result will be the last known server
+     *
+     * @param uuid of player
+     * @return CompletableFuture with status reply
+     */
+    public CompletableFuture<StatusReply> getStatus(UUID uuid) {
+        return get(StatusReply.class, "status", "uuid", uuid);
+    }
+
+    /**
      * Retrieve resources which don't change often.
      *
      * @param resource to be requested
