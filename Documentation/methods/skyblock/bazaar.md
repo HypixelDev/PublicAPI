@@ -10,6 +10,7 @@ Returns the list of [products](#product-description) along with their sell summa
 ```php
 {
   "success": true,
+  "lastUpdated": 1587237498970,
   "products": {
     "INK_SACK:3": {
       "product_id": "INK_SACK:3",
