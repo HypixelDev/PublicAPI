@@ -10,12 +10,7 @@ import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.*;
-import net.hypixel.api.reply.skyblock.ResourceReply;
-import net.hypixel.api.reply.skyblock.SkyBlockAuctionsReply;
-import net.hypixel.api.reply.skyblock.SkyBlockNewsReply;
-import net.hypixel.api.reply.skyblock.SkyBlockProfileReply;
-import net.hypixel.api.reply.skyblock.bazaar.BazaarProductsReply;
-import net.hypixel.api.reply.skyblock.bazaar.BazaarProductReply;
+import net.hypixel.api.reply.skyblock.*;
 import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ResourceType;
 import org.apache.http.client.HttpClient;
@@ -225,23 +220,12 @@ public class HypixelAPI {
     }
 
     /**
-     * Get active bazaar products from SkyBlock.
-     * This list gets updated rarely.
-     *
-     * @return CompletableFuture with Bazaar product id's
-     */
-    public CompletableFuture<BazaarProductsReply> getBazaarProducts() {
-        return get(BazaarProductsReply.class, "skyblock/bazaar/products");
-    }
-
-    /**
      * Requests information about products in bazaar.
      *
-     * @param productId to request
-     * @return CompletableFuture with BazaarProductsReply
+     * @return CompletableFuture with BazaarReply
      */
-    public CompletableFuture<BazaarProductReply> getBazaarProduct(String productId) {
-        return get(BazaarProductReply.class, "skyblock/bazaar/product", "productId", productId);
+    public CompletableFuture<BazaarReply> getBazaar() {
+        return get(BazaarReply.class, "skyblock/bazaar");
     }
 
     public CompletableFuture<ResourceReply> getResource(String resource) {
