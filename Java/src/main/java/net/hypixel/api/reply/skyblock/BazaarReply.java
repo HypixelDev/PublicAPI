@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class BazaarReply extends AbstractReply {
 
+    private long lastUpdated;
     private Map<String, Product> products;
 
     public Map<String, Product> getProducts() {
@@ -28,7 +29,8 @@ public class BazaarReply extends AbstractReply {
     @Override
     public String toString() {
         return "BazaarReply{" +
-                "products=" + products +
+                "lastUpdated=" + lastUpdated +
+                ", products=" + products +
                 "} " + super.toString();
     }
 
