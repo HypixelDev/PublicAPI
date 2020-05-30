@@ -41,8 +41,7 @@ Returns the list of [products](#product-description) along with their sell summa
           "amount": 25957,
           "pricePerUnit": 5,
           "orders": 3
-        },
-        ...
+        }
       ],
       "quick_status": {
         "productId": "INK_SACK:3",
