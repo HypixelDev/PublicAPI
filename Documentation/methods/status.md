@@ -11,12 +11,14 @@ Players can disable this endpoint via in-game settings. When done so the API wil
 - uuid
 
 ## Example Response
-```php
+```js
 {
-    "session": {
-        "online": true,
-        "gameType": "SKYBLOCK",
-        "mode": "dynamic"
-    }
+  "success": true,
+  "session":{
+    "online": true,
+    "gameType": "SKYWARS",
+    "mode": "ranked_normal",
+    "map": "Agni Temple"
+  }
 }
 ```

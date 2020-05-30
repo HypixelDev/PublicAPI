@@ -7,7 +7,7 @@ Returns the list of [products](#product-description) along with their sell summa
 - key
 
 ## Example Response
-```php
+```js
 {
   "success": true,
   "lastUpdated": 1587237498970,

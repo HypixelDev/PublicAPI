@@ -2,7 +2,7 @@
  **Note**: This method is deprecated and will be removed at a later date.
 
 ## Description
-Returns information about a bazaar product by product id. 
+Returns information about a bazaar product by product id.
 
 Due to the way the data is stored in the backend, the "buy" and "sell" fields are all the wrong way round so these will need to be flipped. This is not the case on the new [skyblock/bazaar](https://github.com/HypixelDev/PublicAPI/blob/master/Documentation/methods/skyblock/bazaar.md) endpoint.
 
@@ -34,7 +34,7 @@ You can compute the avg unit price of instant buy on a historic data point using
 - productId
 
 ## Example Response
-```php
+```js
 {
   "success": true,
   "product_info": {
