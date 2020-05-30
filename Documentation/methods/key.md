@@ -9,9 +9,12 @@ Returns information regarding given key.
 ## Example Response
 ```php
 {
-    "key": "", 
-    "ownerUuid": "", // not dashed
-    "totalQueries": 142028083,
-    "queriesInPastMin": 68
-} 
+    "success": true,
+    "record": {
+        "key": "",
+        "owner": "",
+        "limit": 120,
+        "queriesInPastMin": 0,
+        "totalQueries": 0
+}
 ```
