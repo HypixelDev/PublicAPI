@@ -8,7 +8,7 @@ This is also now included in the [`gameCounts`](/Documentation/methods/gameCount
 ## Parameters
 - key
 
-## Example Player Count
+## Example Response
 ```js
 {
   "success": true,

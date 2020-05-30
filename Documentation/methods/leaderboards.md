@@ -7,7 +7,7 @@ Returns a list of the official leaderboards and their current standings for game
 ## Parameters
 - key
 
-## Example Leaderboard
+## Example Response
 ```js
 {
   "success": true,

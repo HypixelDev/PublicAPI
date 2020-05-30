@@ -7,7 +7,7 @@ Returns some statistics about Watchdog & bans.
 ## Parameters
 - key
 
-## Example Watchdog-Stats
+## Example Response
 ```js
 {
   "success": true,

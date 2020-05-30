@@ -8,7 +8,7 @@ Due to the large amount of modes and that they can change at anytime we don't cu
 ## Parameters
 - key
 
-## Example Player Count
+## Example Response
 ```js
 {
   "success": true,

@@ -11,7 +11,7 @@ See [`resources.md`](/Documentation/methods/resources.md) for a JSON list of Gui
 - player (Lookup by Player UUID)
 - name (Lookup by Guild name)
 
-## Example
+## Example Response
 ```js
 {
   "success": true,
