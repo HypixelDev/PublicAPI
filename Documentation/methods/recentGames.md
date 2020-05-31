@@ -15,6 +15,12 @@ Players can disable this endpoint via in-game settings. When done so the API wil
 {
   "success": true,
   "games": [
+    { // No 'ended' means the game is still running
+      "date": 1590935247444,
+      "gameType": "SKYWARS",
+      "mode": "solo_normal",
+      "map": "Shire"
+    },
     {
       "date": 1590850836485,
       "gameType": "BEDWARS",
