@@ -83,7 +83,8 @@ public interface IGuildLeveling {
     }
 
     /**
-     * This method returns the amount of experience needed to go from that level to the next.
+     * This method returns the amount of experience needed to go from that level to the next. If the
+     * level parameter is less than 0, an {@link IllegalArgumentException} will be thrown.
      *
      * @param level The starting level
      * @return The amount of guild exp needed to progress from that level to the next level
@@ -91,6 +92,10 @@ public interface IGuildLeveling {
      * @see #MAX_EXP_NEEDED
      */
     static double getExpFromLevelToNext(double level) {
+        if (level < 0) {
+            throw new IllegalArgumentException("Level value must be >= 0");
+        }
+
         return level >= EXP_NEEDED.size() ? MAX_EXP_NEEDED : EXP_NEEDED.get((int) level);
     }
 
@@ -102,7 +107,8 @@ public interface IGuildLeveling {
     /**
      * This method returns the total amount of exp needed for a guild to reach a whole level
      * (integer). For example, if a guild had 0 experience, this method would return how much
-     * experience they would need before they reached level 5.0.
+     * experience they would need before they reached level 5.0. If the level parameter is less than
+     * 0, an {@link IllegalArgumentException} may be thrown.
      *
      * @param level The level reached with the returned amount of exp; should be an integer
      * @return The total amount of experience needed to reach that level
