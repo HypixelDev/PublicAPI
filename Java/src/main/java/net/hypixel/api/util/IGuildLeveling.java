@@ -99,9 +99,19 @@ public interface IGuildLeveling {
         return level >= EXP_NEEDED.size() ? MAX_EXP_NEEDED : EXP_NEEDED.get((int) level);
     }
 
-    // TODO: 6/6/20 Implement getTotalExpToLevel
+    /**
+     * This method returns the amount of guild experience needed to reach a precise level. For
+     * example, passing in a level of 10.5 will return the amount of exp needed for level 10 plus
+     * half the amount of exp needed between levels 10 and 11. If the level parameter is less than
+     * 0, an {@link IllegalArgumentException} may be thrown.
+     *
+     * @param level The precise level reached with the returned amount of experience; should be >=
+     *              0
+     * @return The total experience needed to reach that precise level
+     */
     static double getTotalExpToLevel(double level) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        double progress = level - (int) level;
+        return getTotalExpToFullLevel(level) + (progress * getExpFromLevelToNext(level));
     }
 
     /**
