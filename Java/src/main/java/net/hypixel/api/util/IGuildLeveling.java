@@ -116,7 +116,7 @@ public interface IGuildLeveling {
     static double getTotalExpToFullLevel(double level) {
         double expNeeded = 0;
 
-        for (int i = 0; i < level; i++) {
+        for (int i = 0; i < (int) level; i++) {
             expNeeded += getExpFromLevelToNext(i);
         }
 
