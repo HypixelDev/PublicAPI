@@ -3,14 +3,37 @@ package net.hypixel.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import java.time.ZonedDateTime;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import net.hypixel.api.adapters.BoostersTypeAdapterFactory;
 import net.hypixel.api.adapters.DateTimeTypeAdapter;
 import net.hypixel.api.adapters.GameTypeTypeAdapter;
+import net.hypixel.api.adapters.PlayerTypeAdapter;
 import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
-import net.hypixel.api.reply.*;
-import net.hypixel.api.reply.skyblock.*;
+import net.hypixel.api.reply.AbstractReply;
+import net.hypixel.api.reply.BoostersReply;
+import net.hypixel.api.reply.FindGuildReply;
+import net.hypixel.api.reply.FriendsReply;
+import net.hypixel.api.reply.GameCountsReply;
+import net.hypixel.api.reply.GuildReply;
+import net.hypixel.api.reply.KeyReply;
+import net.hypixel.api.reply.LeaderboardsReply;
+import net.hypixel.api.reply.PlayerCountReply;
+import net.hypixel.api.reply.PlayerReply;
+import net.hypixel.api.reply.PlayerReply.Player;
+import net.hypixel.api.reply.RecentGamesReply;
+import net.hypixel.api.reply.StatusReply;
+import net.hypixel.api.reply.WatchdogStatsReply;
+import net.hypixel.api.reply.skyblock.BazaarReply;
+import net.hypixel.api.reply.skyblock.ResourceReply;
+import net.hypixel.api.reply.skyblock.SkyBlockAuctionsReply;
+import net.hypixel.api.reply.skyblock.SkyBlockNewsReply;
+import net.hypixel.api.reply.skyblock.SkyBlockProfileReply;
 import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ResourceType;
 import org.apache.http.client.HttpClient;
@@ -18,18 +41,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
-import java.time.ZonedDateTime;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class HypixelAPI {
 
     private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
-            .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
-            .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
+        .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
+        .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
+        .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
+        .registerTypeAdapter(Player.class, new PlayerTypeAdapter())
 
             .registerTypeAdapterFactory(new BoostersTypeAdapterFactory<>(BoostersReply.Booster.class))
 
