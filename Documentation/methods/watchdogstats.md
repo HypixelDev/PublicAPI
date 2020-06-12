@@ -7,16 +7,14 @@ Returns some statistics about Watchdog & bans.
 ## Parameters
 - key
 
-## Example Watchdog-Stats
-```php
-[
-    {
-        "watchdog_lastMinute": "1", // Watchdog's bans in the last minute.
-        "staff_rollingDaily": 123, // Staff bans in the last day.
-        "watchdog_total": 1234567, // Total Watchdog bans, ever.
-        "watchdog_rollingDaily": 1234, // Watchdog bans in the last day.
-        "staff_total": 123456, // Total staff bans, ever.
-    },
-    ...
-]
+## Example Response
+```js
+{
+  "success": true,
+  "watchdog_lastMinute": 5, // Watchdog's bans in the last minute.
+  "staff_rollingDaily": 1356, // Staff bans in the last day.
+  "watchdog_total": 4924740, // Total Watchdog bans, ever.
+  "watchdog_rollingDaily": 7679, // Watchdog bans in the last day.
+  "staff_total": 1608360 // Total staff bans, ever.
+}
 ```

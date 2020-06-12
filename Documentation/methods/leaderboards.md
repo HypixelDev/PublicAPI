@@ -7,24 +7,26 @@ Returns a list of the official leaderboards and their current standings for game
 ## Parameters
 - key
 
-## Example Leaderboard
-```php
+## Example Response
+```js
 {
-  "TNTGAMES": [
-    {
-      "path": "wins_tntrun",
-      "prefix": "Overall",
-      "count": 10, // Number of properties in "leaders"
-      "location": "-2554,57,715", // Coordinates of the board in the lobby
-      "leaders": [
-        "494a5e4a-ecd1-4a16-b9ee-de37ef24820d",
-        "adc9fbdd-ede0-4ce9-8abf-42a97148bdbf",
-        "222c4837-a906-40ed-a1fb-5713a70c13db",
-        ...
-      ],
-      "title": "TNT Run Wins"
-    },
-    ...
-  ]
+  "success": true,
+  "leaderboards": {
+    "SKYWARS": [
+      {
+        "path": "wins",
+        "prefix": "Overall",
+        "title": "Wins",
+        "location": "-2556,55,712", // Coordinates of the board in the lobby
+        "count": 14,
+        "leaders": [
+          "2afdb69c-c007-40cd-98b9-76a7554612d9",
+          "6951ccdb-9ca7-4c8a-883b-a8d3bb81c3d2",
+          "e61044cc-c42f-439b-9ad7-817c51ae7174",
+          ...
+        ]
+      }
+    ]
+  }
 }
 ```
