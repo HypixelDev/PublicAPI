@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Date;
 import java.util.UUID;
+import net.hypixel.api.util.ILeveling;
 
 public class PlayerReply extends AbstractReply {
 
@@ -48,6 +49,13 @@ public class PlayerReply extends AbstractReply {
          */
         public long getNetworkExp() {
             return getNumberProperty("networkExp", 0).longValue();
+        }
+
+        /**
+         * @return The player's precise network level (includng progress)
+         */
+        public double getNetworkLevel() {
+            return ILeveling.getExactLevel(getNetworkExp());
         }
 
         /**
