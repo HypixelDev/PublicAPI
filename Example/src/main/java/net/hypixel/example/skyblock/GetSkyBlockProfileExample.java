@@ -1,9 +1,8 @@
 package net.hypixel.example.skyblock;
 
 import com.google.gson.JsonElement;
-import net.hypixel.example.ExampleUtil;
-
 import java.util.Map;
+import net.hypixel.example.ExampleUtil;
 
 public class GetSkyBlockProfileExample {
     public static void main(String[] args) {
@@ -14,8 +13,10 @@ public class GetSkyBlockProfileExample {
                 return;
             }
 
-            for (Map.Entry<String, JsonElement> profileEntry : playerReply.getPlayer().getAsJsonObject("stats").getAsJsonObject("SkyBlock").getAsJsonObject("profiles").entrySet()) {
-                ExampleUtil.API.getSkyBlockProfile(profileEntry.getKey()).whenComplete(ExampleUtil.getTestConsumer());
+            for (Map.Entry<String, JsonElement> profileEntry : playerReply.getPlayer()
+                .getObjectProperty("stats.SkyBlock.profiles").entrySet()) {
+                ExampleUtil.API.getSkyBlockProfile(profileEntry.getKey())
+                    .whenComplete(ExampleUtil.getTestConsumer());
                 break;
             }
         });
