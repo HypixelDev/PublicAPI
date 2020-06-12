@@ -3,6 +3,7 @@ package net.hypixel.api.reply;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.Date;
 
 public class PlayerReply extends AbstractReply {
 
@@ -23,7 +24,72 @@ public class PlayerReply extends AbstractReply {
 
     public static class Player {
 
+        private static final String DEFAULT_RANK = "NONE";
+
         private JsonElement raw;
+
+        public String getUuid() {
+            return getStringProperty("uuid", null);
+        }
+
+        public String getName() {
+            return getStringProperty("displayname", null);
+        }
+
+        public long getNetworkExp() {
+            return getNumberProperty("networkExp", 0).longValue();
+        }
+
+        public long getKarma() {
+            return getNumberProperty("karma", 0).longValue();
+        }
+
+        public Date getFirstLoginDate() {
+            return new Date(getLongProperty("firstLogin", 0));
+        }
+
+        public Date getLastLoginDate() {
+            return new Date(getLongProperty("lastLogin", 0));
+        }
+
+        public Date getLastLogoutDate() {
+            return new Date(getLongProperty("lastLogout", 0));
+        }
+
+        public boolean isOnline() {
+            return getLongProperty("lastLogin", 0) > getLongProperty("lastLogout", 0);
+        }
+
+        public String getHighestRank() {
+            if (hasRankInField("rank")) {
+                return getStringProperty("rank", DEFAULT_RANK);
+
+            } else if (hasRankInField("monthlyPackageRank")) {
+                return getStringProperty("monthlyPackageRank", DEFAULT_RANK);
+
+            } else if (hasRankInField("newPackageRank")) {
+                return getStringProperty("newPackageRank", DEFAULT_RANK);
+
+            } else if (hasRankInField("packageRank")) {
+                return getStringProperty("packageRank", DEFAULT_RANK);
+            }
+
+            return DEFAULT_RANK;
+        }
+
+        public boolean hasRank() {
+            return !getHighestRank().equals(DEFAULT_RANK);
+        }
+
+        private boolean hasRankInField(String name) {
+            String value = getStringProperty(name, DEFAULT_RANK);
+            return !value.isEmpty() && !value.equals("NONE") && !value.equals("NORMAL");
+        }
+
+        public boolean isOnBuildTeam() {
+            return getBoolProperty("buildTeam", false)
+                || getBoolProperty("buildTeamAdmin", false);
+        }
 
         public JsonObject getRaw() {
             if (raw == null || !raw.isJsonObject()) {
