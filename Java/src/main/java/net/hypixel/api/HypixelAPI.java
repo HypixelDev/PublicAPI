@@ -82,24 +82,6 @@ public class HypixelAPI {
         return get(PlayerCountReply.class, "playerCount");
     }
 
-    /**
-     * Session endpoint is bound to be removed at some point,
-     * data is mainly internal and highly inaccurate for online checking
-     */
-    @Deprecated
-    public CompletableFuture<SessionReply> getSessionByUuid(UUID player) {
-        return get(SessionReply.class, "session", "uuid", player);
-    }
-
-    /**
-     * Session endpoint is bound to be removed at some point,
-     * data is mainly internal and highly inaccurate for online checking
-     */
-    @Deprecated
-    public CompletableFuture<SessionReply> getSessionByUuid(String player) {
-        return get(SessionReply.class, "session", "uuid", player);
-    }
-
     public CompletableFuture<PlayerReply> getPlayerByUuid(UUID player) {
         return get(PlayerReply.class, "player", "uuid", player);
     }
@@ -207,6 +189,15 @@ public class HypixelAPI {
      */
     public CompletableFuture<StatusReply> getStatus(UUID uuid) {
         return get(StatusReply.class, "status", "uuid", uuid);
+    }
+
+    /**
+     * Gets up to 100 of the player's most recently played games. Games are removed from this list after 3 days.
+     * @param uuid of player
+     * @return CompletableFuture with recentGames reply
+     */
+    public CompletableFuture<RecentGamesReply> getRecentGames(UUID uuid) {
+        return get(RecentGamesReply.class, "recentGames", "uuid", uuid);
     }
 
     /**
