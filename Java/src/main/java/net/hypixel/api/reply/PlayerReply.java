@@ -165,6 +165,14 @@ public class PlayerReply extends AbstractReply {
             return raw != null && raw.isJsonObject();
         }
 
+        /**
+         * Get a String from the player object
+         *
+         * @param key
+         * @param def The default value to return if the property was not found
+         * @return String with the specified key, or def if the property was not found
+         * @see #getProperty(String)
+         */
         public String getStringProperty(String key, String def) {
             JsonElement value = getProperty(key);
             if (value == null
@@ -175,22 +183,62 @@ public class PlayerReply extends AbstractReply {
             return value.getAsJsonPrimitive().getAsString();
         }
 
+        /**
+         * Get a float from the player object
+         *
+         * @param key
+         * @param def The default value to return if the property was not found
+         * @return float with the specified key, or def if the property was not found
+         * @see #getProperty(String)
+         */
         public float getFloatProperty(String key, float def) {
             return getNumberProperty(key, def).floatValue();
         }
 
+        /**
+         * Get a double from the player object
+         *
+         * @param key
+         * @param def The default value to return if the property was not found
+         * @return double with the specified key, or def if the property was not found
+         * @see #getProperty(String)
+         */
         public double getDoubleProperty(String key, double def) {
             return getNumberProperty(key, def).doubleValue();
         }
 
+        /**
+         * Get a long from the player object
+         *
+         * @param key
+         * @param def The default value to return if the property was not found
+         * @return long with the specified key, or def if the property was not found
+         * @see #getProperty(String)
+         */
         public long getLongProperty(String key, long def) {
             return getNumberProperty(key, def).longValue();
         }
 
+        /**
+         * Get an integer from the player object
+         *
+         * @param key
+         * @param def The default value to return if the property was not found
+         * @return int with the specified key, or def if the property was not found
+         * @see #getProperty(String)
+         */
         public int getIntProperty(String key, int def) {
             return getNumberProperty(key, def).intValue();
         }
 
+        /**
+         * Get a Number property from the player object
+         *
+         * @param key
+         * @param def The default value to return if the property was not found
+         * @return Number with the specified key, or def if the property was not found
+         * @see #getProperty(String)
+         */
         public Number getNumberProperty(String key, Number def) {
             JsonElement value = getProperty(key);
             if (value == null
@@ -201,6 +249,14 @@ public class PlayerReply extends AbstractReply {
             return value.getAsJsonPrimitive().getAsNumber();
         }
 
+        /**
+         * Get a boolean from the player object
+         *
+         * @param key
+         * @param def The default value to return if the property was not found
+         * @return boolean with the specified key, or def if the property was not found
+         * @see #getProperty(String)
+         */
         public boolean getBoolProperty(String key, boolean def) {
             JsonElement value = getProperty(key);
             if (value == null
@@ -211,6 +267,13 @@ public class PlayerReply extends AbstractReply {
             return value.getAsJsonPrimitive().getAsBoolean();
         }
 
+        /**
+         * Get a JsonArray property from the player object
+         *
+         * @param key
+         * @return JsonArray with the specified key, or null if no such JsonArray was found
+         * @see #getProperty(String)
+         */
         public JsonArray getArrayProperty(String key) {
             JsonElement result = getProperty(key);
             if (result == null || !result.isJsonArray()) {
@@ -219,6 +282,13 @@ public class PlayerReply extends AbstractReply {
             return result.getAsJsonArray();
         }
 
+        /**
+         * Get a JsonObject property from the player object
+         *
+         * @param key
+         * @return JsonObject with the specified key, or null if no such JsonObject was found
+         * @see #getProperty(String)
+         */
         public JsonObject getObjectProperty(String key) {
             JsonElement result = getProperty(key);
             if (result == null || !result.isJsonObject()) {
@@ -227,6 +297,13 @@ public class PlayerReply extends AbstractReply {
             return result.getAsJsonObject();
         }
 
+        /**
+         * Read a property from the player object returned by the API
+         *
+         * @param path Dot-notation path to the desired field (ie "stats.SkyWars.deaths" to get the
+         *             player's total deaths in SkyWars)
+         * @return The value of the specified property, or null if it does not exist
+         */
         public JsonElement getProperty(String path) {
             if (path.trim().isEmpty()) {
                 return raw;
