@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Date;
+import java.util.UUID;
 
 public class PlayerReply extends AbstractReply {
 
@@ -28,38 +29,79 @@ public class PlayerReply extends AbstractReply {
 
         private JsonElement raw;
 
+        /**
+         * @return A string representing the player's Minecraft UUID (without hyphens)
+         */
         public String getUuid() {
             return getStringProperty("uuid", null);
         }
 
+        /**
+         * @return The Minecraft username the player had when they last connected to Hypixel
+         */
         public String getName() {
             return getStringProperty("displayname", null);
         }
 
+        /**
+         * @return The total amount of network experience earned by this player
+         */
         public long getNetworkExp() {
             return getNumberProperty("networkExp", 0).longValue();
         }
 
+        /**
+         * @return The total amount of karma points earned by this player
+         */
         public long getKarma() {
             return getNumberProperty("karma", 0).longValue();
         }
 
+        /**
+         * @return The date when the player first connected to Hypixel
+         */
         public Date getFirstLoginDate() {
             return new Date(getLongProperty("firstLogin", 0));
         }
 
+        /**
+         * @return The date when the player most recently connected to Hypixel
+         */
         public Date getLastLoginDate() {
             return new Date(getLongProperty("lastLogin", 0));
         }
 
+        /**
+         * @return The date when the player more recently disconnected from Hypixel
+         */
         public Date getLastLogoutDate() {
             return new Date(getLongProperty("lastLogout", 0));
         }
 
+        /**
+         * @return The date when the player first connected to Hypixel
+         * @see net.hypixel.api.HypixelAPI#getStatus(UUID)
+         * @deprecated The status endpoint is recommended for checking a player's online status
+         */
+        @Deprecated
         public boolean isOnline() {
             return getLongProperty("lastLogin", 0) > getLongProperty("lastLogout", 0);
         }
 
+        /**
+         * The highest network rank that this player has; prefixes are not taken into consideration
+         * <p>
+         * Example: If... <ul>
+         * <li>A player's base rank is MVP+</li>
+         * <li>They have a subscription for MVP++</li>
+         * <li>They are a staff member with the HELPER rank</li>
+         * </ul>
+         * ...then this method will return "HELPER".
+         *
+         * @return This player's highest network rank, or "NONE" if they do not have any
+         * @see <a href=https://github.com/HypixelDev/PublicAPI/wiki/Common-Questions#how-do-i-get-a-players-rank-prefix>"How
+         * do I get a player's rank prefix?"</a>
+         */
         public String getHighestRank() {
             if (hasRankInField("rank")) {
                 return getStringProperty("rank", DEFAULT_RANK);
@@ -77,20 +119,37 @@ public class PlayerReply extends AbstractReply {
             return DEFAULT_RANK;
         }
 
+        /**
+         * @return Whether or not this user has a network rank (ie VIP, MVP++, MODERATOR, etc)
+         */
         public boolean hasRank() {
             return !getHighestRank().equals(DEFAULT_RANK);
         }
 
-        private boolean hasRankInField(String name) {
+        /**
+         * Utility method for checking if a rank-related field contains a non-default rank (value is
+         * not null, "NONE", or "NORMAL)
+         *
+         * @param name Name/dot-path of the field to check
+         * @return Whether or not the field contains a non-default rank value
+         */
+        protected boolean hasRankInField(String name) {
             String value = getStringProperty(name, DEFAULT_RANK);
             return !value.isEmpty() && !value.equals("NONE") && !value.equals("NORMAL");
         }
 
+        /**
+         * @return Whether or not this player is a member of the <a href=https://twitter.com/hypixelbuilders>Hypixel
+         * Build Team</a>
+         */
         public boolean isOnBuildTeam() {
             return getBoolProperty("buildTeam", false)
                 || getBoolProperty("buildTeamAdmin", false);
         }
 
+        /**
+         * @return The raw player object returned by the Hypixel API
+         */
         public JsonObject getRaw() {
             if (raw == null || !raw.isJsonObject()) {
                 return null;
@@ -99,6 +158,9 @@ public class PlayerReply extends AbstractReply {
             }
         }
 
+        /**
+         * @return Whether or not the API returned null for this player
+         */
         public boolean exists() {
             return raw != null && raw.isJsonObject();
         }
