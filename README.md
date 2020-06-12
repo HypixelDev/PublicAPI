@@ -12,7 +12,7 @@ You can use this API as a dependency via JitPack. In the future it will be deplo
 [![](https://jitpack.io/v/HypixelDev/PublicAPI.svg)](https://jitpack.io/#HypixelDev/PublicAPI)
 
 ### Query Limitations
-The API server has a request limit of 120 queries per minute. Abuse of the API will lead to your API key being banned.
+The API server has a request limit of 120 queries per minute. Any abuse of the API or intentions to bypass this limit (such as with multiple API keys) will lead to your API key being reset or banned.
 
 If you require a higher limit than the above you can open a support ticket at https://support.hypixel.net and provide your use case and why you require a higher limit.
 
