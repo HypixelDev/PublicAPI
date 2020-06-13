@@ -1,10 +1,15 @@
 package net.hypixel.api.reply;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
+import net.hypixel.api.pets.PetStats;
 import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ILeveling;
 
@@ -27,6 +32,7 @@ public class PlayerReply extends AbstractReply {
 
     public static class Player {
 
+        private static final Gson   GSON         = new Gson();
         private static final String DEFAULT_RANK = "NONE";
 
         private JsonElement raw;
@@ -180,6 +186,20 @@ public class PlayerReply extends AbstractReply {
             } catch (IllegalArgumentException ignored) {
                 return null;
             }
+        }
+
+        /**
+         * @return The player's pet stats, or null if they have none
+         */
+        public PetStats getPetStats() {
+            JsonObject petStats = getObjectProperty("petStats");
+            if (petStats == null) {
+                return null;
+            }
+
+            Type statsObjectType = new TypeToken<Map<String, Map<String, Object>>>() {
+            }.getType();
+            return new PetStats(GSON.fromJson(petStats, statsObjectType));
         }
 
         /**
