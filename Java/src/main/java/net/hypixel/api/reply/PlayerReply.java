@@ -62,7 +62,7 @@ public class PlayerReply extends AbstractReply {
          */
         public long getNetworkExp() {
             long exp = getLongProperty("networkExp", 0);
-            exp += ILeveling.getTotalExpToFullLevel(getLongProperty("networkLevel", 0));
+            exp += ILeveling.getTotalExpToFullLevel(getLongProperty("networkLevel", 0) + 1);
             return exp;
         }
 
