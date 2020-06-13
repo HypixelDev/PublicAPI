@@ -48,7 +48,9 @@ public class PlayerReply extends AbstractReply {
          * @return The total amount of network experience earned by this player
          */
         public long getNetworkExp() {
-            return getNumberProperty("networkExp", 0).longValue();
+            long exp = getLongProperty("networkExp", 0);
+            exp += ILeveling.getTotalExpToFullLevel(getLongProperty("networkLevel", 0));
+            return exp;
         }
 
         /**
