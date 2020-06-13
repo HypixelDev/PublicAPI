@@ -64,7 +64,7 @@ public class PlayerReply extends AbstractReply {
          * @return The total amount of karma points earned by this player
          */
         public long getKarma() {
-            return getNumberProperty("karma", 0).longValue();
+            return getLongProperty("karma", 0);
         }
 
         /**
