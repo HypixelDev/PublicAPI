@@ -33,19 +33,26 @@ public class HypixelAPI {
 
             .registerTypeAdapterFactory(new BoostersTypeAdapterFactory<>(BoostersReply.Booster.class))
 
-            .create();
+        .create();
     private static final String BASE_URL = "https://api.hypixel.net/";
 
     private final UUID apiKey;
 
     private final ExecutorService executorService;
-    private final HttpClient httpClient;
+    private final HttpClient      httpClient;
 
     public HypixelAPI(UUID apiKey) {
+        this(apiKey, "PublicAPI/2.0.0 (Java)");
+    }
+
+    public HypixelAPI(UUID apiKey, String userAgent) {
         this.apiKey = apiKey;
 
         this.executorService = Executors.newCachedThreadPool();
-        this.httpClient = HttpClientBuilder.create().build();
+        this.httpClient = HttpClientBuilder
+            .create()
+            .setUserAgent(userAgent)
+            .build();
     }
 
     /**
