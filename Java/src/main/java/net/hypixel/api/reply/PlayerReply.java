@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Date;
 import java.util.UUID;
+import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ILeveling;
 
 public class PlayerReply extends AbstractReply {
@@ -168,6 +169,17 @@ public class PlayerReply extends AbstractReply {
         public boolean isOnBuildTeam() {
             return getBoolProperty("buildTeam", false)
                 || getBoolProperty("buildTeamAdmin", false);
+        }
+
+        /**
+         * @return The player's most recently played {@link GameType}, or null if it is unknown
+         */
+        public GameType getMostRecentGameType() {
+            try {
+                return GameType.valueOf(getStringProperty("mostRecentGameType", ""));
+            } catch (IllegalArgumentException ignored) {
+                return null;
+            }
         }
 
         /**

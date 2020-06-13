@@ -11,17 +11,19 @@ public class GetPlayerExample {
 
                 if (player.exists()) {
                     System.out.println(
-                        "Name:           " + player.getName() + "\n"
-                            + "UUID:           " + player.getUuid() + "\n"
-                            + "Rank:           " + player.getHighestRank() + "\n"
-                            + "Previous Names: " + player.getArrayProperty("knownAliases") + "\n"
-                            + "On Build Team:  " + player.isOnBuildTeam() + "\n"
-                            + "Exp:            " + player.getNetworkExp() + "\n"
-                            + "Level:          " + player.getNetworkLevel() + "\n"
-                            + "Karma:          " + player.getKarma() + "\n"
-                            + "SkyWars Deaths: " + player.getIntProperty("stats.SkyWars.deaths", 0)
+                        "Name:             " + player.getName() + "\n"
+                            + "UUID:             " + player.getUuid() + "\n"
+                            + "Rank:             " + player.getHighestRank() + "\n"
+                            + "Previous Names:   " + player.getArrayProperty("knownAliases") + "\n"
+                            + "On Build Team:    " + player.isOnBuildTeam() + "\n"
+                            + "Exp:              " + player.getNetworkExp() + "\n"
+                            + "Level:            " + player.getNetworkLevel() + "\n"
+                            + "Karma:            " + player.getKarma() + "\n"
+                            + "Most Recent Game: " + player.getMostRecentGameType() + "\n"
+                            + "SkyWars Deaths:   " + player
+                            .getIntProperty("stats.SkyWars.deaths", 0)
                             + "\n"
-                            + "Raw:            " + player.getRaw());
+                            + "Raw:              " + player.getRaw());
                 } else {
                     System.out.println("Player not found!");
                 }
