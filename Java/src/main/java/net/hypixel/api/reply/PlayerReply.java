@@ -41,7 +41,20 @@ public class PlayerReply extends AbstractReply {
          * @return The Minecraft username the player had when they last connected to Hypixel
          */
         public String getName() {
-            return getStringProperty("displayname", null);
+            // Attempt to get their display name
+            String displayName = getStringProperty("displayname", null);
+            if (displayName != null) {
+                return displayName;
+            }
+
+            // Fallback to their most recently-known alias
+            JsonArray knownAliases = getArrayProperty("knownAliases");
+            if (knownAliases != null && knownAliases.size() > 0) {
+                return knownAliases.get(knownAliases.size() - 1).getAsString();
+            }
+
+            // Fallback to lowercase variants of their name
+            return getStringProperty("playername", getStringProperty("username", null));
         }
 
         /**
