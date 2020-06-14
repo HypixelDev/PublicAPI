@@ -119,6 +119,20 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
+         * @return The color of the player's "+"s if they are MVP+ or MVP++; defaults to "RED"
+         */
+        public String getPlusColor() {
+            return getStringProperty("rankPlusColor", "RED");
+        }
+
+        /**
+         * @return The color of the player's tag if they have MVP++; defaults to "GOLD"
+         */
+        public String getSuperstarTagColor() {
+            return getStringProperty("monthlyRankColor", "GOLD");
+        }
+
+        /**
          * The highest network rank that this player has; prefixes are not taken into consideration
          * <p>
          * Example: If... <ul>
@@ -200,6 +214,14 @@ public class PlayerReply extends AbstractReply {
             Type statsObjectType = new TypeToken<Map<String, Map<String, Object>>>() {
             }.getType();
             return new PetStats(GSON.fromJson(petStats, statsObjectType));
+        }
+
+        /**
+         * @return The last Minecraft version that the player used to connect to Hypixel, or null if
+         * it is unknown
+         */
+        public String getLastKnownMinecraftVersion() {
+            return getStringProperty("mcVersionRp", null);
         }
 
         /**

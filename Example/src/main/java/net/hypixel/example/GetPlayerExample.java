@@ -20,6 +20,7 @@ public class GetPlayerExample {
                             + "Level:            " + player.getNetworkLevel() + "\n"
                             + "Karma:            " + player.getKarma() + "\n"
                             + "Most Recent Game: " + player.getMostRecentGameType() + "\n"
+                            + "MC Version:       " + player.getLastKnownMinecraftVersion() + "\n"
                             + "Pet Stats:        " + player.getPetStats() + "\n"
                             + "SkyWars Deaths:   " + player
                             .getIntProperty("stats.SkyWars.deaths", 0)
