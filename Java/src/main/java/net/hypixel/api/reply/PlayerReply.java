@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
+import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.pets.PetStats;
 import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ILeveling;
@@ -109,9 +110,10 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The date when the player first connected to Hypixel
-         * @see net.hypixel.api.HypixelAPI#getStatus(UUID)
-         * @deprecated The status endpoint is recommended for checking a player's online status
+         * @return Whether or not the player is currently connected to the Hypixel network
+         * @see HypixelAPI#getStatus(UUID)
+         * @deprecated The <code>status</code> endpoint ({@link HypixelAPI#getStatus(UUID)}) is
+         * recommended for checking a player's online status
          */
         @Deprecated
         public boolean isOnline() {
@@ -119,7 +121,7 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The color of the player's "+"s if they are MVP+ or MVP++; defaults to "RED"
+         * @return The color of the player's "+"s if they have MVP+ or MVP++; defaults to "RED"
          */
         public String getPlusColor() {
             return getStringProperty("rankPlusColor", "RED");
@@ -164,7 +166,7 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return Whether or not this user has a network rank (ie VIP, MVP++, MODERATOR, etc)
+         * @return Whether or not this user has a network rank (e.g. VIP, MVP++, MODERATOR, etc)
          */
         public boolean hasRank() {
             return !getHighestRank().equals(DEFAULT_RANK);
