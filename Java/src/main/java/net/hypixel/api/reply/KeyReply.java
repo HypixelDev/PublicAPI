@@ -1,5 +1,6 @@
 package net.hypixel.api.reply;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.UUID;
 
 public class KeyReply extends AbstractReply {
@@ -18,6 +19,7 @@ public class KeyReply extends AbstractReply {
 
     public class Key {
         private UUID key;
+        @SerializedName("owner")
         private UUID ownerUuid;
         private int totalQueries;
         private int queriesInPastMin;
