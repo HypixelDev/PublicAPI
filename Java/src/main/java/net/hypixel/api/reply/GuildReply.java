@@ -26,6 +26,7 @@ public class GuildReply extends AbstractReply {
         private String name;
         private String description;
         private String tag;
+        private String tagColor;
         private Boolean publiclyListed;
         private Banner banner;
         private List<Member> members;
@@ -50,6 +51,10 @@ public class GuildReply extends AbstractReply {
 
         public String getTag() {
             return tag;
+        }
+
+        public String getTagColor() {
+            return tagColor;
         }
 
         public Boolean getPubliclyListed() {
@@ -95,6 +100,7 @@ public class GuildReply extends AbstractReply {
                     ", name='" + name + '\'' +
                     ", description='" + description + '\'' +
                     ", tag='" + tag + '\'' +
+                    ", tagColor='" + tagColor + '\'' +
                     ", publiclyListed=" + publiclyListed +
                     ", banner=" + banner +
                     ", members=" + members +
