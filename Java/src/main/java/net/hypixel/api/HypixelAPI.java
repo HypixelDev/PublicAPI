@@ -170,6 +170,18 @@ public class HypixelAPI {
     public CompletableFuture<SkyBlockProfileReply> getSkyBlockProfile(String profile) {
         return get(SkyBlockProfileReply.class, "skyblock/profile", "profile", profile);
     }
+    
+    public CompletableFuture<SkyBlockProfilesReply> getSkyBlockProfiles(UUID player){
+        return get(SkyBlockProfilesReply.class, "skyblock/profiles", "uuid", player);
+    }
+
+    /**
+     * @param player uuid of a player in string format, can be both dashed or undashed.
+     * @return the future
+     */
+    public CompletableFuture<SkyBlockProfilesReply> getSkyBlockProfiles(String player){
+        return get(SkyBlockProfilesReply.class, "skyblock/profiles", "uuid", player);
+    }
 
     public CompletableFuture<SkyBlockNewsReply> getSkyBlockNews() {
         return get(SkyBlockNewsReply.class, "skyblock/news");
