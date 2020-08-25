@@ -19,10 +19,12 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.time.ZonedDateTime;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Stream;
 
 public class HypixelAPI {
 
@@ -228,7 +230,6 @@ public class HypixelAPI {
      *
      * @param request Request to get
      */
-    // TODO use a map of string to object?
     private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request, Object... params) {
         CompletableFuture<R> future = new CompletableFuture<>();
         try {
@@ -266,6 +267,13 @@ public class HypixelAPI {
             future.completeExceptionally(throwable);
         }
         return future;
+    }
+
+    private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request, Map<String, Object> params) {
+        return get(clazz, request, params.entrySet().stream()
+                .flatMap(entry -> Stream.of(entry.getKey(), entry.getValue()))
+                .toArray()
+        );
     }
 
     private CompletableFuture<ResourceReply> requestResource(String resource) {
