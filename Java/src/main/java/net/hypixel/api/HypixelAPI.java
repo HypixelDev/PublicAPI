@@ -19,10 +19,14 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.time.ZonedDateTime;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class HypixelAPI {
 
@@ -219,43 +223,43 @@ public class HypixelAPI {
         return get(BazaarReply.class, "skyblock/bazaar");
     }
 
+    /**
+     * Retrieve resources which don't change often.
+     *
+     * @param resource to be requested
+     * @return CompletableFuture with resource reply
+     */
     public CompletableFuture<ResourceReply> getResource(String resource) {
-        return requestResource(resource);
+        return get("resources/" + resource)
+                .thenApply(content -> new ResourceReply(GSON.fromJson(content, JsonObject.class)));
     }
 
     /**
-     * Execute Request asynchronously, executes Callback when finished
+     * Get the response content from the specified path with the specified query string parameters
      *
-     * @param request Request to get
+     * @param path the path to be requested
+     * @param params the parameters for query string
+     * @return CompletableFuture with the content of the response
      */
-    // TODO use a map of string to object?
-    private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request, Object... params) {
-        CompletableFuture<R> future = new CompletableFuture<>();
+    private CompletableFuture<String> get(String path, Map<String, Object> params) {
+        CompletableFuture<String> future = new CompletableFuture<>();
         try {
-            if (params.length % 2 != 0)
-                throw new IllegalArgumentException("Need both key and value for parameters");
-
             StringBuilder url = new StringBuilder(BASE_URL);
 
-            url.append(request);
-            url.append("?key=").append(apiKey);
+            url.append(path);
 
-            for (int i = 0; i < params.length - 1; i += 2) {
-                url.append("&").append(params[i]).append("=").append(params[i + 1]);
-            }
+            String queryString = params.entrySet().stream()
+                    .map(entry -> entry.getKey() + "=" + entry.getValue())
+                    .collect(Collectors.joining("&", "?", ""));
+
+            url.append(queryString);
 
             executorService.submit(() -> {
                 try {
-                    R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
-                        String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                        if (clazz == ResourceReply.class) {
-                            return (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
-                        } else {
-                            return GSON.fromJson(content, clazz);
-                        }
-                    });
-
-                    checkReply(response);
+                    String response = httpClient.execute(
+                            new HttpGet(url.toString()),
+                            obj -> EntityUtils.toString(obj.getEntity(), "UTF-8")
+                    );
 
                     future.complete(response);
                 } catch (Throwable t) {
@@ -268,30 +272,56 @@ public class HypixelAPI {
         return future;
     }
 
-    private CompletableFuture<ResourceReply> requestResource(String resource) {
-        CompletableFuture<ResourceReply> future = new CompletableFuture<>();
-        try {
-            StringBuilder url = new StringBuilder(BASE_URL);
-            url.append("resources/").append(resource);
+    /**
+     * Get the response content from the specified path
+     *
+     * @param path the path to be requested
+     * @return CompletableFuture with the content of the response
+     */
+    private CompletableFuture<String> get(String path) {
+        return get(path, Collections.emptyMap());
+    }
 
-            executorService.submit(() -> {
-                try {
-                    ResourceReply response = httpClient.execute(new HttpGet(url.toString()), obj -> {
-                        String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                        return new ResourceReply(GSON.fromJson(content, JsonObject.class));
-                    });
+    /**
+     * Get a Reply of type R from the specified path with the specified query string parameters
+     *
+     * @param clazz the reply expected class type
+     * @param path the path to be requested
+     * @param params the parameters for query string
+     * @param <R> the type of the reply
+     * @return CompletableFuture with the reply
+     */
+    private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String path, Object... params) {
+        if (params.length % 2 != 0)
+            throw new IllegalArgumentException("Need both key and value for parameters");
 
-                    checkReply(response);
+        Map<String, Object> mapParams = new HashMap<>();
 
-                    future.complete(response);
-                } catch (Throwable t) {
-                    future.completeExceptionally(t);
-                }
-            });
-        } catch (Throwable throwable) {
-            future.completeExceptionally(throwable);
+        mapParams.put("key", apiKey);
+
+        for (int i = 0; i < params.length - 1; i += 2) {
+            mapParams.put(params[i].toString(), params[i + 1]);
         }
-        return future;
+
+        return get(clazz, path, mapParams);
+    }
+
+    /**
+     * Get a Reply of type R from the specified path with the specified query string parameters
+     *
+     * @param clazz the reply expected class type
+     * @param path the path to be requested
+     * @param params the parameters for query string
+     * @param <R> the type of the reply
+     * @return CompletableFuture with the reply
+     */
+    private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String path, Map<String, Object> params) {
+        return get(path, params)
+                .thenApply(content -> {
+                    R response = GSON.fromJson(content, clazz);
+                    checkReply(response);
+                    return response;
+                });
     }
 
     /**
