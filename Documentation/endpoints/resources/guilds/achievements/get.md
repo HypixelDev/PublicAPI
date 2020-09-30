@@ -1,0 +1,148 @@
+# GET /resources/guilds/achievements
+
+# Description
+
+Get the guild achievements list
+
+# Parameters
+
+# Response
+
+* success (bool): Response status
+* lastUpdated (int): Last updated timestamp
+* one_time (dict): Dictionnary of achievements ID as key and one_time [achievement](../../../../object/achievement.md) object as value
+* tiered (dict): Dictionnary of achievements ID as key and tiered [achievement](../../../../object/achievement.md) object as value
+
+# Example Response
+
+Answer for: https://api.hypixel.net/resources/guilds/achievements
+
+```js
+{
+  "success": true,
+  "lastUpdated": 1570754198669,
+  "one_time": {},
+  "tiered": {
+    "PRESTIGE": {
+      "name": "Prestige",
+      "description": "Reach Guild level %s",
+      "tiers": [
+        {
+          "tier": 1,
+          "amount": 20
+        },
+        {
+          "tier": 2,
+          "amount": 40
+        },
+        {
+          "tier": 3,
+          "amount": 60
+        },
+        {
+          "tier": 4,
+          "amount": 80
+        },
+        {
+          "tier": 5,
+          "amount": 100
+        }
+      ]
+    },
+    "EXPERIENCE_KINGS": {
+      "name": "Experience Kings",
+      "description": "get %s Guild Exp in one day",
+      "tiers": [
+        {
+          "tier": 1,
+          "amount": 50000
+        },
+        {
+          "tier": 2,
+          "amount": 100000
+        },
+        {
+          "tier": 3,
+          "amount": 150000
+        },
+        {
+          "tier": 4,
+          "amount": 200000
+        },
+        {
+          "tier": 5,
+          "amount": 250000
+        },
+        {
+          "tier": 6,
+          "amount": 275000
+        },
+        {
+          "tier": 7,
+          "amount": 300000
+        }
+      ]
+    },
+    "WINNERS": {
+      "name": "Winners",
+      "description": "Win %s games as a Guild in a day",
+      "tiers": [
+        {
+          "tier": 1,
+          "amount": 100
+        },
+        {
+          "tier": 2,
+          "amount": 200
+        },
+        {
+          "tier": 3,
+          "amount": 300
+        },
+        {
+          "tier": 4,
+          "amount": 400
+        },
+        {
+          "tier": 5,
+          "amount": 500
+        }
+      ]
+    },
+    "ONLINE_PLAYERS": {
+      "name": "What are you doing here?",
+      "description": "Have %s guild members online at the same time!",
+      "tiers": [
+        {
+          "tier": 1,
+          "amount": 5
+        },
+        {
+          "tier": 2,
+          "amount": 15
+        },
+        {
+          "tier": 3,
+          "amount": 30
+        },
+        {
+          "tier": 4,
+          "amount": 40
+        },
+        {
+          "tier": 5,
+          "amount": 50
+        },
+        {
+          "tier": 6,
+          "amount": 60
+        },
+        {
+          "tier": 7,
+          "amount": 70
+        }
+      ]
+    }
+  }
+}
+```
