@@ -7,9 +7,22 @@ Hypixel PublicAPI documentation can be found in the [Documentation](https://gith
 Java documentation can be found in the code.
 
 ### Usage
-You can use this API as a dependency via JitPack. In the future it will be deployed to a public maven repo.
+You can use this API as a dependency via the public Hypixel maven repo.
 
-[![](https://jitpack.io/v/HypixelDev/PublicAPI.svg)](https://jitpack.io/#HypixelDev/PublicAPI)
+```xml
+<repository>
+    <id>Hypixel</id>
+    <url>https://repo.hypixel.net/repository/Hypixel/</url>
+</repository>
+```
+
+```xml
+<dependency>
+    <groupId>net.hypixel</groupId>
+    <artifactId>HypixelAPI</artifactId>
+    <version>3.0.0</version>
+</dependency>
+```
 
 ### Query Limitations
 The API server has a request limit of 120 queries per minute. Any abuse of the API or intentions to bypass this limit (such as with multiple API keys) will lead to your API key being reset or banned.

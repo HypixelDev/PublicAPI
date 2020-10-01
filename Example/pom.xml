@@ -8,6 +8,10 @@
     <groupId>net.hypixel</groupId>
     <version>2.0.0</version>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
