@@ -59,8 +59,7 @@ public class HypixelAPI {
      *
      * @param limitPerMinute The new limit
      */
-    public void setRateLimit(int limitPerMinute)
-    {
+    public void setRateLimit(int limitPerMinute) {
         rateLimiter.setRate(limitPerMinute);
     }
 
