@@ -12,6 +12,7 @@ import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
 import net.hypixel.api.util.GameType;
+import net.hypixel.api.util.RateLimiter;
 import net.hypixel.api.util.ResourceType;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -40,12 +41,27 @@ public class HypixelAPI {
 
     private final ExecutorService executorService;
     private final HttpClient httpClient;
+    private RateLimiter rateLimiter;
 
     public HypixelAPI(UUID apiKey) {
         this.apiKey = apiKey;
 
         this.executorService = Executors.newCachedThreadPool();
         this.httpClient = HttpClientBuilder.create().build();
+        this.rateLimiter = new RateLimiter();
+    }
+
+    /**
+     * Set how many requests this API instance is allowed to make in one minute. If more requests attempt
+     * to pass past this limit in one minute, they will need to wait for the next minute.
+     *
+     * <p>Default: 120
+     *
+     * @param limitPerMinute The new limit
+     */
+    public void setRateLimit(int limitPerMinute)
+    {
+        rateLimiter.setRate(limitPerMinute);
     }
 
     /**
@@ -53,6 +69,7 @@ public class HypixelAPI {
      */
     public void shutdown() {
         executorService.shutdown();
+        rateLimiter.shutdown();
     }
 
     /**
@@ -246,6 +263,8 @@ public class HypixelAPI {
 
             executorService.submit(() -> {
                 try {
+                    rateLimiter.block();
+
                     R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
                         if (clazz == ResourceReply.class) {
