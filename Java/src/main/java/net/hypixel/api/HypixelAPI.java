@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HypixelAPI {
+    private static final int DEFAULT_MAX_REQUESTS_PER_MINUTE = 120;
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
@@ -48,7 +49,7 @@ public class HypixelAPI {
 
         this.executorService = Executors.newCachedThreadPool();
         this.httpClient = HttpClientBuilder.create().build();
-        this.rateLimiter = new RateLimiter();
+        this.rateLimiter = new RateLimiter(DEFAULT_MAX_REQUESTS_PER_MINUTE);
     }
 
     /**

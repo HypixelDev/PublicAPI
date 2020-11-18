@@ -7,11 +7,17 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class RateLimiter {
 	private final Object lock = new Object();
+
 	private final ScheduledExecutorService resetter = Executors.newSingleThreadScheduledExecutor();
-	private volatile int limitPerMinute = 120;
+	private volatile int limitPerMinute;
 	private int actionsThisMinute;
 
-	public RateLimiter() {
+	/**
+	 * @param limitPerMinute Maximum amount of times {@link RateLimiter#beforeAction()} can be called in the same minute
+	 *                       before it begins blocking threads until the next minute.
+	 */
+	public RateLimiter(int limitPerMinute) {
+		this.limitPerMinute = limitPerMinute;
 		resetter.scheduleAtFixedRate(this::reset, 1, 1, MINUTES);
 	}
 
@@ -23,7 +29,7 @@ public class RateLimiter {
 	}
 
 	/**
-	 * Set the action queue limit to be used by {@link RateLimiter#beforeAction()}. Default is 120.
+	 * Set the action queue limit to be used by {@link RateLimiter#beforeAction()}.
 	 *
 	 * @param limitPerMinute The new limit.
 	 */
