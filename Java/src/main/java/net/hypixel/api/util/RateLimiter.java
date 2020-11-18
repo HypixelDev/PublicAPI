@@ -5,34 +5,34 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
-public class RateLimiter {
+public class RateLimiter
+{
 	private int limitPerMinute = 120;
 	private int requestsThisMinute;
-	private final Object lock = new Object();
-	private final ScheduledExecutorService refresher = Executors.newSingleThreadScheduledExecutor();
+	private final ScheduledExecutorService resetter = Executors.newSingleThreadScheduledExecutor();
 
 	public RateLimiter() {
-		refresher.scheduleAtFixedRate(() -> {
-			requestsThisMinute = 0;
-			lock.notifyAll();
-		}, 1, 1, MINUTES);
+		resetter.scheduleAtFixedRate(this::reset, 1, 1, MINUTES);
+	}
+
+	private synchronized void reset() {
+		requestsThisMinute = 0;
+		notifyAll();
 	}
 
 	public void setRate(int limitPerMinute) {
 		this.limitPerMinute = limitPerMinute;
 	}
 
-	public void block() throws InterruptedException {
-		synchronized ( lock ) {
-			while (requestsThisMinute >= limitPerMinute) {
-				lock.wait();
-			}
-
-			requestsThisMinute++;
+	public synchronized void block() throws InterruptedException {
+		while (requestsThisMinute >= limitPerMinute) {
+			wait();
 		}
+
+		requestsThisMinute++;
 	}
 
 	public void shutdown() {
-		refresher.shutdown();
+		resetter.shutdown();
 	}
 }
