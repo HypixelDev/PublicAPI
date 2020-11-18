@@ -52,19 +52,18 @@ public class HypixelAPI {
     }
 
     /**
-     * Set how many requests this API instance is allowed to make in one minute. If more requests attempt
-     * to pass past this limit in one minute, they will need to wait for the next minute.
+     * Set how many requests this API instance is allowed to make in one minute.
+     * <p>If more requests attempt to pass past this limit in one minute,
+     * they will need to wait for the next minute. Default is 120.
      *
-     * <p>Default: 120
-     *
-     * @param limitPerMinute The new limit
+     * @param limitPerMinute The new limit.
      */
     public void setRateLimit(int limitPerMinute) {
         rateLimiter.setRate(limitPerMinute);
     }
 
     /**
-     * Shuts down the internal executor service
+     * Shuts down the internal executor service and rate limiter service.
      */
     public void shutdown() {
         executorService.shutdown();
@@ -262,7 +261,7 @@ public class HypixelAPI {
 
             executorService.submit(() -> {
                 try {
-                    rateLimiter.block();
+                    rateLimiter.beforeAction();
 
                     R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
