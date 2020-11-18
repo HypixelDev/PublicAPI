@@ -6,16 +6,20 @@ import java.util.concurrent.ScheduledExecutorService;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class RateLimiter {
-	private int limitPerMinute = 120;
-	private int requestsThisMinute;
 	private final Object lock = new Object();
-	private final ScheduledExecutorService refresher = Executors.newSingleThreadScheduledExecutor();
+	private final ScheduledExecutorService resetter = Executors.newSingleThreadScheduledExecutor();
+	private volatile int limitPerMinute = 120;
+	private int requestsThisMinute;
 
 	public RateLimiter() {
-		refresher.scheduleAtFixedRate(() -> {
+		resetter.scheduleAtFixedRate(this::reset, 1, 1, MINUTES);
+	}
+
+	private void reset() {
+		synchronized ( lock ) {
 			requestsThisMinute = 0;
 			lock.notifyAll();
-		}, 1, 1, MINUTES);
+		}
 	}
 
 	public void setRate(int limitPerMinute) {
@@ -33,6 +37,6 @@ public class RateLimiter {
 	}
 
 	public void shutdown() {
-		refresher.shutdown();
+		resetter.shutdown();
 	}
 }

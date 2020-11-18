@@ -41,7 +41,7 @@ public class HypixelAPI {
 
     private final ExecutorService executorService;
     private final HttpClient httpClient;
-    private RateLimiter rateLimiter;
+    private final RateLimiter rateLimiter;
 
     public HypixelAPI(UUID apiKey) {
         this.apiKey = apiKey;
