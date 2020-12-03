@@ -9,7 +9,9 @@ Responses are served in JSON format.
 
 ## UUID Parameters
 All uuid parameters are expected to have the UUID without dashes.
+
 ``Correct Example: f7c77d999f154a66a87dc4a51ef30d19``
+
 ``Incorrect Example: f7c77d99-9f15-4a66-a87d-c4a51ef30d19``
 
 ## SkyBlock items and inventories
