@@ -38,4 +38,4 @@ The Hypixel PublicAPI has the following dependencies:
 * Apache HttpClient
 
 ### Bug Reporting
-You can create an issue here on GitHub to report a bug with the API or to suggest enhancements by going [here](https://github.com/HypixelDev/PublicAPI/issues/new)
+You can create an issue here on GitHub to report a bug with the API or to suggest enhancements by going [here](https://github.com/HypixelDev/PublicAPI/issues/new).
