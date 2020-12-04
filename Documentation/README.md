@@ -8,11 +8,11 @@ Generally dates are stored as a Unix Epoch times in milliseconds.
 Responses are served in JSON format.
 
 ## UUID Parameters
-All uuid parameters are expected to have the UUID without dashes.
+It is reccomended for the UUID's to have no dashes. There really is no right or wrong for this.
 
-``Correct Example: f7c77d999f154a66a87dc4a51ef30d19``
+``Reccomended Format: f7c77d999f154a66a87dc4a51ef30d19``
 
-``Incorrect Example: f7c77d99-9f15-4a66-a87d-c4a51ef30d19``
+``Unreccomended Example: f7c77d99-9f15-4a66-a87d-c4a51ef30d19``
 
 ## SkyBlock items and inventories
 Items and inventory data are stored as a base64 encoded string containing gzipped nbt data.
