@@ -1,4 +1,6 @@
-### SkyClash has been removed from the Hypixel Network. Read the forum post [here](https://hypixel.net/threads/clarifications-about-skyclash.2031767/).  The API will still stay functional.
+# SkyClash
+
+#### Skyclash has been removed from the Hypixel Network. Read the forum post [here](https://hypixel.net/threads/clarifications-about-skyclash.2031767/).  The API will still stay functional.
 
 Below you can find the current spec for SkyClash stats.
 
