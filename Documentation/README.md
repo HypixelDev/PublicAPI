@@ -8,11 +8,11 @@ Generally dates are stored as a Unix Epoch times in milliseconds.
 Responses are served in JSON format.
 
 ## UUID Parameters
-UUID's will work the same with or without dashes, but it is reccomended to format it without dashes.
+UUID's will work the same with or without dashes, but it is recommended to format it without dashes.
 
-``Reccomended Format: f7c77d999f154a66a87dc4a51ef30d19``
+``Recommended Format: f7c77d999f154a66a87dc4a51ef30d19``
 
-``Unreccomended Format: f7c77d99-9f15-4a66-a87d-c4a51ef30d19``
+``Unrecommended Format: f7c77d99-9f15-4a66-a87d-c4a51ef30d19``
 
 ## Where Can I Find My UUID?
 The most efficient way is to go on [NameMC](https://namemc.com/), search up the desired profile, and it will show up under 'Minecraft Profile'. [Click here for a visual](https://prntscr.com/vw3f7d).
