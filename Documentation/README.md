@@ -14,8 +14,8 @@ UUID's will work the same with or without dashes, but it is recommended to forma
 
 ``Unrecommended Format: f7c77d99-9f15-4a66-a87d-c4a51ef30d19``
 
-## Where Can I Find My UUID?
-The most efficient way is to go on [NameMC](https://namemc.com/), search up the desired profile, and it will show up under 'Minecraft Profile'. [Click here for a visual](https://prntscr.com/vw3f7d).
+## Where can I find someone's UUID?
+The most efficient way is to go on [NameMC](https://namemc.com/), search up the desired profile, and it will show up under 'Minecraft Profile'. [Click here for a visual](https://prnt.sc/vwbqsd).
 
 ## SkyBlock items and inventories
 Items and inventory data are stored as a base64 encoded string containing gzipped nbt data.
