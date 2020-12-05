@@ -1,3 +1,5 @@
+# Warlords
+
 _Please Note_: This is a reformatted and slightly edited version of the original (and likely more updated) guide to reading Warlords Weapons posted [here](http://hypixel.net/threads/guide-how-to-read-weapons-from-the-hypixel-api.274908/).
 
 ### Example Weapon JSON Object
