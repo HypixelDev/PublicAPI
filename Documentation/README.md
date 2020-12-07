@@ -16,7 +16,7 @@ UUID's are required to have dashes to work with the API.
 
 
 ## Where can I find someone's UUID?
-The most efficient way is to go on [NameMC](https://namemc.com/), search up the desired profile, and it will show up under 'Minecraft Profile'. [Click here for a visual](https://prnt.sc/vwbqsd).
+The easiest way is to go on [NameMC](https://namemc.com/), search up the desired profile, and the UUID will show up under 'Minecraft Profile'. [Click here for a visual](https://prnt.sc/vwbqsd).
 
 ## SkyBlock Items and Inventories
 Items and inventory data are stored as a base64 encoded string containing gzipped nbt data.
