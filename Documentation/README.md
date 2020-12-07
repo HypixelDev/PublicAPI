@@ -8,7 +8,9 @@ Generally, date-times are stored as Unix epoch times in milliseconds.
 Responses are served in JSON format.
 
 ## UUID Parameters
-UUID's are required to have dashes to work with the API. 
+Methods which require a UUID in the API ask for a Java `UUID` object, which can be built using `UUID#fromString`. 
+
+**Note:** This method will **only** accept UUIDs in dashed format.
 
 ``Correct Format: f7c77d99-9f15-4a66-a87d-c4a51ef30d19``
 
