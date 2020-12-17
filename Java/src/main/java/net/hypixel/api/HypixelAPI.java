@@ -249,20 +249,18 @@ public class HypixelAPI {
 
             executorService.submit(() -> {
                 try {
-                    AtomicReference<Header> limitLeft = new AtomicReference<>();
-                    AtomicReference<Header> limitReset = new AtomicReference<>();
                     R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
-                        limitLeft.set(obj.getFirstHeader("ratelimit-remaining"));
-                        limitReset.set(obj.getFirstHeader("ratelimit-reset"));
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
+                        R result;
                         if (clazz == ResourceReply.class) {
-                            return (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
+                            result = (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
                         } else {
-                            return GSON.fromJson(content, clazz);
+                            result = GSON.fromJson(content, clazz);
                         }
+                        result.setRequestAmountLeft(Integer.parseInt(obj.getFirstHeader("ratelimit-remaining").getValue()));
+                        result.setSecondsTillReset(Integer.parseInt(obj.getFirstHeader("ratelimit-reset").getValue()));
+                        return result;
                     });
-                    response.setRequestAmountLeft(Integer.parseInt(limitLeft.get().getValue()));
-                    response.setSecondsTillReset(Integer.parseInt(limitReset.get().getValue()));
 
                     checkReply(response);
 
