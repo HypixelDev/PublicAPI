@@ -13,7 +13,6 @@ import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
 import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ResourceType;
-import org.apache.http.Header;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -24,8 +23,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class HypixelAPI {
 
