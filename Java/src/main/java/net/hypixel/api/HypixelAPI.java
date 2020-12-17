@@ -13,6 +13,7 @@ import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
 import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ResourceType;
+import org.apache.http.Header;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -23,6 +24,8 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class HypixelAPI {
 
@@ -246,7 +249,11 @@ public class HypixelAPI {
 
             executorService.submit(() -> {
                 try {
+                    AtomicReference<Header> limitLeft = new AtomicReference<>();
+                    AtomicReference<Header> limitReset = new AtomicReference<>();
                     R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
+                        limitLeft.set(obj.getFirstHeader("ratelimit-remaining"));
+                        limitReset.set(obj.getFirstHeader("ratelimit-reset"));
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
                         if (clazz == ResourceReply.class) {
                             return (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
@@ -254,6 +261,8 @@ public class HypixelAPI {
                             return GSON.fromJson(content, clazz);
                         }
                     });
+                    response.setRequestAmountLeft(Integer.parseInt(limitLeft.get().getValue()));
+                    response.setSecondsTillReset(Integer.parseInt(limitReset.get().getValue()));
 
                     checkReply(response);
 
