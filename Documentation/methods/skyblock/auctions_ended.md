@@ -1,7 +1,7 @@
 # skyblock/auctions_ended
 
 ## Description
-Returns SkyBlock auctions which ended in the last 60 seconds (More precisely, whatever time is defined in the "Cache-Control" header of the response).
+Returns SkyBlock auctions which ended in the last 60 seconds (More precisely, whatever time in seconds is defined in the "Age" header of the response, if it is present).
 
 ## Example Response
 ```js
