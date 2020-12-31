@@ -4,7 +4,7 @@
 Returns the list of [products](#product-description) along with their sell summary, buy summary and quick status.
 
 ## Parameters
-- key
+None
 
 ## Example Response
 ```js
