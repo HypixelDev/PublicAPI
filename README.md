@@ -1,6 +1,6 @@
 Hypixel Public API (Java)
 ======
-This is a Java implementation of the Hypixel API
+This is a Java implementation of the Hypixel API. For discussing the API, requesting help or suggestions you can use the [GitHub Discussions](https://github.com/HypixelDev/PublicAPI/discussions).
 
 ### Documentation
 Hypixel PublicAPI documentation can be found in the [Documentation](https://github.com/HypixelDev/PublicAPI/tree/master/Documentation).
@@ -38,4 +38,4 @@ The Hypixel PublicAPI has the following dependencies:
 * Apache HttpClient
 
 ### Bug Reporting
-You can create an issue here on GitHub to report a bug with the API or to suggest enhancements by going [here](https://github.com/HypixelDev/PublicAPI/issues/new).
+You can create an issue here on GitHub to report a bug with the API or to suggest enhancements.
