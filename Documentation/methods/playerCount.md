@@ -1,17 +1,23 @@
-# playerCount
+# PlayerCount
+
+| Endpoint | Authentication Required |
+| --- | --- |
+| https://api.hypixel.net/playerCount | yes |
 
 ## Description
-Returns current player count.
-
-This is also now included in the [`gameCounts`](/Documentation/methods/gameCounts.md) method.
+Returns the player count of the network
 
 ## Parameters
-- key
 
-## Example Response
-```js
+| Param | Example |
+| --- | --- |
+| [`key`](README.md#api-key) | `36ab954b-4200-6969-aaaa-2aa15f189bad` |
+
+## Example Data
+
+```json
 {
-  "success": true,
-  "playerCount": 75612 // Total players on the network
+  "success":true,
+  "playerCount":60942
 }
 ```

@@ -1,9 +1,9 @@
-### Oscillation
+# Oscillation
 When storing temporary (weekly/monthly) stats, we store them in an oscillating (a/b) scheme in order to cleanly reset them every other week or month (depending on the stat).
 
 In order to caculate the current oscillation name, take the provided start time (changes by the type of oscillation) and compare it to the current epoch value. Even output should be mapped to "a" and odd output should be mapped to "b".
 
-#### Monthly Oscillation
+## Monthly Oscillation
 Monthly tracking was started at 1417410000000 (Mon, 01 Dec 2014 05:00:00 GMT.)
 
 ```java
@@ -21,7 +21,7 @@ public static String getMonthlyOscillation() {
 }
 ```
 
-#### Weekly Oscillation
+## Weekly Oscillation
 Weekly tracking was started at 1417237200000 (Sat, 29 Nov 2014 05:00:00 GMT.)
 
 ```java

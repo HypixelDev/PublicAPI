@@ -1,13 +1,23 @@
-# friends
+# Friends
+
+| Endpoint | Authentication Required |
+| --- | --- |
+| https://api.hypixel.net/friends | yes |
 
 ## Description
-Returns friendships for given player.
+Returns friendships for a given player.
 
 ## Parameters
-- key
-- uuid
 
-## Example Response
+?> `byName` or `byUuid` is required
+
+| Param | Example | |
+| --- | --- | --- |
+| [`key`](README.md#api-key) | `36ab954b-4200-6969-aaaa-2aa15f189bad` |
+| uuid | `41dae80633f442f0982f6c274dcf8a84` | Player UUID |
+
+## Example Data
+
 ```js
 {
   "success": true,

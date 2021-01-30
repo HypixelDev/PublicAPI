@@ -1,17 +1,27 @@
-# guild
+# Guild
+
+| Endpoint | Authentication Required |
+| --- | --- |
+| https://api.hypixel.net/gameCounts | yes |
 
 ## Description
 Returns information about given guild.
 
-See [`resources.md`](/Documentation/methods/resources.md) for a JSON list of Guild achievements and a JSON list of Guild permissions
+See [`resources.md`](methods/resources.md) for a JSON list of Guild achievements and a JSON list of Guild permissions
 
 ## Parameters
-- key
-- id _Guild id returned by [findGuild](https://github.com/HypixelDev/PublicAPI/blob/master/Documentation/methods/findGuild.md)_
-- player (Lookup by Player UUID)
-- name (Lookup by Guild name)
 
-## Example Response
+?> Requires `id`, `player` or `name`
+
+| Param | Example | |
+| --- | --- | --- |
+| [`key`](README.md#api-key) | `36ab954b-4200-6969-aaaa-2aa15f189bad` |
+| id | `52e57a1c0cf2e250d1cd00f8` | Guild ID returned by [findGuild](methods/findGuild.md) |
+| player | `f7c77d999f154a66a87dc4a51ef30d19` | Lookup by player UUID |
+| name | `The Sloths` | Lookup by guild name |
+
+## Example Data
+
 ```js
 {
   "success": true,

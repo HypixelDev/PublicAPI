@@ -1,3 +1,7 @@
+# SkyClash
+
+> Game has been removed, API endpoint exists
+
 Below you can find the current spec for SkyClash stats.
 
 Example Stats: https://gist.github.com/Plancke/5b5cbb93cf2241490391877a5538dd60

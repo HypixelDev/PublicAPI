@@ -1,13 +1,21 @@
-# leaderboards
+# Leaderboards
+
+| Endpoint | Authentication Required |
+| --- | --- |
+| https://api.hypixel.net/leaderboards | yes |
 
 ## Description
 
 Returns a list of the official leaderboards and their current standings for games on the network.
 
 ## Parameters
-- key
 
-## Example Response
+| Param | Example |
+| --- | --- |
+| [`key`](README.md#api-key) | `36ab954b-4200-6969-aaaa-2aa15f189bad` |
+
+## Example Data
+
 ```js
 {
   "success": true,

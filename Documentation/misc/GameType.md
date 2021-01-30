@@ -1,4 +1,5 @@
 # GameTypes
+
 | ID | Type Name      | Database Name | Clean Name           |
 |----|----------------|---------------|----------------------|
 | 2  | QUAKECRAFT     | Quake         | Quake                |
@@ -29,9 +30,9 @@
 | 63 | SKYBLOCK       | SkyBlock      | SkyBlock             |
 | 64 | PIT            | Pit           | Pit                  |
 
-### Storage
+## Storage
 Games store their respective stats and data in a Player's `stats` collection. The game's specific data is held within a JSON object named after it's `Database Name` (seen above.)
 
-### Notes
+## Notes
 * Friendly names are what is displayed to the user when referencing the name.
 * Type names or ids are used when the API references a specific GameType.

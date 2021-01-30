@@ -1,13 +1,22 @@
-# boosters
+# Boosters
+
+| Endpoint | Authentication Required |
+| --- | --- |
+| https://api.hypixel.net/boosters | yes |
 
 ## Description
-
-Returns list of boosters.
+Returns active boosters on the network
 
 ## Parameters
-- key
 
-## Example Response
+| Param | Example |
+| --- | --- |
+| [`key`](README.md#api-key) | `36ab954b-4200-6969-aaaa-2aa15f189bad` |
+
+## Example Data
+
+!> **NOTE:** The JSON below is invalid JSON, as it includes comments
+
 ```js
 {
   "success": true,

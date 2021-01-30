@@ -1,14 +1,21 @@
-# recentGames
+# Recent Games
+
+| Endpoint | Authentication Required |
+| --- | --- |
+| https://api.hypixel.net/recentGames | yes |
 
 ## Description
 
+!> Players can disable this endpoint via in-game settings. When done so the API will return as if there is no games.
+
 Returns recent games of a player. A maximum of 100 games are returned and recent games are only stored for up to 3 days at this time.
 
-Players can disable this endpoint via in-game settings. When done so the API will return as if there is no games.
-
 ## Parameters
-- key
-- uuid
+
+| Param | Example |
+| --- | --- |
+| [`key`](README.md#api-key) | `36ab954b-4200-6969-aaaa-2aa15f189bad` |
+| `uuid` | `41dae80633f442f0982f6c274dcf8a84` |
 
 ## Example Response
 ```js

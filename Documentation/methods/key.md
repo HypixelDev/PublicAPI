@@ -1,12 +1,20 @@
-# key
+# Key
+
+| Endpoint | Authentication Required |
+| --- | --- |
+| https://api.hypixel.net/key | yes |
 
 ## Description
 Returns information regarding given key.
 
 ## Parameters
-- key
 
-## Example Response
+| Param | Example |
+| --- | --- |
+| [`key`](README.md#api-key) | `36ab954b-4200-6969-aaaa-2aa15f189bad` |
+
+## Example Data
+
 ```js
 {
   "success": true,
