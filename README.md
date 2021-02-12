@@ -7,6 +7,8 @@ Hypixel PublicAPI documentation can be found in the [Documentation](https://gith
 Java documentation can be found in the code.
 
 ### Usage
+
+#### Maven
 You can use this API as a dependency via the public Hypixel maven repo.
 
 ```xml
@@ -22,6 +24,21 @@ You can use this API as a dependency via the public Hypixel maven repo.
     <artifactId>HypixelAPI</artifactId>
     <version>3.0.0</version>
 </dependency>
+```
+
+### Gradle
+You can also add this as a Gradle dependency, using Jitpack
+(https://jitpack.io/#hypixeldev/publicapi/2.0.0)
+```gradle
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+```
+
+```gradle
+dependencies {
+    implementation 'com.github.hypixeldev:publicapi:2.0.0'
+}
 ```
 
 ### Query Limitations
