@@ -248,11 +248,8 @@ public class HypixelAPI {
                 try {
                     R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                        if (clazz == ResourceReply.class) {
-                            return (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
-                        } else {
-                            return GSON.fromJson(content, clazz);
-                        }
+                        return (clazz == ResourceReply.class) ? (R) new ResourceReply(GSON.fromJson(content, JsonObject.class))
+                                : GSON.fromJson(content, clazz);
                     });
 
                     checkReply(response);
@@ -298,9 +295,8 @@ public class HypixelAPI {
      * Checks reply and throws appropriate exceptions based on it's content
      *
      * @param reply The reply to check
-     * @param <T>   The class of the reply
      */
-    private <T extends AbstractReply> void checkReply(T reply) {
+    private void checkReply(AbstractReply reply) {
         if (reply != null) {
             if (reply.isThrottle()) {
                 throw new APIThrottleException();
