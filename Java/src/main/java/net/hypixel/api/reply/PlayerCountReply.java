@@ -1,7 +1,7 @@
 package net.hypixel.api.reply;
 
 /**
- * This is now included inside {@link GameCountsReply}
+ * This is now included inside {@link CountsReply}
  */
 @Deprecated
 public class PlayerCountReply extends AbstractReply {

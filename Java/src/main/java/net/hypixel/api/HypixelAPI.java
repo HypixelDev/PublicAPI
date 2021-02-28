@@ -9,20 +9,15 @@ import net.hypixel.api.adapters.GameTypeTypeAdapter;
 import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
+import net.hypixel.api.http.HypixelHTTPClient;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
 import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ResourceType;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class HypixelAPI {
 
@@ -30,29 +25,23 @@ public class HypixelAPI {
             .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
             .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
             .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
-
             .registerTypeAdapterFactory(new BoostersTypeAdapterFactory<>(BoostersReply.Booster.class))
-
             .create();
     private static final String BASE_URL = "https://api.hypixel.net/";
 
     private final UUID apiKey;
+    private final HypixelHTTPClient httpClient;
 
-    private final ExecutorService executorService;
-    private final HttpClient httpClient;
-
-    public HypixelAPI(UUID apiKey) {
+    public HypixelAPI(UUID apiKey, HypixelHTTPClient httpClient) {
         this.apiKey = apiKey;
-
-        this.executorService = Executors.newCachedThreadPool();
-        this.httpClient = HttpClientBuilder.create().build();
+        this.httpClient = httpClient;
     }
 
     /**
-     * Shuts down the internal executor service
+     * Shuts down the {@link HypixelHTTPClient}
      */
     public void shutdown() {
-        executorService.shutdown();
+        httpClient.shutdown();
     }
 
     /**
@@ -70,16 +59,8 @@ public class HypixelAPI {
         return get(LeaderboardsReply.class, "leaderboards");
     }
 
-    public CompletableFuture<WatchdogStatsReply> getWatchdogStats() {
-        return get(WatchdogStatsReply.class, "watchdogStats");
-    }
-
-    /**
-     * This is now included inside {@link HypixelAPI#getGameCounts()}
-     */
-    @Deprecated
-    public CompletableFuture<PlayerCountReply> getPlayerCount() {
-        return get(PlayerCountReply.class, "playerCount");
+    public CompletableFuture<PunishmentStatsReply> getPunishmentStats() {
+        return get(PunishmentStatsReply.class, "punishmentstats");
     }
 
     public CompletableFuture<PlayerReply> getPlayerByUuid(UUID player) {
@@ -94,7 +75,7 @@ public class HypixelAPI {
         return get(PlayerReply.class, "player", "uuid", player);
     }
 
-    @Deprecated
+    @Deprecated // TODO want this still?
     public CompletableFuture<PlayerReply> getPlayerByName(String player) {
         return get(PlayerReply.class, "player", "name", player);
     }
@@ -135,36 +116,12 @@ public class HypixelAPI {
         return get(GuildReply.class, "guild", "id", id);
     }
 
-    /**
-     * You can directly get the guild using {@link HypixelAPI#getGuildByPlayer(UUID)}
-     */
-    @Deprecated
-    public CompletableFuture<FindGuildReply> findGuildByPlayer(UUID player) {
-        return get(FindGuildReply.class, "findGuild", "byUuid", player);
-    }
-
-    /**
-     * You can directly get the guild using {@link HypixelAPI#getGuildByPlayer(String)}
-     */
-    @Deprecated
-    public CompletableFuture<FindGuildReply> findGuildByPlayer(String player) {
-        return get(FindGuildReply.class, "findGuild", "byUuid", player);
-    }
-
-    /**
-     * You can directly get the guild using {@link HypixelAPI#getGuildByName(String)})}
-     */
-    @Deprecated
-    public CompletableFuture<GuildReply> findGuildByName(String name) {
-        return get(GuildReply.class, "findGuild", "byName", name);
-    }
-
     public CompletableFuture<KeyReply> getKey() {
         return get(KeyReply.class, "key");
     }
 
-    public CompletableFuture<GameCountsReply> getGameCounts() {
-        return get(GameCountsReply.class, "gameCounts");
+    public CompletableFuture<CountsReply> getCounts() {
+        return get(CountsReply.class, "counts");
     }
 
     public CompletableFuture<SkyBlockProfileReply> getSkyBlockProfile(String profile) {
@@ -193,6 +150,7 @@ public class HypixelAPI {
 
     /**
      * Gets up to 100 of the player's most recently played games. Games are removed from this list after 3 days.
+     *
      * @param uuid of player
      * @return CompletableFuture with recentGames reply
      */
@@ -230,68 +188,45 @@ public class HypixelAPI {
      */
     // TODO use a map of string to object?
     private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request, Object... params) {
-        CompletableFuture<R> future = new CompletableFuture<>();
-        try {
-            if (params.length % 2 != 0)
-                throw new IllegalArgumentException("Need both key and value for parameters");
+        if (params.length % 2 != 0) {
+            throw new IllegalArgumentException("Need both key and value for parameters");
+        }
 
-            StringBuilder url = new StringBuilder(BASE_URL);
+        StringBuilder url = new StringBuilder(BASE_URL);
+        url.append(request);
+        boolean startedQuery = false;
 
-            url.append(request);
-            url.append("?key=").append(apiKey);
-
-            for (int i = 0; i < params.length - 1; i += 2) {
-                url.append("&").append(params[i]).append("=").append(params[i + 1]);
+        for (int i = 0; i < params.length - 1; i += 2) {
+            if (!startedQuery) {
+                startedQuery = true;
+                url.append("?");
+            } else {
+                url.append("&");
             }
 
-            executorService.submit(() -> {
-                try {
-                    R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
-                        String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                        if (clazz == ResourceReply.class) {
-                            return (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
-                        } else {
-                            return GSON.fromJson(content, clazz);
-                        }
-                    });
-
-                    checkReply(response);
-
-                    future.complete(response);
-                } catch (Throwable t) {
-                    future.completeExceptionally(t);
-                }
-            });
-        } catch (Throwable throwable) {
-            future.completeExceptionally(throwable);
+            url.append(params[i]).append("=").append(params[i + 1]);
         }
-        return future;
+
+        return httpClient.makeAuthenticatedRequest(url.toString(), apiKey).thenApply(content -> {
+            R response;
+            if (clazz == ResourceReply.class) {
+                response = (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
+            } else {
+                response = GSON.fromJson(content, clazz);
+            }
+
+            checkReply(response);
+
+            return response;
+        });
     }
 
     private CompletableFuture<ResourceReply> requestResource(String resource) {
-        CompletableFuture<ResourceReply> future = new CompletableFuture<>();
-        try {
-            StringBuilder url = new StringBuilder(BASE_URL);
-            url.append("resources/").append(resource);
-
-            executorService.submit(() -> {
-                try {
-                    ResourceReply response = httpClient.execute(new HttpGet(url.toString()), obj -> {
-                        String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                        return new ResourceReply(GSON.fromJson(content, JsonObject.class));
-                    });
-
-                    checkReply(response);
-
-                    future.complete(response);
-                } catch (Throwable t) {
-                    future.completeExceptionally(t);
-                }
-            });
-        } catch (Throwable throwable) {
-            future.completeExceptionally(throwable);
-        }
-        return future;
+        return httpClient.makeRequest(BASE_URL + "resources/" + resource).thenApply(content -> {
+            ResourceReply reply = new ResourceReply(GSON.fromJson(content, JsonObject.class));
+            checkReply(reply);
+            return reply;
+        });
     }
 
     /**

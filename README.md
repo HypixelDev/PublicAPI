@@ -33,9 +33,8 @@ If you require a higher limit than the above you can open a support ticket at ht
 You can obtain an API key by joining ```mc.hypixel.net``` with a valid Minecraft account and running the /api command. You will then be assigned a unique key that is to remain **private**.
 
 ### Dependencies
-The Hypixel PublicAPI has the following dependencies:
+The Hypixel Public API Java implementation has the following dependencies:
 * Google Gson library
-* Apache HttpClient
 
 ### Bug Reporting
 You can create an issue here on GitHub to report a bug with the API or to suggest enhancements.

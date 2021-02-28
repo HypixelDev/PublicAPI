@@ -2,7 +2,7 @@ package net.hypixel.api.reply;
 
 import java.util.Map;
 
-public class GameCountsReply extends AbstractReply {
+public class CountsReply extends AbstractReply {
     private Map<String, GameCount> games;
     private int playerCount;
 

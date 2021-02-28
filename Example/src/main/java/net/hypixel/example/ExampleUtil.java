@@ -2,13 +2,19 @@ package net.hypixel.example;
 
 import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.reply.AbstractReply;
+import net.hypixel.example.http.UnirestHTTPClient;
 
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
 public class ExampleUtil {
 
-    public static final HypixelAPI API = new HypixelAPI(UUID.fromString("64bd424e-ccb0-42ed-8b66-6e42a135afb4")); // arbitrary key, replace with your own to test
+    public static final HypixelAPI API;
+
+    static {
+        String key = System.getProperty("apiKey", "64bd424e-ccb0-42ed-8b66-6e42a135afb4"); // arbitrary key, replace with your own to test or use the property
+        API = new HypixelAPI(UUID.fromString(key), new UnirestHTTPClient()); // arbitrary key, replace with your own to test
+    }
 
     public static final UUID HYPIXEL = UUID.fromString("f7c77d99-9f15-4a66-a87d-c4a51ef30d19");
 
