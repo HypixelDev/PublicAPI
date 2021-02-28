@@ -11,7 +11,7 @@ in the code.
 
 ### GitHub Issues
 
-Github issues should only be used to report bugs and for detailed feature requests. Everything else should either be in
+Github issues should only be used to report bugs. Everything else should either be in
 Github discussions or use the Hypixel [Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
 
 ### Usage
