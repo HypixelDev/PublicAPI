@@ -76,11 +76,11 @@ public class SkyBlockBazaarReply extends AbstractReply {
 
         public class Summary {
 
-            private int amount;
+            private long amount;
             private double pricePerUnit;
-            private int orders;
+            private long orders;
 
-            public int getAmount() {
+            public long getAmount() {
                 return amount;
             }
 
@@ -88,7 +88,7 @@ public class SkyBlockBazaarReply extends AbstractReply {
                 return pricePerUnit;
             }
 
-            public int getOrders() {
+            public long getOrders() {
                 return orders;
             }
 
@@ -105,22 +105,14 @@ public class SkyBlockBazaarReply extends AbstractReply {
         public class Status {
 
             private String productId;
-
             private double sellPrice;
-
-            private int sellVolume;
-
-            private int sellMovingWeek;
-
-            private int sellOrders;
-
+            private long sellVolume;
+            private long sellMovingWeek;
+            private long sellOrders;
             private double buyPrice;
-
-            private int buyVolume;
-
-            private int buyMovingWeek;
-
-            private int buyOrders;
+            private long buyVolume;
+            private long buyMovingWeek;
+            private long buyOrders;
 
             public String getProductId() {
                 return productId;
@@ -130,15 +122,15 @@ public class SkyBlockBazaarReply extends AbstractReply {
                 return sellPrice;
             }
 
-            public int getSellVolume() {
+            public long getSellVolume() {
                 return sellVolume;
             }
 
-            public int getSellMovingWeek() {
+            public long getSellMovingWeek() {
                 return sellMovingWeek;
             }
 
-            public int getSellOrders() {
+            public long getSellOrders() {
                 return sellOrders;
             }
 
@@ -146,15 +138,15 @@ public class SkyBlockBazaarReply extends AbstractReply {
                 return buyPrice;
             }
 
-            public int getBuyVolume() {
+            public long getBuyVolume() {
                 return buyVolume;
             }
 
-            public int getBuyMovingWeek() {
+            public long getBuyMovingWeek() {
                 return buyMovingWeek;
             }
 
-            public int getBuyOrders() {
+            public long getBuyOrders() {
                 return buyOrders;
             }
 
