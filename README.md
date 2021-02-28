@@ -5,14 +5,13 @@ GitHub [Discussions](https://github.com/HypixelDev/PublicAPI/discussions).
 
 ### Documentation
 
-Hypixel Public API documentation can be found in
-the [Documentation](https://github.com/HypixelDev/PublicAPI/tree/master/Documentation). Java documentation can be found
-in the code.
+Hypixel Public API documentation can be found at [https://api.hypixel.net/](https://api.hypixel.net/). Java
+documentation can be found in the code.
 
 ### GitHub Issues
 
-Github issues should only be used to report bugs. Everything else should either be in
-Github discussions or use the Hypixel [Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
+Github issues should only be used to report bugs. Everything else should either be in Github discussions or use the
+Hypixel [Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
 
 ### Usage
 
@@ -59,6 +58,3 @@ You will then be assigned a unique key that is to remain **private**.
 
 When contributing changes to the Java API please provide as much detail on the changes and the reasons for them. We will
 not accept changes that have no meaningful contribution to the project.
-
-We are currently in the process of migrating the API documentation and due to this we will not be accepting changes to
-the current documentation on this Github repo.
