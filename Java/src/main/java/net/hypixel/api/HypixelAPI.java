@@ -9,6 +9,7 @@ import net.hypixel.api.adapters.GameTypeTypeAdapter;
 import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
+import net.hypixel.api.http.HTTPQueryParams;
 import net.hypixel.api.http.HypixelHTTPClient;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
@@ -64,7 +65,10 @@ public class HypixelAPI {
     }
 
     public CompletableFuture<PlayerReply> getPlayerByUuid(UUID player) {
-        return get(PlayerReply.class, "player", "uuid", player);
+        return get(PlayerReply.class, "player",
+                HTTPQueryParams.create()
+                        .add("uuid", player)
+        );
     }
 
     /**
@@ -72,16 +76,25 @@ public class HypixelAPI {
      * @return the future
      */
     public CompletableFuture<PlayerReply> getPlayerByUuid(String player) {
-        return get(PlayerReply.class, "player", "uuid", player);
+        return get(PlayerReply.class, "player",
+                HTTPQueryParams.create()
+                        .add("uuid", player)
+        );
     }
 
     @Deprecated // TODO want this still?
     public CompletableFuture<PlayerReply> getPlayerByName(String player) {
-        return get(PlayerReply.class, "player", "name", player);
+        return get(PlayerReply.class, "player",
+                HTTPQueryParams.create()
+                        .add("name", player)
+        );
     }
 
     public CompletableFuture<FriendsReply> getFriends(UUID player) {
-        return get(FriendsReply.class, "friends", "uuid", player);
+        return get(FriendsReply.class, "friends",
+                HTTPQueryParams.create()
+                        .add("uuid", player)
+        );
     }
 
     /**
@@ -89,11 +102,17 @@ public class HypixelAPI {
      * @return the future
      */
     public CompletableFuture<FriendsReply> getFriends(String player) {
-        return get(FriendsReply.class, "friends", "uuid", player);
+        return get(FriendsReply.class, "friends",
+                HTTPQueryParams.create()
+                        .add("uuid", player)
+        );
     }
 
     public CompletableFuture<GuildReply> getGuildByPlayer(UUID player) {
-        return get(GuildReply.class, "guild", "player", player);
+        return get(GuildReply.class, "guild",
+                HTTPQueryParams.create()
+                        .add("player", player)
+        );
     }
 
     /**
@@ -101,11 +120,17 @@ public class HypixelAPI {
      * @return the future
      */
     public CompletableFuture<GuildReply> getGuildByPlayer(String player) {
-        return get(GuildReply.class, "guild", "player", player);
+        return get(GuildReply.class, "guild",
+                HTTPQueryParams.create()
+                        .add("player", player)
+        );
     }
 
     public CompletableFuture<GuildReply> getGuildByName(String name) {
-        return get(GuildReply.class, "guild", "name", name);
+        return get(GuildReply.class, "guild",
+                HTTPQueryParams.create()
+                        .add("name", name)
+        );
     }
 
     /**
@@ -113,7 +138,10 @@ public class HypixelAPI {
      * @return the future
      */
     public CompletableFuture<GuildReply> getGuildById(String id) {
-        return get(GuildReply.class, "guild", "id", id);
+        return get(GuildReply.class, "guild",
+                HTTPQueryParams.create()
+                        .add("id", id)
+        );
     }
 
     public CompletableFuture<KeyReply> getKey() {
@@ -125,7 +153,10 @@ public class HypixelAPI {
     }
 
     public CompletableFuture<SkyBlockProfileReply> getSkyBlockProfile(String profile) {
-        return get(SkyBlockProfileReply.class, "skyblock/profile", "profile", profile);
+        return get(SkyBlockProfileReply.class, "skyblock/profile",
+                HTTPQueryParams.create()
+                        .add("profile", profile)
+        );
     }
 
     public CompletableFuture<SkyBlockNewsReply> getSkyBlockNews() {
@@ -133,7 +164,10 @@ public class HypixelAPI {
     }
 
     public CompletableFuture<SkyBlockAuctionsReply> getSkyBlockAuctions(int page) {
-        return get(SkyBlockAuctionsReply.class, "skyblock/auctions", "page", page);
+        return get(SkyBlockAuctionsReply.class, "skyblock/auctions",
+                HTTPQueryParams.create()
+                        .add("page", page)
+        );
     }
 
     /**
@@ -145,7 +179,10 @@ public class HypixelAPI {
      * @return CompletableFuture with status reply
      */
     public CompletableFuture<StatusReply> getStatus(UUID uuid) {
-        return get(StatusReply.class, "status", "uuid", uuid);
+        return get(StatusReply.class, "status",
+                HTTPQueryParams.create()
+                        .add("uuid", uuid)
+        );
     }
 
     /**
@@ -155,7 +192,10 @@ public class HypixelAPI {
      * @return CompletableFuture with recentGames reply
      */
     public CompletableFuture<RecentGamesReply> getRecentGames(UUID uuid) {
-        return get(RecentGamesReply.class, "recentGames", "uuid", uuid);
+        return get(RecentGamesReply.class, "recentGames",
+                HTTPQueryParams.create()
+                        .add("uuid", uuid)
+        );
     }
 
     /**
@@ -181,33 +221,16 @@ public class HypixelAPI {
         return requestResource(resource);
     }
 
-    /**
-     * Execute Request asynchronously, executes Callback when finished
-     *
-     * @param request Request to get
-     */
-    // TODO use a map of string to object?
-    private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request, Object... params) {
-        if (params.length % 2 != 0) {
-            throw new IllegalArgumentException("Need both key and value for parameters");
+    private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request) {
+        return get(clazz, request, null);
+    }
+
+    private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request, HTTPQueryParams params) {
+        String url = BASE_URL + request;
+        if (params != null) {
+            url = params.getAsQueryString(url);
         }
-
-        StringBuilder url = new StringBuilder(BASE_URL);
-        url.append(request);
-        boolean startedQuery = false;
-
-        for (int i = 0; i < params.length - 1; i += 2) {
-            if (!startedQuery) {
-                startedQuery = true;
-                url.append("?");
-            } else {
-                url.append("&");
-            }
-
-            url.append(params[i]).append("=").append(params[i + 1]);
-        }
-
-        return httpClient.makeAuthenticatedRequest(url.toString(), apiKey).thenApply(content -> {
+        return httpClient.makeAuthenticatedRequest(url, apiKey).thenApply(content -> {
             R response;
             if (clazz == ResourceReply.class) {
                 response = (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
