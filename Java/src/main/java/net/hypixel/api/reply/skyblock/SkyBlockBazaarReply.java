@@ -6,7 +6,7 @@ import net.hypixel.api.reply.AbstractReply;
 import java.util.List;
 import java.util.Map;
 
-public class BazaarReply extends AbstractReply {
+public class SkyBlockBazaarReply extends AbstractReply {
 
     private long lastUpdated;
     private Map<String, Product> products;

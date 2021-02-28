@@ -33,6 +33,10 @@ public class HypixelAPI {
     private final UUID apiKey;
     private final HypixelHTTPClient httpClient;
 
+    /**
+     * @param apiKey     the Hypixel API key to be used for the HTTP requests
+     * @param httpClient a {@link HypixelHTTPClient} that implements the HTTP behaviour for communicating with the API
+     */
     public HypixelAPI(UUID apiKey, HypixelHTTPClient httpClient) {
         this.apiKey = apiKey;
         this.httpClient = httpClient;
@@ -46,7 +50,7 @@ public class HypixelAPI {
     }
 
     /**
-     * @return currently set API key
+     * @return the currently set API key
      */
     public UUID getApiKey() {
         return apiKey;
@@ -64,6 +68,10 @@ public class HypixelAPI {
         return get(PunishmentStatsReply.class, "punishmentstats");
     }
 
+    /**
+     * @param player uuid of a player
+     * @return {@link CompletableFuture} containing {@link PlayerReply}
+     */
     public CompletableFuture<PlayerReply> getPlayerByUuid(UUID player) {
         return get(PlayerReply.class, "player",
                 HTTPQueryParams.create()
@@ -73,7 +81,7 @@ public class HypixelAPI {
 
     /**
      * @param player uuid of a player in string format, can be both dashed or undashed.
-     * @return the future
+     * @return {@link CompletableFuture} containing {@link PlayerReply}
      */
     public CompletableFuture<PlayerReply> getPlayerByUuid(String player) {
         return get(PlayerReply.class, "player",
@@ -84,6 +92,7 @@ public class HypixelAPI {
 
     /**
      * @param player the minecraft username of the player.
+     * @return {@link CompletableFuture} containing {@link PlayerReply}
      * @deprecated While this method should continue functioning we recommend using the Mojang API for requesting UUID's by username.
      * See issue <a href="https://github.com/HypixelDev/PublicAPI/issues/249#issuecomment-645634722">#249</a>
      */
@@ -103,8 +112,8 @@ public class HypixelAPI {
     }
 
     /**
-     * @param player uuid of a player in string format, can be both dashed or undashed.
-     * @return the future
+     * @param player uuid of a player in string format, can be both dashed or undashed
+     * @return {@link CompletableFuture} containing {@link FriendsReply}
      */
     public CompletableFuture<FriendsReply> getFriends(String player) {
         return get(FriendsReply.class, "friends",
@@ -113,6 +122,10 @@ public class HypixelAPI {
         );
     }
 
+    /**
+     * @param player uuid of a player
+     * @return {@link CompletableFuture} containing {@link GuildReply}
+     */
     public CompletableFuture<GuildReply> getGuildByPlayer(UUID player) {
         return get(GuildReply.class, "guild",
                 HTTPQueryParams.create()
@@ -121,8 +134,8 @@ public class HypixelAPI {
     }
 
     /**
-     * @param player uuid of a player in string format, can be both dashed or undashed.
-     * @return the future
+     * @param player uuid of a player in string format, can be both dashed or undashed
+     * @return {@link CompletableFuture} containing {@link GuildReply}
      */
     public CompletableFuture<GuildReply> getGuildByPlayer(String player) {
         return get(GuildReply.class, "guild",
@@ -131,6 +144,10 @@ public class HypixelAPI {
         );
     }
 
+    /**
+     * @param name the name of the guild
+     * @return {@link CompletableFuture} containing {@link GuildReply}
+     */
     public CompletableFuture<GuildReply> getGuildByName(String name) {
         return get(GuildReply.class, "guild",
                 HTTPQueryParams.create()
@@ -140,7 +157,7 @@ public class HypixelAPI {
 
     /**
      * @param id mongo id hex string
-     * @return the future
+     * @return {@link CompletableFuture} containing {@link GuildReply}
      */
     public CompletableFuture<GuildReply> getGuildById(String id) {
         return get(GuildReply.class, "guild",
@@ -155,6 +172,48 @@ public class HypixelAPI {
 
     public CompletableFuture<CountsReply> getCounts() {
         return get(CountsReply.class, "counts");
+    }
+
+    /**
+     * Gets the current status of the player with information about the server they are in
+     * at that moment.
+     * In case the person is in limbo, result will be the last known server
+     *
+     * @param uuid of player
+     * @return {@link CompletableFuture} containing {@link StatusReply}
+     */
+    public CompletableFuture<StatusReply> getStatus(UUID uuid) {
+        return get(StatusReply.class, "status",
+                HTTPQueryParams.create()
+                        .add("uuid", uuid)
+        );
+    }
+
+    /**
+     * Gets up to 100 of the player's most recently played games. Games are removed from this list after 3 days.
+     *
+     * @param uuid of player
+     * @return {@link CompletableFuture} containing {@link RecentGamesReply}
+     */
+    public CompletableFuture<RecentGamesReply> getRecentGames(UUID uuid) {
+        return get(RecentGamesReply.class, "recentGames",
+                HTTPQueryParams.create()
+                        .add("uuid", uuid)
+        );
+    }
+
+    /**
+     * Retrieve resources which don't change often.
+     *
+     * @param resource to be requested
+     * @return {@link CompletableFuture} containing {@link ResourceReply}
+     */
+    public CompletableFuture<ResourceReply> getResource(ResourceType resource) {
+        return getResource(resource.getPath());
+    }
+
+    public CompletableFuture<ResourceReply> getResource(String resource) {
+        return requestResource(resource);
     }
 
     public CompletableFuture<SkyBlockProfileReply> getSkyBlockProfile(String profile) {
@@ -176,54 +235,12 @@ public class HypixelAPI {
     }
 
     /**
-     * Gets the current status of the player with information about the server they are in
-     * at that moment.
-     * In case the person is in limbo, result will be the last known server
-     *
-     * @param uuid of player
-     * @return CompletableFuture with status reply
-     */
-    public CompletableFuture<StatusReply> getStatus(UUID uuid) {
-        return get(StatusReply.class, "status",
-                HTTPQueryParams.create()
-                        .add("uuid", uuid)
-        );
-    }
-
-    /**
-     * Gets up to 100 of the player's most recently played games. Games are removed from this list after 3 days.
-     *
-     * @param uuid of player
-     * @return CompletableFuture with recentGames reply
-     */
-    public CompletableFuture<RecentGamesReply> getRecentGames(UUID uuid) {
-        return get(RecentGamesReply.class, "recentGames",
-                HTTPQueryParams.create()
-                        .add("uuid", uuid)
-        );
-    }
-
-    /**
-     * Retrieve resources which don't change often.
-     *
-     * @param resource to be requested
-     * @return CompletableFuture with resource reply
-     */
-    public CompletableFuture<ResourceReply> getResource(ResourceType resource) {
-        return getResource(resource.getPath());
-    }
-
-    /**
      * Requests information about products in bazaar.
      *
-     * @return CompletableFuture with BazaarReply
+     * @return {@link CompletableFuture} containing {@link SkyBlockBazaarReply}
      */
-    public CompletableFuture<BazaarReply> getBazaar() {
-        return get(BazaarReply.class, "skyblock/bazaar");
-    }
-
-    public CompletableFuture<ResourceReply> getResource(String resource) {
-        return requestResource(resource);
+    public CompletableFuture<SkyBlockBazaarReply> getSkyBlockBazaar() {
+        return get(SkyBlockBazaarReply.class, "skyblock/bazaar");
     }
 
     private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request) {
@@ -254,6 +271,7 @@ public class HypixelAPI {
      *
      * @param reply The reply to check
      * @param <T>   The class of the reply
+     * @return the same object that was provided for cleaner usage
      */
     private <T extends AbstractReply> T checkReply(T reply) {
         if (reply != null) {
