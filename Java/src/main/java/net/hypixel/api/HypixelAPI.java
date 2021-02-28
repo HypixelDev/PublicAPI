@@ -231,25 +231,17 @@ public class HypixelAPI {
             url = params.getAsQueryString(url);
         }
         return httpClient.makeAuthenticatedRequest(url, apiKey).thenApply(content -> {
-            R response;
             if (clazz == ResourceReply.class) {
-                response = (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
+                return checkReply((R) new ResourceReply(GSON.fromJson(content, JsonObject.class)));
             } else {
-                response = GSON.fromJson(content, clazz);
+                return checkReply(GSON.fromJson(content, clazz));
             }
-
-            checkReply(response);
-
-            return response;
         });
     }
 
     private CompletableFuture<ResourceReply> requestResource(String resource) {
-        return httpClient.makeRequest(BASE_URL + "resources/" + resource).thenApply(content -> {
-            ResourceReply reply = new ResourceReply(GSON.fromJson(content, JsonObject.class));
-            checkReply(reply);
-            return reply;
-        });
+        return httpClient.makeRequest(BASE_URL + "resources/" + resource)
+                .thenApply(content -> checkReply(new ResourceReply(GSON.fromJson(content, JsonObject.class))));
     }
 
     /**
@@ -258,7 +250,7 @@ public class HypixelAPI {
      * @param reply The reply to check
      * @param <T>   The class of the reply
      */
-    private <T extends AbstractReply> void checkReply(T reply) {
+    private <T extends AbstractReply> T checkReply(T reply) {
         if (reply != null) {
             if (reply.isThrottle()) {
                 throw new APIThrottleException();
@@ -266,5 +258,6 @@ public class HypixelAPI {
                 throw new HypixelAPIException(reply.getCause());
             }
         }
+        return reply;
     }
 }
