@@ -82,7 +82,13 @@ public class HypixelAPI {
         );
     }
 
-    @Deprecated // TODO want this still?
+    /**
+     * Get a player by their name.
+     *
+     * @deprecated While this method should continue functioning we recommend using the Mojang API for requesting UUID's by username.
+     * See issue <a href="https://github.com/HypixelDev/PublicAPI/issues/249#issuecomment-645634722">#249</a>
+     */
+    @Deprecated
     public CompletableFuture<PlayerReply> getPlayerByName(String player) {
         return get(PlayerReply.class, "player",
                 HTTPQueryParams.create()
