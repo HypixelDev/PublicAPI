@@ -1,6 +1,6 @@
 Hypixel Public API (Java)
 ======
-This is a Java implementation of the Hypixel API
+This is a Java implementation of the Hypixel API. For discussing the API, requesting help or suggestions you can use the GitHub [Discussions](https://github.com/HypixelDev/PublicAPI/discussions).
 
 ### Documentation
 Hypixel PublicAPI documentation can be found in the [Documentation](https://github.com/HypixelDev/PublicAPI/tree/master/Documentation).
