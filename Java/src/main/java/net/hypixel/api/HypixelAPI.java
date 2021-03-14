@@ -95,6 +95,7 @@ public class HypixelAPI {
      * @return {@link CompletableFuture} containing {@link PlayerReply}
      * @deprecated While this method should continue functioning we recommend using the Mojang API for requesting UUID's by username.
      * See issue <a href="https://github.com/HypixelDev/PublicAPI/issues/249#issuecomment-645634722">#249</a>
+     * This endpoint is also subject to limiting requests of the same username in a short period of time.
      */
     @Deprecated
     public CompletableFuture<PlayerReply> getPlayerByName(String player) {
