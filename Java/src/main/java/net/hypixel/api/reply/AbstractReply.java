@@ -6,8 +6,8 @@ public abstract class AbstractReply {
     protected boolean success;
     protected String cause;
 
-    transient protected int limitLeft;
-    transient protected int limitReset;
+    transient protected int requestAmountRemaining;
+    transient protected int timeUntilLimitReset;
 
     public boolean isThrottle() {
         return throttle;
@@ -21,24 +21,34 @@ public abstract class AbstractReply {
         return cause;
     }
 
-    public int getRequestAmountLeft()
+    public int getRequestAmountRemaining()
     {
-        return limitLeft;
+        return requestAmountRemaining;
     }
 
-    public void setRequestAmountLeft(int limitLeft)
+    /**
+     * Should only be used in {@link net.hypixel.api.HypixelAPI#get(Class, String, Object...)}
+     * This has no use after this value has been set once
+     * @param requestAmountRemaining
+     */
+    public void setRequestAmountRemaining(int requestAmountRemaining)
     {
-        this.limitLeft = limitLeft;
+        this.requestAmountRemaining = requestAmountRemaining;
     }
 
-    public int getSecondsTillReset()
+    public int getSecondsUntilReset()
     {
-        return limitReset;
+        return timeUntilLimitReset;
     }
 
-    public void setSecondsTillReset(int limitReset)
+    /**
+     * Should only be used in {@link net.hypixel.api.HypixelAPI#get(Class, String, Object...)}
+     * This has no use after this value has been set once
+     * @param timeUntilReset
+     */
+    public void setSecondsUntilReset(int timeUntilReset)
     {
-        this.limitReset = limitReset;
+        this.timeUntilLimitReset = timeUntilReset;
     }
 
 
@@ -48,8 +58,8 @@ public abstract class AbstractReply {
                 "throttle=" + throttle +
                 ", success=" + success +
                 ", cause='" + cause + '\'' +
-                ", limitLeft=" + limitLeft +
-                ", limitReset=" + limitReset +
+                ", limitLeft=" + requestAmountRemaining +
+                ", limitReset=" + timeUntilLimitReset +
                 '}';
     }
 }

@@ -254,8 +254,8 @@ public class HypixelAPI {
                         } else {
                             result = GSON.fromJson(content, clazz);
                         }
-                        result.setRequestAmountLeft(Integer.parseInt(obj.getFirstHeader("ratelimit-remaining").getValue()));
-                        result.setSecondsTillReset(Integer.parseInt(obj.getFirstHeader("ratelimit-reset").getValue()));
+                        result.setRequestAmountRemaining(Integer.parseInt(obj.getFirstHeader("ratelimit-remaining").getValue()));
+                        result.setSecondsUntilReset(Integer.parseInt(obj.getFirstHeader("ratelimit-reset").getValue()));
                         return result;
                     });
 
