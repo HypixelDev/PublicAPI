@@ -248,15 +248,17 @@ public class HypixelAPI {
                 try {
                     R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                        R result;
+                        content = content.substring(0, content.length() - 1).concat(
+                                "\"" + AbstractReply.REQUEST_REMAINING_FIELD_NAME + "\":"
+                                + obj.getFirstHeader("ratelimit-remaining").getValue()
+                                + ",\"" + AbstractReply.TIME_UNTIL_RESET_FIELD_NAME + "\":"
+                                + obj.getFirstHeader("ratelimit-reset").getValue() + "}"
+                        );
                         if (clazz == ResourceReply.class) {
-                            result = (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
+                            return (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
                         } else {
-                            result = GSON.fromJson(content, clazz);
+                            return GSON.fromJson(content, clazz);
                         }
-                        result.setRequestAmountRemaining(Integer.parseInt(obj.getFirstHeader("ratelimit-remaining").getValue()));
-                        result.setSecondsUntilReset(Integer.parseInt(obj.getFirstHeader("ratelimit-reset").getValue()));
-                        return result;
                     });
 
                     checkReply(response);

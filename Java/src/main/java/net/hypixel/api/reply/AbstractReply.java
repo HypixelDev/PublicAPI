@@ -1,13 +1,20 @@
 package net.hypixel.api.reply;
 
+import com.google.gson.annotations.SerializedName;
+
 public abstract class AbstractReply {
 
     protected boolean throttle;
     protected boolean success;
     protected String cause;
 
-    transient protected int requestAmountRemaining;
-    transient protected int timeUntilLimitReset;
+    public static final String REQUEST_REMAINING_FIELD_NAME = "requests_remaining";
+    public static final String TIME_UNTIL_RESET_FIELD_NAME = "time_until_reset";
+
+    @SerializedName(REQUEST_REMAINING_FIELD_NAME)
+    protected final int requestAmountRemaining = -1; // -1 indicates this field has not been deserialized yet
+    @SerializedName(TIME_UNTIL_RESET_FIELD_NAME)
+    protected final int timeUntilLimitReset = -1; // -1 indicates this field has not been deserialized yet
 
     public boolean isThrottle() {
         return throttle;
@@ -26,29 +33,9 @@ public abstract class AbstractReply {
         return requestAmountRemaining;
     }
 
-    /**
-     * Should only be used in {@link net.hypixel.api.HypixelAPI#get(Class, String, Object...)}
-     * This has no use after this value has been set once
-     * @param requestAmountRemaining
-     */
-    public void setRequestAmountRemaining(int requestAmountRemaining)
-    {
-        this.requestAmountRemaining = requestAmountRemaining;
-    }
-
     public int getSecondsUntilReset()
     {
         return timeUntilLimitReset;
-    }
-
-    /**
-     * Should only be used in {@link net.hypixel.api.HypixelAPI#get(Class, String, Object...)}
-     * This has no use after this value has been set once
-     * @param timeUntilReset
-     */
-    public void setSecondsUntilReset(int timeUntilReset)
-    {
-        this.timeUntilLimitReset = timeUntilReset;
     }
 
 
@@ -58,8 +45,8 @@ public abstract class AbstractReply {
                 "throttle=" + throttle +
                 ", success=" + success +
                 ", cause='" + cause + '\'' +
-                ", limitLeft=" + requestAmountRemaining +
-                ", limitReset=" + timeUntilLimitReset +
+                ", limit_left=" + requestAmountRemaining +
+                ", limit_reset=" + timeUntilLimitReset +
                 '}';
     }
 }
