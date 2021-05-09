@@ -18,7 +18,6 @@ Hypixel [Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
 You can use this API as a dependency via the public Hypixel maven repo.
 
 ```xml
-
 <repository>
     <id>Hypixel</id>
     <url>https://repo.hypixel.net/repository/Hypixel/</url>
@@ -26,12 +25,25 @@ You can use this API as a dependency via the public Hypixel maven repo.
 ```
 
 ```xml
-
 <dependency>
     <groupId>net.hypixel</groupId>
     <artifactId>HypixelAPI</artifactId>
     <version>3.0.0</version>
 </dependency>
+```
+
+This repo can also be used with Gradle in the following form.
+
+```gradle
+repositories {
+    maven { url 'https://repo.hypixel.net/repository/Hypixel/' }
+}
+```
+
+```gradle
+dependencies {
+    implementation 'net.hypixel:HypixelAPI:3.0.0'
+}
 ```
 
 ### Dependencies
