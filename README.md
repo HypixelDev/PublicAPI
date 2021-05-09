@@ -15,23 +15,46 @@ Hypixel [Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
 
 ### Usage
 
-You can use this API as a dependency via the public Hypixel maven repo. You can use
+You can use this API as a dependency via the public Hypixel maven repo. You can also use
 the [Example Code](https://github.com/HypixelDev/PublicAPI/tree/master/Example) as a good starting point.
 
+#### Hypixel Maven Repo
+
 ```xml
+
 <repository>
     <id>Hypixel</id>
     <url>https://repo.hypixel.net/repository/Hypixel/</url>
 </repository>
 ```
 
+#### Transports
+
+We include two built in options communicating with the Hypixel API, you can include either of these or even include the
+core API directly and create your own instance of HypixelHTTPClient.
+
+Below is an example of using the Apache HttpClient based transport dependency via Maven.
+
 ```xml
+
 <dependency>
     <groupId>net.hypixel</groupId>
-    <artifactId>HypixelAPI</artifactId>
+    <artifactId>hypixel-api-transport-apache</artifactId>
     <version>4.0.0</version>
 </dependency>
 ```
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        HypixelHTTPClient client = new ApacheHTTPClient(UUID.fromString("your-api-key-here"));
+        HypixelAPI hypixelAPI = new HypixelAPI(client);
+        hypixelAPI.getPlayerByName("Hypixel").thenAccept(System.out::println);
+    }
+}
+```
+
+#### Gradle
 
 This repo can also be used with Gradle in the following form.
 
@@ -43,12 +66,14 @@ repositories {
 
 ```gradle
 dependencies {
-    implementation 'net.hypixel:HypixelAPI:3.0.0'
+    implementation 'net.hypixel:hypixel-api-transport-apache:4.0.0'
 }
 ```
 
 ### Dependencies
+
 The Hypixel Public API Java implementation has the following dependencies:
+
 * Google Gson library
 
 ### Query Limitations
