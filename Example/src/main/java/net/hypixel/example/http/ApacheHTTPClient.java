@@ -6,46 +6,45 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ApacheHTTPClient implements HypixelHTTPClient {
+    private final UUID apiKey;
     private final ExecutorService executorService;
     private final HttpClient httpClient;
 
-    public ApacheHTTPClient() {
+    public ApacheHTTPClient(UUID apiKey) {
+        this.apiKey = apiKey;
         this.executorService = Executors.newCachedThreadPool();
         this.httpClient = HttpClientBuilder.create().build();
     }
 
     @Override
     public CompletableFuture<String> makeRequest(String url) {
-        CompletableFuture<String> future = new CompletableFuture<>();
-        this.executorService.submit(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             try {
-                future.complete(this.httpClient.execute(new HttpGet(url), obj -> EntityUtils.toString(obj.getEntity(), "UTF-8")));
-            } catch (Throwable t) {
-                future.completeExceptionally(t);
+                return this.httpClient.execute(new HttpGet(url), obj -> EntityUtils.toString(obj.getEntity(), "UTF-8"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        });
-        return future;
+        }, this.executorService);
     }
 
     @Override
-    public CompletableFuture<String> makeAuthenticatedRequest(String url, UUID apiKey) {
-        CompletableFuture<String> future = new CompletableFuture<>();
-        this.executorService.submit(() -> {
+    public CompletableFuture<String> makeAuthenticatedRequest(String url) {
+        return CompletableFuture.supplyAsync(() -> {
+            HttpGet request = new HttpGet(url);
+            request.addHeader("API-Key", this.apiKey.toString());
             try {
-                HttpGet request = new HttpGet(url);
-                request.addHeader("API-Key", apiKey.toString());
-                future.complete(this.httpClient.execute(request, obj -> EntityUtils.toString(obj.getEntity(), "UTF-8")));
-            } catch (Throwable t) {
-                future.completeExceptionally(t);
+                return this.httpClient.execute(request, obj -> EntityUtils.toString(obj.getEntity(), "UTF-8"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        });
-        return future;
+        }, this.executorService);
     }
 
     @Override

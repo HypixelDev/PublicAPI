@@ -30,15 +30,13 @@ public class HypixelAPI {
             .create();
     private static final String BASE_URL = "https://api.hypixel.net/";
 
-    private final UUID apiKey;
     private final HypixelHTTPClient httpClient;
 
     /**
      * @param apiKey     the Hypixel API key to be used for the HTTP requests
      * @param httpClient a {@link HypixelHTTPClient} that implements the HTTP behaviour for communicating with the API
      */
-    public HypixelAPI(UUID apiKey, HypixelHTTPClient httpClient) {
-        this.apiKey = apiKey;
+    public HypixelAPI(HypixelHTTPClient httpClient) {
         this.httpClient = httpClient;
     }
 
@@ -47,13 +45,6 @@ public class HypixelAPI {
      */
     public void shutdown() {
         httpClient.shutdown();
-    }
-
-    /**
-     * @return the currently set API key
-     */
-    public UUID getApiKey() {
-        return apiKey;
     }
 
     public CompletableFuture<BoostersReply> getBoosters() {
@@ -253,7 +244,7 @@ public class HypixelAPI {
         if (params != null) {
             url = params.getAsQueryString(url);
         }
-        return httpClient.makeAuthenticatedRequest(url, apiKey).thenApply(content -> {
+        return httpClient.makeAuthenticatedRequest(url).thenApply(content -> {
             if (clazz == ResourceReply.class) {
                 return checkReply((R) new ResourceReply(GSON.fromJson(content, JsonObject.class)));
             } else {
