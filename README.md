@@ -10,12 +10,13 @@ documentation can be found in the code.
 
 ### GitHub Issues
 
-Github issues should only be used to report bugs. Everything else should either be in Github discussions or use the
+GitHub issues should only be used to report bugs. Everything else should either be in GitHub discussions or use the
 Hypixel [Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
 
 ### Usage
 
-You can use this API as a dependency via the public Hypixel maven repo.
+You can use this API as a dependency via the public Hypixel maven repo. You can use
+the [Example Code](https://github.com/HypixelDev/PublicAPI/tree/master/Example) as a good starting point.
 
 ```xml
 <repository>
@@ -28,7 +29,7 @@ You can use this API as a dependency via the public Hypixel maven repo.
 <dependency>
     <groupId>net.hypixel</groupId>
     <artifactId>HypixelAPI</artifactId>
-    <version>3.0.0</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 
