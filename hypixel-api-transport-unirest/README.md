@@ -26,7 +26,13 @@ public class Main {
     public static void main(String[] args) {
         HypixelHTTPClient client = new UnirestHTTPClient(UUID.fromString("your-api-key-here"));
         HypixelAPI hypixelAPI = new HypixelAPI(client);
-        hypixelAPI.getPlayerByName("Hypixel").thenAccept(System.out::println);
+        hypixelAPI.getPlayerByName("Hypixel")
+                .exceptionally(throwable -> {
+                    // Handle exceptions here
+                    throwable.printStackTrace();
+                    return null;
+                })
+                .thenAccept(System.out::println);
     }
 }
 ```
