@@ -216,6 +216,13 @@ public class HypixelAPI {
         );
     }
 
+    public CompletableFuture<SkyBlockProfilesReply> getSkyBlockProfiles(UUID player) {
+        return get(SkyBlockProfilesReply.class, "skyblock/profiles",
+                HTTPQueryParams.create()
+                        .add("uuid", player)
+        );
+    }
+
     public CompletableFuture<SkyBlockNewsReply> getSkyBlockNews() {
         return get(SkyBlockNewsReply.class, "skyblock/news");
     }
