@@ -18,10 +18,9 @@ Hypixel [Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
 You can use this API as a dependency via the public Hypixel maven repo. You can also use
 the [Example Code](https://github.com/HypixelDev/PublicAPI/tree/master/Example) as a good starting point.
 
+
 #### Hypixel Maven Repo
-
 ```xml
-
 <repository>
     <id>Hypixel</id>
     <url>https://repo.hypixel.net/repository/Hypixel/</url>
@@ -34,9 +33,7 @@ We include two built in options communicating with the Hypixel API, you can incl
 core API directly and create your own instance of HypixelHTTPClient.
 
 Below is an example of using the Apache HttpClient based transport dependency via Maven.
-
 ```xml
-
 <dependency>
     <groupId>net.hypixel</groupId>
     <artifactId>hypixel-api-transport-apache</artifactId>
@@ -63,7 +60,6 @@ repositories {
     maven { url 'https://repo.hypixel.net/repository/Hypixel/' }
 }
 ```
-
 ```gradle
 dependencies {
     implementation 'net.hypixel:hypixel-api-transport-apache:4.0.0'
