@@ -70,7 +70,7 @@ dependencies {
 
 The Hypixel API Core implementation has the following dependencies:
 
-* Google Gson library
+* [Google Gson library](https://mvnrepository.com/artifact/com.google.code.gson/gson)
 
 Transports will also have dependencies where required.
 
