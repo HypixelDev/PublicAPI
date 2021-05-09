@@ -113,7 +113,7 @@ public class GuildReply extends AbstractReply {
                     '}';
         }
 
-        public class Member {
+        public static class Member {
             private UUID uuid;
             private String rank;
             private ZonedDateTime joined;
