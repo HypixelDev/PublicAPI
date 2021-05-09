@@ -1,7 +1,7 @@
 package net.hypixel.api.adapters;
 
 import com.google.gson.*;
-import net.hypixel.api.util.GameType;
+import net.hypixel.api.data.type.GameType;
 
 import java.lang.reflect.Type;
 

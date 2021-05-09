@@ -4,10 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.hypixel.api.adapters.BoostersTypeAdapterFactory;
-import net.hypixel.api.adapters.DateTimeTypeAdapter;
-import net.hypixel.api.adapters.GameTypeTypeAdapter;
-import net.hypixel.api.adapters.UUIDTypeAdapter;
+import net.hypixel.api.adapters.*;
+import net.hypixel.api.data.type.GameType;
+import net.hypixel.api.data.type.ServerType;
 import net.hypixel.api.exceptions.BadResponseException;
 import net.hypixel.api.exceptions.BadStatusCodeException;
 import net.hypixel.api.http.HTTPQueryParams;
@@ -15,7 +14,6 @@ import net.hypixel.api.http.HypixelHttpClient;
 import net.hypixel.api.http.HypixelHttpResponse;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
-import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ResourceType;
 
 import java.time.ZonedDateTime;
@@ -27,6 +25,7 @@ public class HypixelAPI {
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
             .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
+            .registerTypeAdapter(ServerType.class, new ServerTypeTypeAdapter())
             .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
             .registerTypeAdapterFactory(new BoostersTypeAdapterFactory<>(BoostersReply.Booster.class))
             .create();

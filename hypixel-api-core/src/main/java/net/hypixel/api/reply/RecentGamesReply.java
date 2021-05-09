@@ -1,6 +1,6 @@
 package net.hypixel.api.reply;
 
-import net.hypixel.api.util.GameType;
+import net.hypixel.api.data.type.GameType;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -41,7 +41,7 @@ public class RecentGamesReply extends AbstractReply {
 
     /**
      * @return Game played during this session
-     * @see net.hypixel.api.util.GameType
+     * @see GameType
      */
     public GameType getGameType() {
       return gameType;

@@ -1,6 +1,6 @@
-package net.hypixel.api.util;
+package net.hypixel.api.data.type;
 
-public enum GameType {
+public enum GameType implements ServerType {
     QUAKECRAFT("Quakecraft", "Quake", 2),
     WALLS("Walls", "Walls", 3),
     PAINTBALL("Paintball", "Paintball", 4),
@@ -80,6 +80,7 @@ public enum GameType {
     /**
      * @return The official name of the GameType
      */
+    @Override
     public String getName() {
         return name;
     }

@@ -1,6 +1,7 @@
 package net.hypixel.api.reply;
 
-import net.hypixel.api.util.GameType;
+import com.google.gson.annotations.SerializedName;
+import net.hypixel.api.data.type.ServerType;
 
 public class StatusReply extends AbstractReply {
 
@@ -21,7 +22,7 @@ public class StatusReply extends AbstractReply {
                 "} " + super.toString();
     }
 
-    public class Session {
+    public static class Session {
 
         /**
          * Boolean if player is online.
@@ -30,12 +31,12 @@ public class StatusReply extends AbstractReply {
         private boolean online;
 
         /**
-         * GameType could be null if a new game has been released
-         * and GameType is not yet added to {@link GameType}.
+         * ServerType could be null if a new game/lobby has been released and type is not yet added.
          * <p>
          * This will NOT throw an exception.
          */
-        private GameType gameType;
+        @SerializedName("gameType")
+        private ServerType serverType;
 
         /**
          * Mode of game being played
@@ -53,8 +54,8 @@ public class StatusReply extends AbstractReply {
             return online;
         }
 
-        public GameType getGameType() {
-            return gameType;
+        public ServerType getServerType() {
+            return serverType;
         }
 
         public String getMode() {
@@ -69,7 +70,7 @@ public class StatusReply extends AbstractReply {
         public String toString() {
             return "Session{" +
                     "online=" + online +
-                    ", gameType=" + gameType +
+                    ", serverType=" + serverType +
                     ", mode=" + mode +
                     ", map=" + map +
                     "}";
