@@ -27,44 +27,20 @@ the [Example Code](https://github.com/HypixelDev/PublicAPI/tree/master/hypixel-a
 </repository>
 ```
 
-#### Transports
-
-We include two built in options communicating with the Hypixel API, you can include either of these or even include the
-core API directly and create your own instance of HypixelHTTPClient.
-
-Below is an example of using the Apache HttpClient based transport dependency via Maven.
-```xml
-<dependency>
-    <groupId>net.hypixel</groupId>
-    <artifactId>hypixel-api-transport-apache</artifactId>
-    <version>4.0.0</version>
-</dependency>
-```
-
-```java
-public class Main {
-    public static void main(String[] args) {
-        HypixelHTTPClient client = new ApacheHTTPClient(UUID.fromString("your-api-key-here"));
-        HypixelAPI hypixelAPI = new HypixelAPI(client);
-        hypixelAPI.getPlayerByName("Hypixel").thenAccept(System.out::println);
-    }
-}
-```
-
-#### Gradle
-
-This repo can also be used with Gradle in the following form.
-
+This repo can also be used with Gradle.
 ```gradle
 repositories {
     maven { url 'https://repo.hypixel.net/repository/Hypixel/' }
 }
 ```
-```gradle
-dependencies {
-    implementation 'net.hypixel:hypixel-api-transport-apache:4.0.0'
-}
-```
+
+#### Transports
+
+We include two built in options communicating with the Hypixel API, you can include either of these or even include the
+core API directly and create your own instance of HypixelHTTPClient.
+
+* [Apache HttpClient Transport](hypixel-api-transport-apache)
+* [Unirest Java Transport](hypixel-api-transport-unirest)
 
 ### Dependencies
 

@@ -1,6 +1,8 @@
 Hypixel Public API - Apache Transport
 ======
 
+### Usage
+
 ```xml
 <dependency>
     <groupId>net.hypixel</groupId>
@@ -8,6 +10,16 @@ Hypixel Public API - Apache Transport
     <version>4.0.0</version>
 </dependency>
 ```
+
+Can also be included with Gradle.
+
+```gradle
+dependencies {
+    implementation 'net.hypixel:hypixel-api-transport-apache:4.0.0'
+}
+```
+
+### Example code
 
 ```java
 public class Main {
