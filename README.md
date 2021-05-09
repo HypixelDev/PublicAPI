@@ -68,9 +68,11 @@ dependencies {
 
 ### Dependencies
 
-The Hypixel Public API Java implementation has the following dependencies:
+The Hypixel API Core implementation has the following dependencies:
 
 * Google Gson library
+
+Transports will also have dependencies where required.
 
 ### Query Limitations
 
