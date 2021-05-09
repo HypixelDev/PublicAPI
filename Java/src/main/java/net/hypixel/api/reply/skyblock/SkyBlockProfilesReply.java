@@ -7,7 +7,7 @@ import net.hypixel.api.reply.AbstractReply;
 public class SkyBlockProfilesReply extends AbstractReply {
     private JsonElement profiles;
 
-    public JsonArray getProfile() {
+    public JsonArray getProfiles() {
         if (profiles == null || profiles.isJsonNull()) {
             return null;
         } else {
