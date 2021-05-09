@@ -17,12 +17,12 @@ public class UnirestHttpClient implements HypixelHttpClient {
 
     @Override
     public CompletableFuture<HypixelHttpResponse> makeRequest(String url) {
-        return Unirest.get(url).asStringAsync().thenApply(res -> new HypixelHttpResponse(res.getStatus(), res.getBody()));
+        return Unirest.get(url).header("User-Agent", DEFAULT_USER_AGENT).asStringAsync().thenApply(res -> new HypixelHttpResponse(res.getStatus(), res.getBody()));
     }
 
     @Override
     public CompletableFuture<HypixelHttpResponse> makeAuthenticatedRequest(String url) {
-        return Unirest.get(url).header("API-Key", this.apiKey.toString()).asStringAsync().thenApply(res -> new HypixelHttpResponse(res.getStatus(), res.getBody()));
+        return Unirest.get(url).header("User-Agent", DEFAULT_USER_AGENT).header("API-Key", this.apiKey.toString()).asStringAsync().thenApply(res -> new HypixelHttpResponse(res.getStatus(), res.getBody()));
     }
 
     @Override

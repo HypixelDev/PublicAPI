@@ -23,7 +23,7 @@ public class ApacheHttpClient implements HypixelHttpClient {
     public ApacheHttpClient(UUID apiKey) {
         this.apiKey = apiKey;
         this.executorService = Executors.newCachedThreadPool();
-        this.httpClient = HttpClientBuilder.create().build();
+        this.httpClient = HttpClientBuilder.create().setUserAgent(DEFAULT_USER_AGENT).build();
     }
 
     @Override
