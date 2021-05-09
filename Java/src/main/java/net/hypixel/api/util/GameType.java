@@ -27,7 +27,10 @@ public enum GameType {
     BUILD_BATTLE("Build Battle", "BuildBattle", 60),
     DUELS("Duels", "Duels", 61),
     SKYBLOCK("SkyBlock", "SkyBlock", 63),
-    PIT("Pit", "Pit", 64);
+    PIT("Pit", "Pit", 64),
+    REPLAY("Replay", "Replay", 65),
+    SMP("SMP", "SMP", 67),
+    ;
 
     private static final GameType[] VALUES = values();
 
