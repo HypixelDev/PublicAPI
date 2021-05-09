@@ -16,7 +16,7 @@ Hypixel [Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
 ### Usage
 
 You can use this API as a dependency via the public Hypixel maven repo. You can also use
-the [Example Code](https://github.com/HypixelDev/PublicAPI/tree/master/Example) as a good starting point.
+the [Example Code](https://github.com/HypixelDev/PublicAPI/tree/master/hypixel-api-example) as a good starting point.
 
 
 #### Hypixel Maven Repo
