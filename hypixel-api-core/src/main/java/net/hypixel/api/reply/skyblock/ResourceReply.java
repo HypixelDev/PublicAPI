@@ -5,8 +5,8 @@ import net.hypixel.api.reply.AbstractReply;
 
 public class ResourceReply extends AbstractReply {
 
-    private long lastUpdated;
-    private JsonObject response;
+    private final long lastUpdated;
+    private final JsonObject response;
 
     public ResourceReply(JsonObject response) {
         this.response = response;
@@ -26,6 +26,7 @@ public class ResourceReply extends AbstractReply {
     /**
      * Gets unix time when the resource was updated.
      * Will return -1 if last updated was not included in response
+     *
      * @return long unix time
      */
     public long getLastUpdated() {

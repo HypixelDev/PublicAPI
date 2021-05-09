@@ -1,6 +1,8 @@
 package net.hypixel.api.apache;
 
-import net.hypixel.api.http.HypixelHTTPClient;
+import net.hypixel.api.http.HypixelHttpClient;
+import net.hypixel.api.http.HypixelHttpResponse;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -12,22 +14,24 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ApacheHTTPClient implements HypixelHTTPClient {
+public class ApacheHttpClient implements HypixelHttpClient {
+
     private final UUID apiKey;
     private final ExecutorService executorService;
     private final HttpClient httpClient;
 
-    public ApacheHTTPClient(UUID apiKey) {
+    public ApacheHttpClient(UUID apiKey) {
         this.apiKey = apiKey;
         this.executorService = Executors.newCachedThreadPool();
         this.httpClient = HttpClientBuilder.create().build();
     }
 
     @Override
-    public CompletableFuture<String> makeRequest(String url) {
+    public CompletableFuture<HypixelHttpResponse> makeRequest(String url) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return this.httpClient.execute(new HttpGet(url), obj -> EntityUtils.toString(obj.getEntity(), "UTF-8"));
+                HttpResponse response = this.httpClient.execute(new HttpGet(url));
+                return new HypixelHttpResponse(response.getStatusLine().getStatusCode(), EntityUtils.toString(response.getEntity(), "UTF-8"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -35,12 +39,13 @@ public class ApacheHTTPClient implements HypixelHTTPClient {
     }
 
     @Override
-    public CompletableFuture<String> makeAuthenticatedRequest(String url) {
+    public CompletableFuture<HypixelHttpResponse> makeAuthenticatedRequest(String url) {
         return CompletableFuture.supplyAsync(() -> {
             HttpGet request = new HttpGet(url);
             request.addHeader("API-Key", this.apiKey.toString());
             try {
-                return this.httpClient.execute(request, obj -> EntityUtils.toString(obj.getEntity(), "UTF-8"));
+                HttpResponse response = this.httpClient.execute(request);
+                return new HypixelHttpResponse(response.getStatusLine().getStatusCode(), EntityUtils.toString(response.getEntity(), "UTF-8"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

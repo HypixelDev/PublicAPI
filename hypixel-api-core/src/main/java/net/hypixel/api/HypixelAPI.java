@@ -3,14 +3,16 @@ package net.hypixel.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import net.hypixel.api.adapters.BoostersTypeAdapterFactory;
 import net.hypixel.api.adapters.DateTimeTypeAdapter;
 import net.hypixel.api.adapters.GameTypeTypeAdapter;
 import net.hypixel.api.adapters.UUIDTypeAdapter;
-import net.hypixel.api.exceptions.APIThrottleException;
-import net.hypixel.api.exceptions.HypixelAPIException;
+import net.hypixel.api.exceptions.BadResponseException;
+import net.hypixel.api.exceptions.BadStatusCodeException;
 import net.hypixel.api.http.HTTPQueryParams;
-import net.hypixel.api.http.HypixelHTTPClient;
+import net.hypixel.api.http.HypixelHttpClient;
+import net.hypixel.api.http.HypixelHttpResponse;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
 import net.hypixel.api.util.GameType;
@@ -30,18 +32,17 @@ public class HypixelAPI {
             .create();
     private static final String BASE_URL = "https://api.hypixel.net/";
 
-    private final HypixelHTTPClient httpClient;
+    private final HypixelHttpClient httpClient;
 
     /**
-     * @param apiKey     the Hypixel API key to be used for the HTTP requests
-     * @param httpClient a {@link HypixelHTTPClient} that implements the HTTP behaviour for communicating with the API
+     * @param httpClient a {@link HypixelHttpClient} that implements the HTTP behaviour for communicating with the API
      */
-    public HypixelAPI(HypixelHTTPClient httpClient) {
+    public HypixelAPI(HypixelHttpClient httpClient) {
         this.httpClient = httpClient;
     }
 
     /**
-     * Shuts down the {@link HypixelHTTPClient}
+     * Shuts down the {@link HypixelHttpClient}
      */
     public void shutdown() {
         httpClient.shutdown();
@@ -244,18 +245,38 @@ public class HypixelAPI {
         if (params != null) {
             url = params.getAsQueryString(url);
         }
-        return httpClient.makeAuthenticatedRequest(url).thenApply(content -> {
-            if (clazz == ResourceReply.class) {
-                return checkReply((R) new ResourceReply(GSON.fromJson(content, JsonObject.class)));
-            } else {
-                return checkReply(GSON.fromJson(content, clazz));
-            }
-        });
+        return httpClient.makeAuthenticatedRequest(url)
+                .thenApply(this::checkResponse)
+                .thenApply(response -> {
+                    if (clazz == ResourceReply.class) {
+                        return checkReply((R) new ResourceReply(GSON.fromJson(response.getBody(), JsonObject.class)));
+                    }
+                    return checkReply(GSON.fromJson(response.getBody(), clazz));
+                });
     }
 
     private CompletableFuture<ResourceReply> requestResource(String resource) {
         return httpClient.makeRequest(BASE_URL + "resources/" + resource)
-                .thenApply(content -> checkReply(new ResourceReply(GSON.fromJson(content, JsonObject.class))));
+                .thenApply(this::checkResponse)
+                .thenApply(response -> checkReply(new ResourceReply(GSON.fromJson(response.getBody(), JsonObject.class))));
+    }
+
+    /**
+     * Checks the status of the response and throws an exception if needed
+     */
+    private HypixelHttpResponse checkResponse(HypixelHttpResponse response) {
+        if (response.getStatusCode() == 200) {
+            return response;
+        }
+
+        String cause;
+        try {
+            cause = GSON.fromJson(response.getBody(), JsonObject.class).get("cause").getAsString();
+        } catch (JsonSyntaxException ignored) {
+            cause = "Unknown (body is not json)";
+        }
+
+        throw new BadStatusCodeException(response.getStatusCode(), cause);
     }
 
     /**
@@ -267,10 +288,8 @@ public class HypixelAPI {
      */
     private <T extends AbstractReply> T checkReply(T reply) {
         if (reply != null) {
-            if (reply.isThrottle()) {
-                throw new APIThrottleException();
-            } else if (!reply.isSuccess()) {
-                throw new HypixelAPIException(reply.getCause());
+            if (!reply.isSuccess()) {
+                throw new BadResponseException(reply.getCause());
             }
         }
         return reply;

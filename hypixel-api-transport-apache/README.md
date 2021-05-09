@@ -24,7 +24,7 @@ dependencies {
 ```java
 public class Main {
     public static void main(String[] args) {
-        HypixelHTTPClient client = new ApacheHTTPClient(UUID.fromString("your-api-key-here"));
+        HypixelHttpClient client = new ApacheHttpClient(UUID.fromString("your-api-key-here"));
         HypixelAPI hypixelAPI = new HypixelAPI(client);
         hypixelAPI.getPlayerByName("Hypixel")
                 .exceptionally(throwable -> {
