@@ -74,18 +74,6 @@ The Hypixel API Core implementation has the following dependencies:
 
 Transports will also have dependencies where required.
 
-### Query Limitations
-
-The API server has a request limit of 120 queries per minute. Any abuse of the API or intentions to bypass this limit (
-such as with multiple API keys) will lead to your API key being reset or banned.
-
-If you require a higher limit than the above you can open a support ticket at https://support.hypixel.net and provide
-your use case and why you require a higher limit.
-
-### Obtaining an API Key
-
-You can obtain an API key by joining ```mc.hypixel.net``` with a valid Minecraft account and running the /api command.
-You will then be assigned a unique key that is to remain **private**.
 
 ### Contributing
 
