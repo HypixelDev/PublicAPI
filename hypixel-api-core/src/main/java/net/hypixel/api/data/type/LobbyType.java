@@ -1,5 +1,8 @@
 package net.hypixel.api.data.type;
 
+/**
+ * A LobbyType is used for lobbies which do not have a gametype linked.
+ */
 public enum LobbyType implements ServerType {
     MAIN("Main Lobby"),
     TOURNAMENT("Tournament Hall"),
