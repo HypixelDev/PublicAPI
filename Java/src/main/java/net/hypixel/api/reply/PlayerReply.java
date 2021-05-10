@@ -227,22 +227,6 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return Whether or not this player has hidden their session in the API (via that status
-         * endpoint)
-         */
-        public boolean isSessionVisible() {
-            return getBoolProperty("settings.apiSession", true);
-        }
-
-        /**
-         * @return Whether or not this player has hidden their recent games in the API (via the
-         * recentGames endpoint)
-         */
-        public boolean areRecentGamesVisible() {
-            return getBoolProperty("settings.apiRecentGames", true);
-        }
-
-        /**
          * @return The raw player object returned by the Hypixel API
          */
         public JsonObject getRaw() {
