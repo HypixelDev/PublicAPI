@@ -12,6 +12,7 @@ import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
 import net.hypixel.api.util.GameType;
+import net.hypixel.api.util.RateLimiter;
 import net.hypixel.api.util.ResourceType;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -25,6 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HypixelAPI {
+    private static final int DEFAULT_MAX_REQUESTS_PER_MINUTE = 120;
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
@@ -40,19 +42,33 @@ public class HypixelAPI {
 
     private final ExecutorService executorService;
     private final HttpClient httpClient;
+    private final RateLimiter rateLimiter;
 
     public HypixelAPI(UUID apiKey) {
         this.apiKey = apiKey;
 
         this.executorService = Executors.newCachedThreadPool();
         this.httpClient = HttpClientBuilder.create().build();
+        this.rateLimiter = new RateLimiter(DEFAULT_MAX_REQUESTS_PER_MINUTE);
     }
 
     /**
-     * Shuts down the internal executor service
+     * Set how many requests this API instance is allowed to make in one minute.
+     * <p>If more requests attempt to pass past this limit in one minute,
+     * they will need to wait for the next minute. Default is 120.
+     *
+     * @param limitPerMinute The new limit.
+     */
+    public void setRateLimit(int limitPerMinute) {
+        rateLimiter.setRate(limitPerMinute);
+    }
+
+    /**
+     * Shuts down the internal executor service and rate limiter service.
      */
     public void shutdown() {
         executorService.shutdown();
+        rateLimiter.shutdown();
     }
 
     /**
@@ -246,6 +262,8 @@ public class HypixelAPI {
 
             executorService.submit(() -> {
                 try {
+                    rateLimiter.beforeAction();
+
                     R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
                         if (clazz == ResourceReply.class) {
