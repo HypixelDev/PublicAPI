@@ -10,13 +10,16 @@ documentation can be found in the code.
 
 ### GitHub Issues
 
-Github issues should only be used to report bugs. Everything else should either be in Github discussions or use the
+GitHub issues should only be used to report bugs. Everything else should either be in GitHub discussions or use the
 Hypixel [Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
 
 ### Usage
 
-You can use this API as a dependency via the public Hypixel maven repo.
+You can use this API as a dependency via the public Hypixel maven repo. You can also use
+the [Example Code](https://github.com/HypixelDev/PublicAPI/tree/master/hypixel-api-example) as a good starting point.
 
+
+#### Hypixel Maven Repo
 ```xml
 <repository>
     <id>Hypixel</id>
@@ -24,47 +27,29 @@ You can use this API as a dependency via the public Hypixel maven repo.
 </repository>
 ```
 
-```xml
-<dependency>
-    <groupId>net.hypixel</groupId>
-    <artifactId>HypixelAPI</artifactId>
-    <version>3.0.0</version>
-</dependency>
-```
-
-This repo can also be used with Gradle in the following form.
-
+This repo can also be used with Gradle.
 ```gradle
 repositories {
     maven { url 'https://repo.hypixel.net/repository/Hypixel/' }
 }
 ```
 
-```gradle
-dependencies {
-    implementation 'net.hypixel:HypixelAPI:3.0.0'
-}
-```
+#### Transports
+
+We include two built in options communicating with the Hypixel API, you can include either of these or even include the
+core API directly and create your own instance of HypixelHTTPClient.
+
+* [Apache HttpClient Transport](hypixel-api-transport-apache/README.md)
+* [Unirest Java Transport](hypixel-api-transport-unirest/README.md)
 
 ### Dependencies
 
-The Hypixel PublicAPI has the following dependencies:
+The Hypixel API Core implementation has the following dependencies:
 
-* Google Gson library
-* Apache HttpClient
+* [Google Gson library - 2.8.6](https://mvnrepository.com/artifact/com.google.code.gson/gson)
 
-### Query Limitations
+Transports will also have dependencies where required.
 
-The API server has a request limit of 120 queries per minute. Any abuse of the API or intentions to bypass this limit (
-such as with multiple API keys) will lead to your API key being reset or banned.
-
-If you require a higher limit than the above you can open a support ticket at https://support.hypixel.net and provide
-your use case and why you require a higher limit.
-
-### Obtaining an API Key
-
-You can obtain an API key by joining ```mc.hypixel.net``` with a valid Minecraft account and running the /api command.
-You will then be assigned a unique key that is to remain **private**.
 
 ### Contributing
 
