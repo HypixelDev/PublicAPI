@@ -16,7 +16,7 @@ import net.hypixel.api.util.ILeveling;
 
 public class PlayerReply extends AbstractReply {
 
-    private static final Player BLANK_PLAYER = new Player();
+    private static final Player BLANK_PLAYER = new Player(null);
 
     private Player player;
 
@@ -36,7 +36,14 @@ public class PlayerReply extends AbstractReply {
         private static final Gson   GSON         = new Gson();
         private static final String DEFAULT_RANK = "NONE";
 
-        private JsonElement raw;
+        private final JsonElement raw;
+
+        /**
+         * @param raw A JSON object representing a Hypixel player, as returned from the API
+         */
+        public Player(JsonElement raw) {
+            this.raw = raw;
+        }
 
         /**
          * @return A string representing the player's Minecraft UUID (without hyphens)
