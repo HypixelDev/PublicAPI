@@ -41,5 +41,5 @@ public class Main {
 
 This transport depends on the following:
 
-* [Google Gson library](https://mvnrepository.com/artifact/com.google.code.gson/gson) (for hypixel-api-core)
-* [Apache HttpClient](https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient)
+* [Google Gson library - 2.8.6](https://mvnrepository.com/artifact/com.google.code.gson/gson) (for hypixel-api-core)
+* [Apache HttpClient - 4.5.13](https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient)

@@ -41,5 +41,5 @@ public class Main {
 
 This transport depends on the following:
 
-* [Google Gson library](https://mvnrepository.com/artifact/com.google.code.gson/gson) (for hypixel-api-core)
-* [Unirest Java](https://mvnrepository.com/artifact/com.konghq/unirest-java)
+* [Google Gson library - 2.8.6](https://mvnrepository.com/artifact/com.google.code.gson/gson) (for hypixel-api-core)
+* [Unirest Java - 3.11.11](https://mvnrepository.com/artifact/com.konghq/unirest-java)
