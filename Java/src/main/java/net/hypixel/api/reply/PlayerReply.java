@@ -75,7 +75,7 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The player's precise network level (includng progress)
+         * @return The player's precise network level (including progress)
          */
         public double getNetworkLevel() {
             return ILeveling.getExactLevel(getNetworkExp());
