@@ -7,6 +7,12 @@ public class GetPlayerExample {
     public static void main(String[] args) {
         ExampleUtil.API.getPlayerByUuid(ExampleUtil.HYPIXEL)
             .whenComplete((playerReply, throwable) -> {
+                if (throwable != null) {
+                    throwable.printStackTrace();
+                    System.exit(0);
+                    return;
+                }
+
                 Player player = playerReply.getPlayer();
 
                 if (player.exists()) {
