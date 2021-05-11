@@ -69,7 +69,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
             } catch (InterruptedException e) {
                 throw new AssertionError("This should not have been possible", e);
             }
-        }).subscribeOn(Schedulers.boundedElastic()).subscribe(RequestCallback::sendRequest);
+        }).subscribeOn(Schedulers.boundedElastic()).limitRate(3).subscribe(RequestCallback::sendRequest);
     }
 
     @Override
