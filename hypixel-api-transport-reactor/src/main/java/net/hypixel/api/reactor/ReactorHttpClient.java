@@ -12,6 +12,7 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.util.function.Tuple2;
 
+import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CompletableFuture;
@@ -69,7 +70,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
             } catch (InterruptedException e) {
                 throw new AssertionError("This should not have been possible", e);
             }
-        }).subscribeOn(Schedulers.boundedElastic()).limitRate(1).subscribe(RequestCallback::sendRequest);
+        }).delayElements(Duration.ofMillis(50)).subscribe(RequestCallback::sendRequest);
     }
 
     @Override
