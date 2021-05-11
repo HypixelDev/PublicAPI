@@ -41,7 +41,7 @@ core API directly and create your own instance of HypixelHTTPClient.
 
 * [Apache HttpClient Transport](hypixel-api-transport-apache/README.md)
 * [Unirest Java Transport](hypixel-api-transport-unirest/README.md)
-* [Project Reactor Transport](hypixel-api-transport-reactor/README.md)
+* [Project Reactor Transport](hypixel-api-transport-reactor/README.md) (automatic rate-limiting by default)
 
 ### Dependencies
 
