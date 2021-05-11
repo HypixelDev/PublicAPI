@@ -21,8 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-public class ReactorHttpClient implements HypixelHttpClient
-{
+public class ReactorHttpClient implements HypixelHttpClient {
     /**
      * The {@link HttpClient} used to send requests with
      */
@@ -64,14 +63,12 @@ public class ReactorHttpClient implements HypixelHttpClient
      * delays sending requests when the rate limit has been reached until the next reset
      * @param apiKey
      */
-    public ReactorHttpClient(UUID apiKey)
-    {
+    public ReactorHttpClient(UUID apiKey) {
         this.apiKey = apiKey;
         this.httpClient = HttpClient.create().secure();
 
         this.requestCallbackFluxDisposable = Flux.<RequestCallback>generate((synchronousSink) -> {
-            try
-            {
+            try {
                 // blocks till next request callback has been found
                 RequestCallback callback = blockingQueue.take();
                 // we don't want skipped requests to decrease our limit
@@ -79,14 +76,12 @@ public class ReactorHttpClient implements HypixelHttpClient
                     callback = blockingQueue.take();
                 }
                 // trigger waiting when the limit has been reached
-                if (this.requestsLeft.updateAndGet(amt -> amt - 1) < 0)
-                {
+                if (this.requestsLeft.updateAndGet(amt -> amt - 1) < 0) {
                     this.blockingMonoForRequests.block();
                 }
                 // pass the next request callback to this flux's SynchronousSink
                 synchronousSink.next(callback);
-            } catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 // this error should never happen
                 // how could this be improved?
                 e.printStackTrace();
@@ -96,16 +91,14 @@ public class ReactorHttpClient implements HypixelHttpClient
     }
 
     @Override
-    public CompletableFuture<HypixelHttpResponse> makeRequest(String url)
-    {
+    public CompletableFuture<HypixelHttpResponse> makeRequest(String url) {
         return this.makeRequest(url, false).getRequestResult()
                 .map(tuple -> new HypixelHttpResponse(tuple.getT2(), tuple.getT1()))
                 .toFuture();
     }
 
     @Override
-    public CompletableFuture<HypixelHttpResponse> makeAuthenticatedRequest(String url)
-    {
+    public CompletableFuture<HypixelHttpResponse> makeAuthenticatedRequest(String url) {
         // this ignores the possibility of canceling the request
         return this.makeRequest(url, true).getRequestResult()
                 .map(tuple -> new HypixelHttpResponse(tuple.getT2(), tuple.getT1()))
@@ -113,8 +106,7 @@ public class ReactorHttpClient implements HypixelHttpClient
     }
 
     @Override
-    public void shutdown()
-    {
+    public void shutdown() {
         // cancel subscription to end thread
         this.requestCallbackFluxDisposable.dispose();
     }
@@ -127,8 +119,7 @@ public class ReactorHttpClient implements HypixelHttpClient
      * (not sure how that would be implemented in the hypixel api!!)
      * @param path full url
      */
-    public RequestResultMono makeRequest(String path, boolean isAuthenticated)
-    {
+    public RequestResultMono makeRequest(String path, boolean isAuthenticated) {
         // create a reference to this request's cancel callback
         AtomicReference<RequestCallback> reference = new AtomicReference<>();
         return new RequestResultMono(Mono.<Tuple2<String, Integer>>create(sink -> {
@@ -136,12 +127,10 @@ public class ReactorHttpClient implements HypixelHttpClient
             RequestCallback callback = new RequestCallback(path, sink, isAuthenticated, this);
             reference.set(callback);
 
-            try
-            {
+            try {
                 // add this callback to our blocking queue
                 this.blockingQueue.put(callback);
-            } catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 // cancel our request silently
                 // should this somehow send the error downstream? (this point should never be reached though)
                 callback.execute(false);
@@ -161,15 +150,12 @@ public class ReactorHttpClient implements HypixelHttpClient
      * requests error
      * @throws InterruptedException should never happen, don't know when it would
      */
-    private ResponseHandlingResult handleResponse(HttpClientResponse response, RequestCallback requestCallback) throws InterruptedException
-    {
+    private ResponseHandlingResult handleResponse(HttpClientResponse response, RequestCallback requestCallback) throws InterruptedException {
         // only trigger this code after every reset (and when starting the program)
-        if (this.firstRequestReturned.compareAndSet(false, true))
-        {
+        if (this.firstRequestReturned.compareAndSet(false, true)) {
             int timeRemaining = response.responseHeaders().getInt("ratelimit-reset");
 
-            if (response.status() == HttpResponseStatus.TOO_MANY_REQUESTS)
-            {
+            if (response.status() == HttpResponseStatus.TOO_MANY_REQUESTS) {
                 // stop further requests from being sent
                 this.requestsLeft.set(0);
                 // start clock for next reset
@@ -202,8 +188,7 @@ public class ReactorHttpClient implements HypixelHttpClient
      * (has 2 seconds margin to account for errors from the server's clock)
      * @param timeRemaining
      */
-    private void resetForFirstRequest(int timeRemaining)
-    {
+    private void resetForFirstRequest(int timeRemaining) {
         Schedulers.parallel().schedule(() -> {
             this.firstRequestReturned.set(false);
             this.requestsLeft.set(1);
@@ -215,28 +200,24 @@ public class ReactorHttpClient implements HypixelHttpClient
      * A result class that includes both the resulting request (as a {@link Mono<String>})
      * and a {@link AtomicReference<Consumer<Boolean>>} callback to cancel this request with
      */
-    public static class RequestResultMono
-    {
+    public static class RequestResultMono {
         /**
          * Callback to optionally cancel this request
          */
         private AtomicReference<RequestCallback> callbackReference;
         private Mono<Tuple2<String, Integer>> requestResult;
 
-        public RequestResultMono(Mono<Tuple2<String, Integer>> requestResult, AtomicReference<RequestCallback> callbackReference)
-        {
+        public RequestResultMono(Mono<Tuple2<String, Integer>> requestResult, AtomicReference<RequestCallback> callbackReference) {
             this.callbackReference = callbackReference;
             this.requestResult = requestResult;
         }
 
         // useful for canceling requests, not supported by hypixel-api currently
-        public AtomicReference<RequestCallback> getCallbackReference()
-        {
+        public AtomicReference<RequestCallback> getCallbackReference() {
             return this.callbackReference;
         }
 
-        public Mono<Tuple2<String, Integer>> getRequestResult()
-        {
+        public Mono<Tuple2<String, Integer>> getRequestResult() {
             return this.requestResult;
         }
     }
@@ -244,8 +225,7 @@ public class ReactorHttpClient implements HypixelHttpClient
     /**
      * A helper class to notify waiting threads
      */
-    private static class BlockingMonoCallback implements Consumer<MonoSink<Boolean>>
-    {
+    private static class BlockingMonoCallback implements Consumer<MonoSink<Boolean>> {
         private MonoSink<Boolean> sinkReference = null;
 
         /**
@@ -253,16 +233,14 @@ public class ReactorHttpClient implements HypixelHttpClient
          * @param booleanMonoSink
          */
         @Override
-        public void accept(MonoSink<Boolean> booleanMonoSink)
-        {
+        public void accept(MonoSink<Boolean> booleanMonoSink) {
             sinkReference = booleanMonoSink;
         }
 
         /**
          * Trigger current waiting thread to continue
          */
-        public void triggerRelease()
-        {
+        public void triggerRelease() {
             if (this.sinkReference != null) {
                 this.sinkReference.success(true);
             }
@@ -272,16 +250,14 @@ public class ReactorHttpClient implements HypixelHttpClient
     /**
      * A helper class that handles sending the actual request
      */
-    private static class RequestCallback
-    {
+    private static class RequestCallback {
         private final String url;
         private final MonoSink<Tuple2<String, Integer>> monoSink;
         private final ReactorHttpClient requestRateLimiter;
         private final boolean isAuthenticated;
         private boolean isCompleted = false;
 
-        public RequestCallback(String url, MonoSink<Tuple2<String, Integer>> monoSink, boolean isAuthenticated, ReactorHttpClient requestRateLimiter)
-        {
+        public RequestCallback(String url, MonoSink<Tuple2<String, Integer>> monoSink, boolean isAuthenticated, ReactorHttpClient requestRateLimiter) {
             this.url = url;
             this.monoSink = monoSink;
             this.requestRateLimiter = requestRateLimiter;
@@ -291,8 +267,7 @@ public class ReactorHttpClient implements HypixelHttpClient
             monoSink.onDispose(() -> this.isCompleted = true);
         }
 
-        public boolean isCompleted()
-        {
+        public boolean isCompleted() {
             return this.isCompleted;
         }
 
@@ -300,8 +275,7 @@ public class ReactorHttpClient implements HypixelHttpClient
          * Either send the request or return {@link Mono#empty()}
          * @param shouldRequest
          */
-        public void execute(Boolean shouldRequest)
-        {
+        public void execute(Boolean shouldRequest) {
             if (isCompleted) return;
 
             if (shouldRequest) {
@@ -309,8 +283,7 @@ public class ReactorHttpClient implements HypixelHttpClient
                 (this.isAuthenticated ? requestRateLimiter.httpClient.headers(headers -> headers.add("API-Key", requestRateLimiter.apiKey.toString())) : requestRateLimiter.httpClient).get()
                         .uri(url)
                         .responseSingle((response, body) -> {
-                            try
-                            {
+                            try {
                                 // handle response and get back whether to return this request's body or wait
                                 ResponseHandlingResult result = requestRateLimiter.handleResponse(response, this);
 
@@ -319,8 +292,7 @@ public class ReactorHttpClient implements HypixelHttpClient
                                     return body.asString().zipWith(Mono.just(result.statusCode));
                                 }
                                 return Mono.empty();
-                            } catch (InterruptedException e)
-                            {
+                            } catch (InterruptedException e) {
                                 // silently skip request
                                 monoSink.success();
                                 System.out.println("ERROR: Queue insertion got interrupted, serious problem! (this should not happen!!)");
@@ -332,25 +304,21 @@ public class ReactorHttpClient implements HypixelHttpClient
             this.monoSink.success();
         }
 
-        public void cancel()
-        {
+        public void cancel() {
             this.execute(false);
         }
 
-        // should only be called by ReactorHttpClient --> private
-        private void sendRequest()
-        {
+        // should only be called by ReactorHttpClient, hence private
+        private void sendRequest() {
             this.execute(true);
         }
     }
 
-    private static class ResponseHandlingResult
-    {
+    private static class ResponseHandlingResult {
         public final boolean allowToPass;
         public final int statusCode;
 
-        public ResponseHandlingResult(boolean allowToPass, int statusCode)
-        {
+        public ResponseHandlingResult(boolean allowToPass, int statusCode) {
             this.allowToPass = allowToPass;
             this.statusCode = statusCode;
         }
