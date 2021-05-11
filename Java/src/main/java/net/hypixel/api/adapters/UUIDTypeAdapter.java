@@ -4,6 +4,7 @@ import com.google.gson.*;
 
 import java.lang.reflect.Type;
 import java.util.UUID;
+import net.hypixel.api.util.Utilities;
 
 public class UUIDTypeAdapter implements JsonDeserializer<UUID>, JsonSerializer<UUID> {
 
@@ -14,11 +15,6 @@ public class UUIDTypeAdapter implements JsonDeserializer<UUID>, JsonSerializer<U
 
     @Override
     public UUID deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        String uuid = json.getAsString();
-        if (uuid.contains("-")) {
-            return UUID.fromString(uuid);
-        } else {
-            return UUID.fromString(uuid.substring(0, 8) + "-" + uuid.substring(8, 12) + "-" + uuid.substring(12, 16) + "-" + uuid.substring(16, 20) + "-" + uuid.substring(20, 32));
-        }
+        return Utilities.uuidFromString(json.getAsString());
     }
 }

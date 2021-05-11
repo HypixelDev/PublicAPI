@@ -13,6 +13,7 @@ import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.pets.PetStats;
 import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ILeveling;
+import net.hypixel.api.util.Utilities;
 
 public class PlayerReply extends AbstractReply {
 
@@ -48,8 +49,9 @@ public class PlayerReply extends AbstractReply {
         /**
          * @return A string representing the player's Minecraft UUID (without hyphens)
          */
-        public String getUuid() {
-            return getStringProperty("uuid", null);
+        public UUID getUuid() {
+            String uuidStr = getStringProperty("uuid", null);
+            return uuidStr != null ? Utilities.uuidFromString(uuidStr) : null;
         }
 
         /**
