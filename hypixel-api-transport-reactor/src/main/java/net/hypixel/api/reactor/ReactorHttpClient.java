@@ -32,6 +32,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
      * marker to reset {@link ReactorHttpClient#requestsLeft} and release waiting threads by triggering {@link BlockingMonoCallback#triggerRelease()}
      */
     private final AtomicBoolean firstRequestReturned = new AtomicBoolean(false);
+    private final AtomicBoolean overflowStartedNewClock = new AtomicBoolean(false);
     /**
      * AtomicInteger keeping track of how many requests we can send until we hit the limit
      * (initialized with 1 so the first request will return and reset this value before allowing other requests to be sent)
@@ -151,25 +152,26 @@ public class ReactorHttpClient implements HypixelHttpClient {
      * @throws InterruptedException should never happen, don't know when it would
      */
     private ResponseHandlingResult handleResponse(HttpClientResponse response, RequestCallback requestCallback) throws InterruptedException {
-        // only trigger this code after every reset (and when starting the program)
-        if (this.firstRequestReturned.compareAndSet(false, true)) {
+        if (response.status() == HttpResponseStatus.TOO_MANY_REQUESTS) {
+            // start clock for next reset
             int timeRemaining = response.responseHeaders().getInt("ratelimit-reset");
-
-            if (response.status() == HttpResponseStatus.TOO_MANY_REQUESTS) {
+            if (this.overflowStartedNewClock.compareAndSet(false, true)) {
                 // stop further requests from being sent
                 this.requestsLeft.set(0);
                 // start clock for next reset
                 resetForFirstRequest(timeRemaining);
-
-                // execute this last to prevent a possible exception from messing up our clock synchronization
-                this.blockingQueue.put(requestCallback);
-                // tell the makeRequest returned mono to wait for the actual body instead of an error code
-                return new ResponseHandlingResult(false, response.status().code());
             }
 
-            // System.out.println("Time Remaining: " + timeRemaining);
+            // execute this last to prevent a possible exception from messing up our clock synchronization
+            this.blockingQueue.put(requestCallback);
+            // tell the makeRequest returned mono to wait for the actual body instead of an error code
+            return new ResponseHandlingResult(false, response.status().code());
+        }
+
+        // only trigger this code after every reset (and when starting the program)
+        if (this.firstRequestReturned.compareAndSet(false, true)) {
+            int timeRemaining = response.responseHeaders().getInt("ratelimit-reset");
             int requestsRemaining = response.responseHeaders().getInt("ratelimit-remaining");
-            // System.out.println("Requests Remaining: " + requestsRemaining);
 
             // reset request limit
             this.requestsLeft.set(requestsRemaining);
@@ -191,6 +193,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
     private void resetForFirstRequest(int timeRemaining) {
         Schedulers.parallel().schedule(() -> {
             this.firstRequestReturned.set(false);
+            this.overflowStartedNewClock.set(false);
             this.requestsLeft.set(1);
             this.blockingMonoCallback.triggerRelease();
         }, timeRemaining + 2, TimeUnit.SECONDS);
