@@ -44,7 +44,7 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return A string representing the player's Minecraft UUID (without hyphens)
+         * @return The player's Minecraft UUID
          */
         public UUID getUuid() {
             String uuidStr = getStringProperty("uuid", null);
