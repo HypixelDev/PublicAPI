@@ -1,6 +1,5 @@
 package net.hypixel.api.reply;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -33,8 +32,6 @@ public class PlayerReply extends AbstractReply {
     }
 
     public static class Player {
-
-        private static final Gson   GSON         = new Gson();
         private static final String DEFAULT_RANK = "NONE";
 
         private final JsonElement raw;
@@ -224,7 +221,7 @@ public class PlayerReply extends AbstractReply {
 
             Type statsObjectType = new TypeToken<Map<String, Map<String, Object>>>() {
             }.getType();
-            return new PetStats(GSON.fromJson(petStats, statsObjectType));
+            return new PetStats(Utilities.GSON.fromJson(petStats, statsObjectType));
         }
 
         /**

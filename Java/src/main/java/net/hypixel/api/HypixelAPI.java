@@ -1,18 +1,10 @@
 package net.hypixel.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import net.hypixel.api.adapters.BoostersTypeAdapterFactory;
-import net.hypixel.api.adapters.DateTimeTypeAdapter;
-import net.hypixel.api.adapters.GameTypeTypeAdapter;
-import net.hypixel.api.adapters.PlayerTypeAdapter;
-import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
 import net.hypixel.api.reply.AbstractReply;
@@ -25,7 +17,6 @@ import net.hypixel.api.reply.KeyReply;
 import net.hypixel.api.reply.LeaderboardsReply;
 import net.hypixel.api.reply.PlayerCountReply;
 import net.hypixel.api.reply.PlayerReply;
-import net.hypixel.api.reply.PlayerReply.Player;
 import net.hypixel.api.reply.RecentGamesReply;
 import net.hypixel.api.reply.StatusReply;
 import net.hypixel.api.reply.WatchdogStatsReply;
@@ -34,24 +25,14 @@ import net.hypixel.api.reply.skyblock.ResourceReply;
 import net.hypixel.api.reply.skyblock.SkyBlockAuctionsReply;
 import net.hypixel.api.reply.skyblock.SkyBlockNewsReply;
 import net.hypixel.api.reply.skyblock.SkyBlockProfileReply;
-import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ResourceType;
+import net.hypixel.api.util.Utilities;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 public class HypixelAPI {
-
-    private static final Gson GSON = new GsonBuilder()
-        .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
-        .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
-        .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
-        .registerTypeAdapter(Player.class, new PlayerTypeAdapter())
-
-            .registerTypeAdapterFactory(new BoostersTypeAdapterFactory<>(BoostersReply.Booster.class))
-
-            .create();
     private static final String BASE_URL = "https://api.hypixel.net/";
 
     private final UUID apiKey;
@@ -267,9 +248,9 @@ public class HypixelAPI {
                     R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
                         if (clazz == ResourceReply.class) {
-                            return (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
+                            return (R) new ResourceReply(Utilities.GSON.fromJson(content, JsonObject.class));
                         } else {
-                            return GSON.fromJson(content, clazz);
+                            return Utilities.GSON.fromJson(content, clazz);
                         }
                     });
 
@@ -296,7 +277,7 @@ public class HypixelAPI {
                 try {
                     ResourceReply response = httpClient.execute(new HttpGet(url.toString()), obj -> {
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                        return new ResourceReply(GSON.fromJson(content, JsonObject.class));
+                        return new ResourceReply(Utilities.GSON.fromJson(content, JsonObject.class));
                     });
 
                     checkReply(response);
