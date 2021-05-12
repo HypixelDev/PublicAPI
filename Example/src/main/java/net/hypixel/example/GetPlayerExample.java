@@ -35,6 +35,7 @@ public class GetPlayerExample {
                 } else {
                     System.out.println("Player not found!");
                 }
+                System.exit(0);
             });
         ExampleUtil.await();
     }
