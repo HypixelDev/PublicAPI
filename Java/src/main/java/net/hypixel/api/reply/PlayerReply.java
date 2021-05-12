@@ -32,6 +32,7 @@ public class PlayerReply extends AbstractReply {
     }
 
     public static class Player {
+
         private static final String DEFAULT_RANK = "NONE";
 
         private final JsonElement raw;
@@ -426,6 +427,16 @@ public class PlayerReply extends AbstractReply {
             }
 
             return null;
+        }
+
+        /**
+         * @param path Dot-notation path to the desired field (ie "stats.SkyWars" to check if the
+         *             player has any SkyWars stats)
+         * @return Whether or not the player has a property set at the given path, even if the value
+         * is {@link com.google.gson.JsonNull}
+         */
+        public boolean hasProperty(String path) {
+            return getProperty(path) != null;
         }
 
         @Override
