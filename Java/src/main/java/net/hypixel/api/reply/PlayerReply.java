@@ -127,9 +127,10 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The color of the player's "+"s if they have MVP+ or MVP++; defaults to "RED"
+         * @return The color of the player's "+"s if they have MVP+ or MVP++. If they do not have
+         * either rank, or if they have not selected a color, "RED" is returned as the default
          */
-        public String getPlusColor() {
+        public String getSelectedPlusColor() {
             return getStringProperty("rankPlusColor", "RED");
         }
 
