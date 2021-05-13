@@ -18,9 +18,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 public class ReactorHttpClient implements HypixelHttpClient {
     private final HttpClient httpClient;
@@ -31,62 +28,87 @@ public class ReactorHttpClient implements HypixelHttpClient {
     // Marker to only schedule a reset clock once on error 429
     private final AtomicBoolean overflowStartedNewClock = new AtomicBoolean(false);
 
-    /*
-     * How many requests we can send before reaching the limit
-     * Starts as 1 so the first request returns and resets this value before allowing other requests to be sent.
-     */
-    private final AtomicInteger requestsLeft = new AtomicInteger(1);
     // Callbacks that will trigger their corresponding requests
-    private final ArrayBlockingQueue<RequestCallback> blockingQueue = new ArrayBlockingQueue<>(500);
+    private final ArrayBlockingQueue<RequestCallback> blockingQueue;
 
     // For shutting down the flux that emits request callbacks
     private final Disposable requestCallbackFluxDisposable;
 
-    // For signaling limit reset
-    private final BlockingMonoCallback blockingMonoCallback = new BlockingMonoCallback();
-    // Emits a value when limit gets reset to wake up blocked threads
-    private final Mono<Boolean> blockingMonoForRequests = Mono.create(this.blockingMonoCallback);
+    private final Object lock = new Object();
+
+    /*
+     * How many requests we can send before reaching the limit
+     * Starts as 1 so the first request returns and resets this value before allowing other requests to be sent.
+     */
+    private int actionsLeftThisMinute = 1;
 
     /**
      * Constructs a new instance of this client using the specified API key.
      *
      * @param apiKey the key associated with this connection
+     * @param minDelayBetweenRequests minimum time between sending requests (in ms) default is 8
+     * @param bufferCapacity fixed size of blockingQueue
      */
-    public ReactorHttpClient(UUID apiKey) {
+    public ReactorHttpClient(UUID apiKey, long minDelayBetweenRequests, int bufferCapacity) {
         this.apiKey = apiKey;
         this.httpClient = HttpClient.create().secure();
+        this.blockingQueue = new ArrayBlockingQueue<>(bufferCapacity);
 
         this.requestCallbackFluxDisposable = Flux.<RequestCallback>generate((synchronousSink) -> {
             try {
                 RequestCallback callback = blockingQueue.take();
                 // prune skipped/completed requests to avoid counting them
-                while (callback.isCompleted) {
+                while (callback.isCanceled()) {
                     callback = blockingQueue.take();
                 }
-                if (this.requestsLeft.updateAndGet(amt -> amt - 1) < 0) {
-                    this.blockingMonoForRequests.block();
+
+                synchronized (lock) {
+                    while (this.actionsLeftThisMinute <= 0) {
+                        lock.wait();
+                    }
+
+                    actionsLeftThisMinute--;
                 }
                 synchronousSink.next(callback);
             } catch (InterruptedException e) {
                 throw new AssertionError("This should not have been possible", e);
             }
-        }).subscribeOn(Schedulers.boundedElastic()).delayElements(Duration.ofMillis(50), Schedulers.boundedElastic()).subscribe(RequestCallback::sendRequest);
+        }).subscribeOn(Schedulers.boundedElastic()).delayElements(Duration.ofMillis(minDelayBetweenRequests), Schedulers.boundedElastic()).subscribe(RequestCallback::sendRequest);
     }
 
+    public ReactorHttpClient(UUID apiKey, long minDelayBetweenRequests)
+    {
+        this(apiKey, minDelayBetweenRequests, 500);
+    }
+
+    public ReactorHttpClient(UUID apiKey, int bufferCapacity)
+    {
+        this(apiKey, 8, bufferCapacity);
+    }
+
+    public ReactorHttpClient(UUID apiKey)
+    {
+        this(apiKey, 8, 500);
+    }
+
+    /**
+     * Canceling the returned future will result in canceling the request if possible
+     */
     @Override
     public CompletableFuture<HypixelHttpResponse> makeRequest(String url) {
         return toHypixelResponseFuture(makeRequest(url, false));
     }
 
+    /**
+     * Canceling the returned future will result in canceling the request if possible
+     */
     @Override
     public CompletableFuture<HypixelHttpResponse> makeAuthenticatedRequest(String url) {
-        // this ignores the possibility of canceling the request
         return toHypixelResponseFuture(makeRequest(url, true));
     }
 
-    private static CompletableFuture<HypixelHttpResponse> toHypixelResponseFuture(RequestResultMono result) {
-        return result.getRequestResult()
-                .map(tuple -> new HypixelHttpResponse(tuple.getT2(), tuple.getT1()))
+    private static CompletableFuture<HypixelHttpResponse> toHypixelResponseFuture(Mono<Tuple2<String, Integer>> result) {
+        return result.map(tuple -> new HypixelHttpResponse(tuple.getT2(), tuple.getT1()))
                 .toFuture();
     }
 
@@ -96,24 +118,22 @@ public class ReactorHttpClient implements HypixelHttpClient {
     }
 
     /**
-     * Makes a request to the Hypixel api and returns a {@link RequestResultMono} containing
-     * a {@link Mono<String>} that emits the request's body on success and a {@link RequestCallback} that can be used to cancel
-     * this request to prevent pending requests from adding to the rate limit.
+     * Makes a request to the Hypixel api and returns a {@link Mono<Tuple2<String, Integer>>} containing
+     * the response body and status code, canceling this mono will prevent the request from being sent if possible
      * @param path full url
+     * @param isAuthenticated whether to enable authentication or not
      */
-    public RequestResultMono makeRequest(String path, boolean isAuthenticated) {
-        AtomicReference<RequestCallback> reference = new AtomicReference<>();
-        return new RequestResultMono(Mono.<Tuple2<String, Integer>>create(sink -> {
+    public Mono<Tuple2<String, Integer>> makeRequest(String path, boolean isAuthenticated) {
+        return Mono.<Tuple2<String, Integer>>create(sink -> {
             RequestCallback callback = new RequestCallback(path, sink, isAuthenticated, this);
-            reference.set(callback);
 
             try {
                 this.blockingQueue.put(callback);
             } catch (InterruptedException e) {
-                callback.execute(false);
+                sink.error(e);
                 throw new AssertionError("Queue insertion interrupted. This should not have been possible", e);
             }
-        }).subscribeOn(Schedulers.boundedElastic()), reference);
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -126,9 +146,12 @@ public class ReactorHttpClient implements HypixelHttpClient {
      */
     private ResponseHandlingResult handleResponse(HttpClientResponse response, RequestCallback requestCallback) throws InterruptedException {
         if (response.status() == HttpResponseStatus.TOO_MANY_REQUESTS) {
-            int timeRemaining = response.responseHeaders().getInt("ratelimit-reset");
+            int timeRemaining = Math.max(1, response.responseHeaders().getInt("ratelimit-reset", 10));
+
             if (this.overflowStartedNewClock.compareAndSet(false, true)) {
-                this.requestsLeft.set(0);
+                synchronized (lock) {
+                    this.actionsLeftThisMinute = 0;
+                }
                 resetForFirstRequest(timeRemaining);
             }
 
@@ -138,11 +161,13 @@ public class ReactorHttpClient implements HypixelHttpClient {
         }
 
         if (this.firstRequestReturned.compareAndSet(false, true)) {
-            int timeRemaining = response.responseHeaders().getInt("ratelimit-reset");
-            int requestsRemaining = response.responseHeaders().getInt("ratelimit-remaining");
+            int timeRemaining = Math.max(1, response.responseHeaders().getInt("ratelimit-reset", 10));
+            int requestsRemaining = response.responseHeaders().getInt("ratelimit-remaining", 110);
 
-            this.requestsLeft.set(requestsRemaining);
-            this.blockingMonoCallback.triggerRelease();
+            synchronized (lock) {
+                this.actionsLeftThisMinute = requestsRemaining;
+                lock.notifyAll();
+            }
 
             resetForFirstRequest(timeRemaining);
         }
@@ -150,8 +175,8 @@ public class ReactorHttpClient implements HypixelHttpClient {
     }
 
     /**
-     * Wakes up all waiting threads in the specified amount of seconds (Adds two seconds to account for
-     * sync errors in the server).
+     * Wakes up all waiting threads in the specified amount of seconds
+     * (Adds two seconds to account for sync errors in the server).
      *
      * @param timeRemaining how much time is left until the next reset
      */
@@ -159,48 +184,11 @@ public class ReactorHttpClient implements HypixelHttpClient {
         Schedulers.parallel().schedule(() -> {
             this.firstRequestReturned.set(false);
             this.overflowStartedNewClock.set(false);
-            this.requestsLeft.set(1);
-            this.blockingMonoCallback.triggerRelease();
-        }, timeRemaining + 2, TimeUnit.SECONDS);
-    }
-
-    /**
-     * Includes the request body as {@link Mono<String>} and the callback that controls this request
-     */
-    public static class RequestResultMono {
-        private AtomicReference<RequestCallback> callbackReference;
-        private Mono<Tuple2<String, Integer>> requestResult;
-
-        public RequestResultMono(Mono<Tuple2<String, Integer>> requestResult, AtomicReference<RequestCallback> callbackReference) {
-            this.callbackReference = callbackReference;
-            this.requestResult = requestResult;
-        }
-
-        public AtomicReference<RequestCallback> getCallbackReference() {
-            return this.callbackReference;
-        }
-
-        public Mono<Tuple2<String, Integer>> getRequestResult() {
-            return this.requestResult;
-        }
-    }
-
-    /**
-     * Wakes up waiting threads
-     */
-    private static class BlockingMonoCallback implements Consumer<MonoSink<Boolean>> {
-        private MonoSink<Boolean> sinkReference = null;
-
-        @Override
-        public void accept(MonoSink<Boolean> booleanMonoSink) {
-            sinkReference = booleanMonoSink;
-        }
-
-        public void triggerRelease() {
-            if (this.sinkReference != null) {
-                this.sinkReference.success(true);
+            synchronized (lock) {
+                this.actionsLeftThisMinute = 1;
+                lock.notifyAll();
             }
-        }
+        }, timeRemaining + 2, TimeUnit.SECONDS);
     }
 
     /**
@@ -211,51 +199,51 @@ public class ReactorHttpClient implements HypixelHttpClient {
         private final MonoSink<Tuple2<String, Integer>> monoSink;
         private final ReactorHttpClient requestRateLimiter;
         private final boolean isAuthenticated;
-        private boolean isCompleted = false;
+        private boolean isCanceled = false;
 
-        public RequestCallback(String url, MonoSink<Tuple2<String, Integer>> monoSink, boolean isAuthenticated, ReactorHttpClient requestRateLimiter) {
+        private RequestCallback(String url, MonoSink<Tuple2<String, Integer>> monoSink, boolean isAuthenticated, ReactorHttpClient requestRateLimiter) {
             this.url = url;
             this.monoSink = monoSink;
             this.requestRateLimiter = requestRateLimiter;
             this.isAuthenticated = isAuthenticated;
 
-            monoSink.onDispose(() -> this.isCompleted = true);
+            this.monoSink.onCancel(() -> {
+                synchronized (this) {
+                    this.isCanceled = true;
+                }
+            });
         }
 
-        public boolean isCompleted() {
-            return this.isCompleted;
-        }
-
-        public void execute(Boolean shouldRequest) {
-            if (isCompleted) return;
-
-            if (shouldRequest) {
-                (this.isAuthenticated ? requestRateLimiter.httpClient.headers(headers -> headers.add("API-Key", requestRateLimiter.apiKey.toString())) : requestRateLimiter.httpClient).get()
-                        .uri(url)
-                        .responseSingle((response, body) -> {
-                            try {
-                                ResponseHandlingResult result = requestRateLimiter.handleResponse(response, this);
-
-                                if (result.allowToPass) {
-                                    return body.asString().zipWith(Mono.just(result.statusCode));
-                                }
-                                return Mono.empty();
-                            } catch (InterruptedException e) {
-                                monoSink.success();
-                                throw new AssertionError("ERROR: Queue insertion got interrupted, serious problem! (this should not happen!!)", e);
-                            }
-                        }).subscribe(this.monoSink::success);
-                return;
-            }
-            this.monoSink.success();
-        }
-
-        public void cancel() {
-            this.execute(false);
+        public boolean isCanceled() {
+            return this.isCanceled;
         }
 
         private void sendRequest() {
-            this.execute(true);
+            synchronized (this) {
+                if (isCanceled) {
+                    synchronized (this.requestRateLimiter.lock) {
+                        this.requestRateLimiter.actionsLeftThisMinute++;
+                        this.requestRateLimiter.lock.notifyAll();
+                    }
+                    return;
+                }
+            }
+
+            (this.isAuthenticated ? requestRateLimiter.httpClient.headers(headers -> headers.add("API-Key", requestRateLimiter.apiKey.toString())) : requestRateLimiter.httpClient).get()
+                    .uri(url)
+                    .responseSingle((response, body) -> {
+                        try {
+                            ResponseHandlingResult result = requestRateLimiter.handleResponse(response, this);
+
+                            if (result.allowToPass) {
+                                return body.asString().zipWith(Mono.just(result.statusCode));
+                            }
+                            return Mono.empty();
+                        } catch (InterruptedException e) {
+                            monoSink.error(e);
+                            throw new AssertionError("ERROR: Queue insertion got interrupted, serious problem! (this should not happen!!)", e);
+                        }
+                    }).subscribe(this.monoSink::success);
         }
     }
 
