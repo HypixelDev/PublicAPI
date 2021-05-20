@@ -36,7 +36,7 @@ public class Utilities {
 	              + uuidStr.substring(8, 12) + "-"
 	              + uuidStr.substring(12, 16) + "-"
 		      + uuidStr.substring(16, 20) + "-"
-		      + uuidStr.substring(20, 32));
+		      + uuidStr.substring(20, 32);
 
             return UUID.fromString(uuidStr);
         }
