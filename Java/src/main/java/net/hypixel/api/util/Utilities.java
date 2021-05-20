@@ -29,16 +29,14 @@ public class Utilities {
     }
 
     public static UUID uuidFromString(String uuidStr) {
-        if (uuidStr.contains("-")) {
-            return UUID.fromString(uuidStr);
-        } else {
+        if (!uuidStr.contains("-")) {
             uuidStr = uuidStr.substring(0, 8) + "-"
-	              + uuidStr.substring(8, 12) + "-"
-	              + uuidStr.substring(12, 16) + "-"
-		      + uuidStr.substring(16, 20) + "-"
-		      + uuidStr.substring(20, 32);
+                + uuidStr.substring(8, 12) + "-"
+                + uuidStr.substring(12, 16) + "-"
+                + uuidStr.substring(16, 20) + "-"
+                + uuidStr.substring(20, 32);
 
-            return UUID.fromString(uuidStr);
         }
+        return UUID.fromString(uuidStr);
     }
 }
