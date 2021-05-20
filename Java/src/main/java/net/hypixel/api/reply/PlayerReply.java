@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.pets.PetStats;
+import net.hypixel.api.util.ComplexHypixelObject;
 import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ILeveling;
 import net.hypixel.api.util.Utilities;
@@ -31,17 +32,15 @@ public class PlayerReply extends AbstractReply {
             "} " + super.toString();
     }
 
-    public static class Player {
+    public static class Player extends ComplexHypixelObject {
 
         private static final String DEFAULT_RANK = "NONE";
-
-        private final JsonElement raw;
 
         /**
          * @param raw A JSON object representing a Hypixel player, as returned from the API
          */
         public Player(JsonElement raw) {
-            this.raw = raw;
+            super(raw);
         }
 
         /**
@@ -235,208 +234,10 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The raw player object returned by the Hypixel API
-         */
-        public JsonObject getRaw() {
-            if (raw == null || !raw.isJsonObject()) {
-                return null;
-            } else {
-                return raw.getAsJsonObject();
-            }
-        }
-
-        /**
          * @return Whether or not the API returned null for this player
          */
         public boolean exists() {
             return raw != null && raw.isJsonObject();
-        }
-
-        /**
-         * Get a String from the player object
-         *
-         * @param key
-         * @param def The default value to return if the property was not found
-         * @return String with the specified key, or def if the property was not found
-         * @see #getProperty(String)
-         */
-        public String getStringProperty(String key, String def) {
-            JsonElement value = getProperty(key);
-            if (value == null
-                || !value.isJsonPrimitive()
-                || !value.getAsJsonPrimitive().isString()) {
-                return def;
-            }
-            return value.getAsJsonPrimitive().getAsString();
-        }
-
-        /**
-         * Get a float from the player object
-         *
-         * @param key
-         * @param def The default value to return if the property was not found
-         * @return float with the specified key, or def if the property was not found
-         * @see #getProperty(String)
-         */
-        public float getFloatProperty(String key, float def) {
-            return getNumberProperty(key, def).floatValue();
-        }
-
-        /**
-         * Get a double from the player object
-         *
-         * @param key
-         * @param def The default value to return if the property was not found
-         * @return double with the specified key, or def if the property was not found
-         * @see #getProperty(String)
-         */
-        public double getDoubleProperty(String key, double def) {
-            return getNumberProperty(key, def).doubleValue();
-        }
-
-        /**
-         * Get a long from the player object
-         *
-         * @param key
-         * @param def The default value to return if the property was not found
-         * @return long with the specified key, or def if the property was not found
-         * @see #getProperty(String)
-         */
-        public long getLongProperty(String key, long def) {
-            return getNumberProperty(key, def).longValue();
-        }
-
-        /**
-         * Get an integer from the player object
-         *
-         * @param key
-         * @param def The default value to return if the property was not found
-         * @return int with the specified key, or def if the property was not found
-         * @see #getProperty(String)
-         */
-        public int getIntProperty(String key, int def) {
-            return getNumberProperty(key, def).intValue();
-        }
-
-        /**
-         * Get a Number property from the player object
-         *
-         * @param key
-         * @param def The default value to return if the property was not found
-         * @return Number with the specified key, or def if the property was not found
-         * @see #getProperty(String)
-         */
-        public Number getNumberProperty(String key, Number def) {
-            JsonElement value = getProperty(key);
-            if (value == null
-                || !value.isJsonPrimitive()
-                || !value.getAsJsonPrimitive().isNumber()) {
-                return def;
-            }
-            return value.getAsJsonPrimitive().getAsNumber();
-        }
-
-        /**
-         * Get a boolean from the player object
-         *
-         * @param key
-         * @param def The default value to return if the property was not found
-         * @return boolean with the specified key, or def if the property was not found
-         * @see #getProperty(String)
-         */
-        public boolean getBoolProperty(String key, boolean def) {
-            JsonElement value = getProperty(key);
-            if (value == null
-                || !value.isJsonPrimitive()
-                || !value.getAsJsonPrimitive().isBoolean()) {
-                return def;
-            }
-            return value.getAsJsonPrimitive().getAsBoolean();
-        }
-
-        /**
-         * Get a JsonArray property from the player object
-         *
-         * @param key
-         * @return JsonArray with the specified key, or null if no such JsonArray was found
-         * @see #getProperty(String)
-         */
-        public JsonArray getArrayProperty(String key) {
-            JsonElement result = getProperty(key);
-            if (result == null || !result.isJsonArray()) {
-                return null;
-            }
-            return result.getAsJsonArray();
-        }
-
-        /**
-         * Get a JsonObject property from the player object
-         *
-         * @param key
-         * @return JsonObject with the specified key, or null if no such JsonObject was found
-         * @see #getProperty(String)
-         */
-        public JsonObject getObjectProperty(String key) {
-            JsonElement result = getProperty(key);
-            if (result == null || !result.isJsonObject()) {
-                return null;
-            }
-            return result.getAsJsonObject();
-        }
-
-        /**
-         * Read a property from the player object returned by the API
-         *
-         * @param path Dot-notation path to the desired field (ie "stats.SkyWars.deaths" to get the
-         *             player's total deaths in SkyWars)
-         * @return The value of the specified property, or null if it does not exist
-         */
-        public JsonElement getProperty(String path) {
-            if (path.trim().isEmpty()) {
-                return raw;
-
-            } else if (raw == null) {
-                return null;
-            }
-
-            String[] pathParts = path.split("\\.");
-
-            JsonObject currentObj = getRaw();
-            for (int i = 0; i < pathParts.length; i++) {
-
-                JsonElement value = currentObj.get(pathParts[i]);
-                if (value != null) {
-
-                    if (i < pathParts.length - 1 && value.isJsonObject()) {
-                        // The child was a json object & there's more to the path
-                        currentObj = value.getAsJsonObject();
-
-                    } else if (i < pathParts.length - 1) {
-                        // We reached a value before the end of the path
-                        return null;
-
-                    } else {
-                        // We reached the end of the path, return the value
-                        return value;
-                    }
-
-                } else {
-                    // Some part of the path was set to null
-                    return null;
-                }
-            }
-
-            return null;
-        }
-
-        /**
-         * @param path Dot-notation path to the desired field (ie "stats.SkyWars" to check if the
-         *             player has any SkyWars stats)
-         * @return Whether or not the player has a property set at the given path, even if the value
-         * is {@link com.google.gson.JsonNull}
-         */
-        public boolean hasProperty(String path) {
-            return getProperty(path) != null;
         }
 
         @Override

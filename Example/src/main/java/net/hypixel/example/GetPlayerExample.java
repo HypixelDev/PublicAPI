@@ -28,8 +28,7 @@ public class GetPlayerExample {
                             + "Most Recent Game: " + player.getMostRecentGameType() + "\n"
                             + "MC Version:       " + player.getLastKnownMinecraftVersion() + "\n"
                             + "Pet Stats:        " + player.getPetStats() + "\n"
-                            + "SkyWars Deaths:   " + player
-                            .getIntProperty("stats.SkyWars.deaths", 0)
+                            + "SkyWars Deaths:   " + player.getIntProperty("stats.SkyWars.deaths", 0)
                             + "\n"
                             + "Raw:              " + player.getRaw());
                 } else {
