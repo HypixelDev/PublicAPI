@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -25,7 +26,19 @@ public class PropertyFilter {
     }
 
     public void include(String... keys) {
-        allowedKeys.addAll(Arrays.asList(keys));
+        allowedKeys.addAll(keysToList(keys));
+    }
+
+    public void removeKeys(String... keys) {
+        allowedKeys.removeAll(keysToList(keys));
+    }
+
+    private List<String> keysToList(String... keys) {
+        List<String> keyList = Arrays.asList(keys);
+        if (keyList.contains(null)) {
+            throw new IllegalArgumentException("Filtered keys cannot be null");
+        }
+        return keyList;
     }
 
     public void applyTo(ComplexHypixelObject object) {
@@ -43,6 +56,7 @@ public class PropertyFilter {
             }
 
             // Tokenize the path at un-escaped periods.
+            // The negative-lookbehind ensures that periods are not preceded by a backslash.
             String[] tokens = key.split("(?<!\\\\)\\.");
 
             JsonObject parent = temp;
@@ -66,7 +80,7 @@ public class PropertyFilter {
             }
         }
 
-        // Replace the contents of the old object.
+        // Replace the contents of the original object.
         json.entrySet().clear();
         for (Entry<String, JsonElement> property : temp.entrySet()) {
             json.add(property.getKey(), property.getValue());
