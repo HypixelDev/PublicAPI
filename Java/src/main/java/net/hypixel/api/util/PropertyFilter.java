@@ -34,6 +34,10 @@ public class PropertyFilter {
     }
 
     private List<String> keysToList(String... keys) {
+        if (keys == null || keys.length == 0) {
+            throw new IllegalArgumentException("At least 1 key name required");
+        }
+
         List<String> keyList = Arrays.asList(keys);
         if (keyList.contains(null)) {
             throw new IllegalArgumentException("Filtered keys cannot be null");
