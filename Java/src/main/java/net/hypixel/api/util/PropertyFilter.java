@@ -108,15 +108,51 @@ public class PropertyFilter {
     }
 
     /**
+     * {@link #applyTo(ComplexHypixelObject) Applies} the filter to all {@code objects} provided as
+     * arguments.
+     *
+     * @throws IllegalArgumentException If no objects are provided, or if any of the objects are
+     *                                  {@code null}.
+     */
+    public void applyTo(ComplexHypixelObject... objects) {
+        if (objects == null || objects.length == 0) {
+            throw new IllegalArgumentException("Batch filtering requires at least 1 object");
+        }
+
+        for (ComplexHypixelObject object : objects) {
+            applyTo(object);
+        }
+    }
+
+    /**
+     * {@link #applyTo(ComplexHypixelObject) Applies} the filter to any {@code objects} iterated
+     * over.
+     *
+     * @throws IllegalArgumentException If any object received during iteration is {@code null}.
+     */
+    public void applyTo(Iterable<ComplexHypixelObject> objects) {
+        for (ComplexHypixelObject object : objects) {
+            applyTo(object);
+        }
+    }
+
+    /**
      * Strips the {@code object} of any properties that haven't explicitly been allowed via {@link
      * #include(String...)} or the {@link PropertyFilter#with(String...) with(...) constructor}.
      * <p><br>
      * The resulting object will (at most) only contain the properties returned by {@link
      * #getIncludedKeys()}. Any properties missing from the object will not be added.
+     *
+     * @throws IllegalArgumentException If the {@code object} is {@code null}.
      */
     public void applyTo(ComplexHypixelObject object) {
+        if (object == null) {
+            throw new IllegalArgumentException("Cannot filter null objects");
+        }
+
+        // Do nothing for empty objects.
         JsonObject json = object.getRaw();
-        if (json == null || json.entrySet().isEmpty()) {
+        if (json.entrySet().isEmpty()) {
             return;
         }
 
