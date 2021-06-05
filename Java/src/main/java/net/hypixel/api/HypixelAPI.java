@@ -25,6 +25,7 @@ import net.hypixel.api.reply.skyblock.ResourceReply;
 import net.hypixel.api.reply.skyblock.SkyBlockAuctionsReply;
 import net.hypixel.api.reply.skyblock.SkyBlockNewsReply;
 import net.hypixel.api.reply.skyblock.SkyBlockProfileReply;
+import net.hypixel.api.util.PropertyFilter;
 import net.hypixel.api.util.ResourceType;
 import net.hypixel.api.util.Utilities;
 import org.apache.http.client.HttpClient;
@@ -96,6 +97,31 @@ public class HypixelAPI {
     @Deprecated
     public CompletableFuture<PlayerReply> getPlayerByName(String player) {
         return get(PlayerReply.class, "player", "name", player);
+    }
+
+    /**
+     * Same as {@link #getPlayerByUuid(UUID)}, but the resulting player object will only contain
+     * properties explicitly included via a {@link PropertyFilter filter}.
+     */
+    public CompletableFuture<PlayerReply> getPlayerByUuid(UUID player, PropertyFilter filter) {
+        return applyFilterFuture(getPlayerByUuid(player), filter);
+    }
+
+    /**
+     * Same as {@link #getPlayerByUuid(String)}, but the resulting player object will only contain
+     * properties explicitly included via a {@link PropertyFilter filter}.
+     */
+    public CompletableFuture<PlayerReply> getPlayerByUuid(String player, PropertyFilter filter) {
+        return applyFilterFuture(getPlayerByUuid(player), filter);
+    }
+
+    /**
+     * Same as {@link #getPlayerByName(String)}, but the resulting player object will only contain
+     * properties explicitly included via a {@link PropertyFilter filter}.
+     */
+    @Deprecated
+    public CompletableFuture<PlayerReply> getPlayerByName(String player, PropertyFilter filter) {
+        return applyFilterFuture(getPlayerByName(player), filter);
     }
 
     public CompletableFuture<FriendsReply> getFriends(UUID player) {
@@ -220,6 +246,16 @@ public class HypixelAPI {
 
     public CompletableFuture<ResourceReply> getResource(String resource) {
         return requestResource(resource);
+    }
+
+    /**
+     * Applies a {@code filter} to a player object when it is received in an API response.
+     */
+    private CompletableFuture<PlayerReply> applyFilterFuture(CompletableFuture<PlayerReply> future, PropertyFilter filter) {
+        return future.thenApply(reply -> {
+            filter.applyTo(reply.getPlayer());
+            return reply;
+        });
     }
 
     /**
