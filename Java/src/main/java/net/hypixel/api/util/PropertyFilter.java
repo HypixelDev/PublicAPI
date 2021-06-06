@@ -2,10 +2,10 @@ package net.hypixel.api.util;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -34,31 +34,8 @@ public class PropertyFilter {
         return filter;
     }
 
-    /**
-     * Helper function that validates a {@code keys} array and converts it to a list.
-     */
-    private static List<String> keysToList(String... keys) {
-        if (keys == null || keys.length == 0) {
-            throw new IllegalArgumentException("At least 1 key name required");
-        }
-
-        List<String> keyList = Arrays.asList(keys);
-        for (int i = 0; i < keyList.size(); i++) {
-            String key = keyList.get(i);
-            if (key == null) {
-                throw new IllegalArgumentException("Filtered keys cannot be null");
-            }
-
-            // Remove escape characters.
-            keyList.set(i, key.replace("\\.", "."));
-        }
-
-        return keyList;
-    }
-
     // Only these keys are allowed in objects returned from `applyTo(...)`.
-    // Keys with literal dots should be stripped of escape characters before being added.
-    private final Set<String> allowedKeys;
+    private final Set<PropertyKey> allowedKeys;
 
     public PropertyFilter() {
         allowedKeys = new HashSet<>();
@@ -77,13 +54,63 @@ public class PropertyFilter {
      *     •{@code stats.SkyWars}       - Keep all of the player's SkyWars stats when filtering.
      *     •{@code stats.SkyWars.coins} - Keep just the player's SkyWars coins when filtering.
      * </pre>
-     * Any duplicate keys (or keys already included in the filter) will be ignored.
+     * Any duplicate keys, and keys already included in the filter, will not be added. If one key
+     * begins with the entirety of another key, and has more tokens / parts after that, the two keys
+     * are considered to be colliding. Some notes about key collision:
+     * <pre>
+     *     • New keys always take precedence when collision happens, such that...
+     *     • If an added key has a <u>wider scope</u> (fewer tokens) than any existing keys, all
+     *       colliding keys with narrower scopes (more tokens) will be removed, and the new key will
+     *       be added.
+     *     • If the added key has a <u>narrower scope</u> (more tokens) than an existing key, the
+     *       colliding key with a wider scope (fewer tokens) will be replaced with the new one.
+     * </pre>
+     * An example of collision would be adding {@code "stats.SkyWars.coins"} when {@code
+     * "stats.SkyWars"} is already included. In that case, the added key would replace the existing
+     * key, so that only {@code "stats.SkyWars.coins"} is included when filtering.
      *
      * @param keys Names of properties that will be allowed to pass through the filter (in
      *             dot-notation).
      */
     public void include(String... keys) {
-        allowedKeys.addAll(keysToList(keys));
+        if (keys == null) {
+            throw new IllegalArgumentException("Cannot include null property keys");
+        }
+
+        // Check for key collisions.
+        for (String rawKey : keys) {
+            if (rawKey == null) {
+                throw new IllegalArgumentException("Cannot include null property keys");
+            }
+
+            PropertyKey key = new PropertyKey(rawKey);
+            boolean shouldAddKey = true;
+            Iterator<PropertyKey> existingKeys = allowedKeys.iterator();
+
+            while (existingKeys.hasNext()) {
+                PropertyKey existingKey = existingKeys.next();
+
+                // Ignore duplicate keys.
+                if (existingKey.equals(key)) {
+                    shouldAddKey = false;
+                    break;
+                }
+
+                // Check if the new key collides with the existing key's scope.
+                if (key.isExtendedBy(existingKey)) {
+                    // Replace & continue, since there can be multiple keys with narrower scopes.
+                    existingKeys.remove();
+                } else if (existingKey.isExtendedBy(key)) {
+                    // Replace & break, since only 1 key should possibly have a wider scope.
+                    existingKeys.remove();
+                    break;
+                }
+            }
+
+            if (shouldAddKey) {
+                allowedKeys.add(key);
+            }
+        }
     }
 
     /**
@@ -95,7 +122,16 @@ public class PropertyFilter {
      * included} to begin with, will have no effect.
      */
     public void removeKeys(String... keys) {
-        allowedKeys.removeAll(keysToList(keys));
+        if (keys == null) {
+            throw new IllegalArgumentException("Cannot remove null keys");
+        }
+
+        for (String key : keys) {
+            if (key == null) {
+                throw new IllegalArgumentException("Cannot remove null keys");
+            }
+            allowedKeys.removeIf(existingKey -> existingKey.toString().equals(key));
+        }
     }
 
     /**
@@ -104,7 +140,11 @@ public class PropertyFilter {
      * @see #include(String...)
      */
     public Set<String> getIncludedKeys() {
-        return new HashSet<>(allowedKeys);
+        Set<String> fullKeys = new HashSet<>(allowedKeys.size());
+        for (PropertyKey key : allowedKeys) {
+            fullKeys.add(key.toString());
+        }
+        return fullKeys;
     }
 
     /**
@@ -157,18 +197,15 @@ public class PropertyFilter {
         }
 
         JsonObject temp = new JsonObject();
-        for (String key : allowedKeys) {
-            JsonElement value = object.getProperty(key);
+        for (PropertyKey key : allowedKeys) {
+            JsonElement value = object.getProperty(key.toString());
             if (value == null) {
                 // Ignore null properties.
                 continue;
             }
 
-            // Tokenize the path at un-escaped dots.
-            // The negative-lookbehind ensures that dots are not preceded by a backslash.
-            String[] tokens = key.split("(?<!\\\\)\\.");
-
             JsonObject parent = temp;
+            String[] tokens = key.tokens;
             for (int i = 0; i < tokens.length; i++) {
                 if (i < tokens.length - 1) {
                     // Use the existing child object (if one exists).
@@ -193,6 +230,75 @@ public class PropertyFilter {
         json.entrySet().clear();
         for (Entry<String, JsonElement> property : temp.entrySet()) {
             json.add(property.getKey(), property.getValue());
+        }
+    }
+
+    /**
+     * The key of one of a {@link ComplexHypixelObject}'s properties, potentially one nested inside
+     * multiple other objects.
+     */
+    private static final class PropertyKey {
+
+        // The key's full stringified form. Literal dots (.) should still have escape characters.
+        final String full;
+
+        // Each "part" of the key, delimited by un-escaped dots in the `full` key.
+        final String[] tokens;
+
+        PropertyKey(String full) {
+            if (full == null) {
+                throw new IllegalArgumentException("Property key cannot be null");
+            }
+            this.full = full;
+
+            // Tokenize the key at un-escaped dots.
+            // The negative-lookbehind ensures that dots are not preceded by a backslash.
+            tokens = full.split("(?<!\\\\)\\.");
+        }
+
+        /**
+         * @return {@code true} if the {@code other} key starts with all of this key's {@link
+         * #tokens} & has additional tokens at the end, otherwise {@code false}.
+         */
+        boolean isExtendedBy(PropertyKey other) {
+            String otherFull = other.full;
+            int extensionIndex = full.length();
+
+            // (1) `other` cannot possibly be an extension if it has a shorter or equal length.
+            // (2) Check that the key continues immediately after extensionIndex.
+            // (3) Check that the dot (.) we found in (2) wasn't escaped.
+            // (4) Check that the other key starts with this entire key.
+            return otherFull.length() > full.length()
+                   && otherFull.charAt(extensionIndex) == '.'
+                   && otherFull.charAt(extensionIndex - 1) != '\\'
+                   && otherFull.startsWith(full);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null) {
+                return false;
+            }
+            if (o instanceof PropertyKey) {
+                return full.equals(((PropertyKey) o).full);
+            }
+            if (o instanceof String) {
+                return full.equals(o);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(full);
+        }
+
+        @Override
+        public String toString() {
+            return full;
         }
     }
 }
