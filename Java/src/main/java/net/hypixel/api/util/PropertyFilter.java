@@ -204,12 +204,17 @@ public class PropertyFilter {
                 continue;
             }
 
+            // Create any required parents for the property, similar to File#mkdirs().
             JsonObject parent = temp;
             String[] tokens = key.tokens;
             for (int i = 0; i < tokens.length; i++) {
+                String token = tokens[i];
+                String escapedToken = token.replace("\\.", ".");
+
                 if (i < tokens.length - 1) {
+
                     // Use the existing child object (if one exists).
-                    JsonElement existingChild = parent.get(tokens[i]);
+                    JsonElement existingChild = parent.get(token);
                     if (existingChild instanceof JsonObject) {
                         parent = (JsonObject) existingChild;
                         continue;
@@ -217,11 +222,11 @@ public class PropertyFilter {
 
                     // Create a new child object if one doesn't exist.
                     JsonObject child = new JsonObject();
-                    parent.add(tokens[i], child);
+                    parent.add(escapedToken, child);
                     parent = child;
                 } else {
                     // Set the final value of the property.
-                    parent.add(tokens[i], value);
+                    parent.add(escapedToken, value);
                 }
             }
         }
