@@ -167,32 +167,37 @@ public abstract class ComplexHypixelObject {
      * @return The value of the specified property, or null if it does not exist
      */
     public JsonElement getProperty(String key) {
-        if (key.trim().isEmpty()) {
-            return raw;
-
-        } else if (raw == null) {
+        if (key == null) {
+            throw new IllegalArgumentException("Property key cannot be null");
+        } else if (!(raw instanceof JsonObject)) {
+            // Can't get properties from a `null` source.
             return null;
+        } else if (key.isEmpty()) {
+            // Return root object if path is empty.
+            return raw;
         }
 
-        String[] pathParts = key.split("\\.");
+        // Tokenize the key at un-escaped dots.
+        // The negative-lookbehind ensures that dots are not preceded by a backslash.
+        String[] tokens = key.split("(?<!\\\\)\\.");
 
-        JsonObject currentObj = getRaw();
-        for (int i = 0; i < pathParts.length; i++) {
+        JsonObject parent = getRaw();
+        for (int i = 0; i < tokens.length; i++) {
 
-            JsonElement value = currentObj.get(pathParts[i]);
-            if (value != null) {
+            JsonElement child = parent.get(tokens[i].replace("\\.", "."));
+            if (child != null) {
 
-                if (i < pathParts.length - 1 && value.isJsonObject()) {
+                if (i < tokens.length - 1 && child.isJsonObject()) {
                     // The child was a json object & there's more to the path
-                    currentObj = value.getAsJsonObject();
+                    parent = child.getAsJsonObject();
 
-                } else if (i < pathParts.length - 1) {
+                } else if (i < tokens.length - 1) {
                     // We reached a value before the end of the path
                     return null;
 
                 } else {
                     // We reached the end of the path, return the value
-                    return value;
+                    return child;
                 }
 
             } else {
