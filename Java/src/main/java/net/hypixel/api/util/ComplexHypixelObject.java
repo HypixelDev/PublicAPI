@@ -10,10 +10,12 @@ import com.google.gson.JsonObject;
  */
 public abstract class ComplexHypixelObject {
 
-    protected final JsonElement raw;
+    protected final JsonObject raw;
 
     protected ComplexHypixelObject(JsonElement raw) {
-        this.raw = raw;
+        this.raw = raw instanceof JsonObject
+            ? (JsonObject) raw
+            : new JsonObject();
     }
 
     /**
@@ -21,11 +23,7 @@ public abstract class ComplexHypixelObject {
      * object
      */
     public JsonObject getRaw() {
-        if (raw == null || !raw.isJsonObject()) {
-            return null;
-        } else {
-            return raw.getAsJsonObject();
-        }
+        return raw;
     }
 
     /**
@@ -169,9 +167,6 @@ public abstract class ComplexHypixelObject {
     public JsonElement getProperty(String key) {
         if (key == null) {
             throw new IllegalArgumentException("Property key cannot be null");
-        } else if (!(raw instanceof JsonObject)) {
-            // Can't get properties from a `null` source.
-            return null;
         } else if (key.isEmpty()) {
             // Return root object if path is empty.
             return raw;
