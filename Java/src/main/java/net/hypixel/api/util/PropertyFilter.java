@@ -140,11 +140,9 @@ public class PropertyFilter {
      * @see #include(String...)
      */
     public Set<String> getIncludedKeys() {
-        Set<String> fullKeys = new HashSet<>(allowedKeys.size());
-        for (PropertyKey key : allowedKeys) {
-            fullKeys.add(key.toString());
-        }
-        return fullKeys;
+        return allowedKeys.stream()
+                          .map(PropertyKey::toString)
+                          .collect(Collectors.toSet());
     }
 
     /**
@@ -171,9 +169,7 @@ public class PropertyFilter {
      * @throws IllegalArgumentException If any object received during iteration is {@code null}.
      */
     public void applyTo(Iterable<ComplexHypixelObject> objects) {
-        for (ComplexHypixelObject object : objects) {
-            applyTo(object);
-        }
+        objects.forEach(this::applyTo);
     }
 
     /**

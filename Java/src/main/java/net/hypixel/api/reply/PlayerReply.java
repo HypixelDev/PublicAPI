@@ -181,7 +181,7 @@ public class PlayerReply extends AbstractReply {
 
         /**
          * Utility method for checking if a rank-related field contains a non-default rank (value is
-         * not null, "NONE", or "NORMAL)
+         * not null, "NONE", or "NORMAL")
          *
          * @param name Name/dot-path of the field to check
          * @return Whether or not the field contains a non-default rank value
