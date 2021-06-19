@@ -8,11 +8,11 @@ import com.google.gson.JsonObject;
 /**
  * An object returned from the Hypixel API that lacks a defined structure.
  */
-public abstract class ComplexHypixelObject {
+public abstract class UnstableHypixelObject {
 
     protected final JsonObject raw;
 
-    protected ComplexHypixelObject(JsonElement raw) {
+    protected UnstableHypixelObject(JsonElement raw) {
         this.raw = raw instanceof JsonObject
             ? (JsonObject) raw
             : new JsonObject();

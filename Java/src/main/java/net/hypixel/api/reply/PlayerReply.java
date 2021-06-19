@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.pets.PetStats;
-import net.hypixel.api.util.ComplexHypixelObject;
+import net.hypixel.api.util.UnstableHypixelObject;
 import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ILeveling;
 import net.hypixel.api.util.Utilities;
@@ -32,7 +32,7 @@ public class PlayerReply extends AbstractReply {
             "} " + super.toString();
     }
 
-    public static class Player extends ComplexHypixelObject {
+    public static class Player extends UnstableHypixelObject {
 
         private static final String DEFAULT_RANK = "NONE";
 

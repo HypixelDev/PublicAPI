@@ -7,14 +7,15 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * A tool for trimming unneeded properties from {@link ComplexHypixelObject}s, especially to
+ * A tool for trimming unneeded properties from {@link UnstableHypixelObject}s, especially to
  * minimize their memory and storage consumption. Based on MongoDB projections.
  * <p><br>
  * To use an <strong>inclusion filter</strong>, property names (or "keys") can be added via {@link
  * #include(String...) include(...)} or the {@link #with(String...) with(...) constructor}. When an
- * object is {@link #applyTo(ComplexHypixelObject) passed through} the filter, any properties not
+ * object is {@link #applyTo(UnstableHypixelObject) passed through} the filter, any properties not
  * explicitly named using the aforementioned methods will be removed from the object. If the object
  * did not have an included property to begin with, it will not be created.
  * <p><br>
@@ -25,7 +26,7 @@ public class PropertyFilter {
 
     /**
      * Shorthand for constructing a new filter that only allows the {@code includedKeys} to {@link
-     * #applyTo(ComplexHypixelObject) pass through}. See {@link #include(String...)} for the key
+     * #applyTo(UnstableHypixelObject) pass through}. See {@link #include(String...)} for the key
      * syntax.
      */
     public static PropertyFilter with(String... includedKeys) {
@@ -43,7 +44,7 @@ public class PropertyFilter {
 
     /**
      * Allows properties with any of the provided {@code keys} to {@link
-     * #applyTo(ComplexHypixelObject) pass through} the filter. To include nested properties, use
+     * #applyTo(UnstableHypixelObject) pass through} the filter. To include nested properties, use
      * dots ({@code .}) to separate each parent property from its child. If a property's name
      * contains a dot literally, use a double-backslash to escape the dot. (e.g. {@code
      * "key_with_literal_dot\\.in_it"} instead of {@code "key_with_literal_dot.in_it"})
@@ -115,7 +116,7 @@ public class PropertyFilter {
 
     /**
      * Removes all of the provided keys from the filter, such that objects {@link
-     * #applyTo(ComplexHypixelObject) passed through} the filter will <em>not</em> include
+     * #applyTo(UnstableHypixelObject) passed through} the filter will <em>not</em> include
      * properties with those keys.
      * <p><br>
      * Attempting to remove a key that was already removed, or never {@link #include(String...)
@@ -135,40 +136,40 @@ public class PropertyFilter {
     }
 
     /**
-     * @return A new set containing all property keys that can {@link #applyTo(ComplexHypixelObject)
+     * @return A new set containing all property keys that can {@link #applyTo(UnstableHypixelObject)
      * pass through} the filter.
      * @see #include(String...)
      */
     public Set<String> getIncludedKeys() {
         return allowedKeys.stream()
-                          .map(PropertyKey::toString)
-                          .collect(Collectors.toSet());
+            .map(PropertyKey::toString)
+            .collect(Collectors.toSet());
     }
 
     /**
-     * {@link #applyTo(ComplexHypixelObject) Applies} the filter to all {@code objects} provided as
+     * {@link #applyTo(UnstableHypixelObject) Applies} the filter to all {@code objects} provided as
      * arguments.
      *
      * @throws IllegalArgumentException If no objects are provided, or if any of the objects are
      *                                  {@code null}.
      */
-    public void applyTo(ComplexHypixelObject... objects) {
+    public void applyTo(UnstableHypixelObject... objects) {
         if (objects == null || objects.length == 0) {
             throw new IllegalArgumentException("Batch filtering requires at least 1 object");
         }
 
-        for (ComplexHypixelObject object : objects) {
+        for (UnstableHypixelObject object : objects) {
             applyTo(object);
         }
     }
 
     /**
-     * {@link #applyTo(ComplexHypixelObject) Applies} the filter to any {@code objects} iterated
+     * {@link #applyTo(UnstableHypixelObject) Applies} the filter to any {@code objects} iterated
      * over.
      *
      * @throws IllegalArgumentException If any object received during iteration is {@code null}.
      */
-    public void applyTo(Iterable<ComplexHypixelObject> objects) {
+    public void applyTo(Iterable<UnstableHypixelObject> objects) {
         objects.forEach(this::applyTo);
     }
 
@@ -181,7 +182,7 @@ public class PropertyFilter {
      *
      * @throws IllegalArgumentException If the {@code object} is {@code null}.
      */
-    public void applyTo(ComplexHypixelObject object) {
+    public void applyTo(UnstableHypixelObject object) {
         if (object == null) {
             throw new IllegalArgumentException("Cannot filter null objects");
         }
@@ -235,7 +236,7 @@ public class PropertyFilter {
     }
 
     /**
-     * The key of one of a {@link ComplexHypixelObject}'s properties, potentially one nested inside
+     * The key of one of a {@link UnstableHypixelObject}'s properties, potentially one nested inside
      * multiple other objects.
      */
     private static final class PropertyKey {
