@@ -15,7 +15,7 @@ import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.reply.BoostersReply;
 import net.hypixel.api.reply.PlayerReply.Player;
 
-public class Utilities {
+public final class Utilities {
 
     private static final Pattern TOKEN_SPLITTER = Pattern.compile("(?<!\\\\)\\.");
     public static final Gson GSON = new GsonBuilder()
@@ -48,5 +48,9 @@ public class Utilities {
 
         }
         return UUID.fromString(uuidStr);
+    }
+
+    private Utilities() {
+        throw new UnsupportedOperationException("Helper class should not be instantiated");
     }
 }
