@@ -237,7 +237,7 @@ public class PlayerReply extends AbstractReply {
          * @return Whether or not the API returned null for this player
          */
         public boolean exists() {
-            return raw != null && raw.isJsonObject();
+            return getUuid() != null;
         }
 
         @Override
