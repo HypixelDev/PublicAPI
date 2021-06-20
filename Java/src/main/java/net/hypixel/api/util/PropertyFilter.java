@@ -14,10 +14,11 @@ import java.util.stream.Collectors;
  * minimize their memory and storage consumption. Based on MongoDB projections.
  * <p><br>
  * To use an <strong>inclusion filter</strong>, property names (or "keys") can be added via {@link
- * #include(String...) include(...)} or the {@link #with(String...) with(...) constructor}. When an
- * object is {@link #applyTo(UnstableHypixelObject) passed through} the filter, any properties not
- * explicitly named using the aforementioned methods will be removed from the object. If the object
- * did not have an included property to begin with, it will not be created.
+ * #include(String...) include(...)} or the {@link #including(String...) including(...)
+ * constructor}. When an object is {@link #applyTo(UnstableHypixelObject) passed through} the
+ * filter, any properties not explicitly named using the aforementioned methods will be removed from
+ * the object. If the object did not have an included property to begin with, it will not be
+ * created.
  * <p><br>
  * Property names are referenced using dot-notation. See the documentation for {@link
  * #include(String...) include(...)} for more details.
@@ -29,7 +30,7 @@ public class PropertyFilter {
      * #applyTo(UnstableHypixelObject) pass through}. See {@link #include(String...)} for the key
      * syntax.
      */
-    public static PropertyFilter with(String... includedKeys) {
+    public static PropertyFilter including(String... includedKeys) {
         PropertyFilter filter = new PropertyFilter();
         filter.include(includedKeys);
         return filter;
@@ -175,7 +176,8 @@ public class PropertyFilter {
 
     /**
      * Strips the {@code object} of any properties that haven't explicitly been allowed via {@link
-     * #include(String...)} or the {@link PropertyFilter#with(String...) with(...) constructor}.
+     * #include(String...)} or the {@link PropertyFilter#including(String...) including(...)
+     * constructor}.
      * <p><br>
      * The resulting object will (at most) only contain the properties returned by {@link
      * #getIncludedKeys()}. Any properties missing from the object will not be added.
