@@ -174,27 +174,22 @@ public abstract class UnstableHypixelObject {
 
         String[] tokens = Utilities.tokenizeKey(key);
 
+        // Navigate the raw object until the end of the provided token list.
         JsonObject parent = getRaw();
         for (int i = 0; i < tokens.length; i++) {
 
             JsonElement child = parent.get(tokens[i].replace("\\.", "."));
-            if (child != null) {
-
-                if (i < tokens.length - 1 && child.isJsonObject()) {
-                    // The child was a json object & there's more to the path
+            if (i + 1 == tokens.length) {
+                // No more tokens; current child must be the output.
+                return child;
+            } else {
+                // More tokens follow; child must be an object to continue.
+                if (child instanceof JsonObject) {
                     parent = child.getAsJsonObject();
-
-                } else if (i < tokens.length - 1) {
-                    // We reached a value before the end of the path
-                    return null;
-
-                } else {
-                    // We reached the end of the path, return the value
-                    return child;
+                    continue;
                 }
 
-            } else {
-                // Some part of the path was set to null
+                // No child matching token.
                 return null;
             }
         }
