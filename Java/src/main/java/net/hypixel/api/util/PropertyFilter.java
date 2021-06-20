@@ -56,20 +56,7 @@ public class PropertyFilter {
      *     •{@code stats.SkyWars}       - Keep all of the player's SkyWars stats when filtering.
      *     •{@code stats.SkyWars.coins} - Keep just the player's SkyWars coins when filtering.
      * </pre>
-     * Any duplicate keys, and keys already included in the filter, will not be added. If one key
-     * begins with the entirety of another key, and has more tokens / parts after that, the two keys
-     * are considered to be colliding. Some notes about key collision:
-     * <pre>
-     *     • New keys always take precedence when collision happens, such that...
-     *     • If an added key has a <u>wider scope</u> (fewer tokens) than any existing keys, all
-     *       colliding keys with narrower scopes (more tokens) will be removed, and the new key will
-     *       be added.
-     *     • If the added key has a <u>narrower scope</u> (more tokens) than an existing key, the
-     *       colliding key with a wider scope (fewer tokens) will be replaced with the new one.
-     * </pre>
-     * An example of collision would be adding {@code "stats.SkyWars.coins"} when {@code
-     * "stats.SkyWars"} is already included. In that case, the added key would replace the existing
-     * key, so that only {@code "stats.SkyWars.coins"} is included when filtering.
+     * If an added key conflicts with an existing one, the newer key takes precedence.
      *
      * @param keys Names of properties that will be allowed to pass through the filter (in
      *             dot-notation).
@@ -123,7 +110,7 @@ public class PropertyFilter {
      * Attempting to remove a key that was already removed, or never {@link #include(String...)
      * included} to begin with, will have no effect.
      */
-    public void removeKeys(String... keys) {
+    public void remove(String... keys) {
         if (keys == null) {
             throw new IllegalArgumentException("Cannot remove null keys");
         }
@@ -141,7 +128,7 @@ public class PropertyFilter {
      * pass through} the filter.
      * @see #include(String...)
      */
-    public Set<String> getIncludedKeys() {
+    public Set<String> getIncluded() {
         return allowedKeys.stream()
             .map(PropertyKey::toString)
             .collect(Collectors.toSet());
@@ -180,7 +167,7 @@ public class PropertyFilter {
      * constructor}.
      * <p><br>
      * The resulting object will (at most) only contain the properties returned by {@link
-     * #getIncludedKeys()}. Any properties missing from the object will not be added.
+     * #getIncluded()}. Any properties missing from the object will not be added.
      *
      * @throws IllegalArgumentException If the {@code object} is {@code null}.
      */
