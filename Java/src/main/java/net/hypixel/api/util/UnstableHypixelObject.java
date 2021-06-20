@@ -28,8 +28,9 @@ public abstract class UnstableHypixelObject {
 
     /**
      * @param key Dot-notation path to the desired field
-     * @return Whether or not the object has a property set at the given path, including if its
-     * value is explicitly {@link JsonNull null}.
+     * @return {@code true} if the object has a value associated with the {@code key}, including if
+     * that value is {@link JsonNull}. Otherwise {@code false}.
+     * @see #getProperty(String)
      */
     public boolean hasProperty(String key) {
         return getProperty(key) != null;
@@ -38,16 +39,16 @@ public abstract class UnstableHypixelObject {
     /**
      * Get a String from the object
      *
-     * @param def The default value to return if the property was not found
-     * @return String with the specified key, or def if the property was not found
+     * @return The string value associated with the {@code key}, or {@code defaultValue} if the
+     * value does not exist or isn't a string
      * @see #getProperty(String)
      */
-    public String getStringProperty(String key, String def) {
+    public String getStringProperty(String key, String defaultValue) {
         JsonElement value = getProperty(key);
         if (value == null
             || !value.isJsonPrimitive()
             || !value.getAsJsonPrimitive().isString()) {
-            return def;
+            return defaultValue;
         }
         return value.getAsJsonPrimitive().getAsString();
     }
@@ -55,60 +56,60 @@ public abstract class UnstableHypixelObject {
     /**
      * Get a float from the object
      *
-     * @param def The default value to return if the property was not found
-     * @return float with the specified key, or def if the property was not found
+     * @return The float value associated with the {@code key}, or {@code defaultValue} if the value
+     * does not exist or isn't a float
      * @see #getProperty(String)
      */
-    public float getFloatProperty(String key, float def) {
-        return getNumberProperty(key, def).floatValue();
+    public float getFloatProperty(String key, float defaultValue) {
+        return getNumberProperty(key, defaultValue).floatValue();
     }
 
     /**
      * Get a double from the object
      *
-     * @param def The default value to return if the property was not found
-     * @return double with the specified key, or def if the property was not found
+     * @return The double value associated with the {@code key}, or {@code defaultValue} if the
+     * value does not exist or isn't a double
      * @see #getProperty(String)
      */
-    public double getDoubleProperty(String key, double def) {
-        return getNumberProperty(key, def).doubleValue();
+    public double getDoubleProperty(String key, double defaultValue) {
+        return getNumberProperty(key, defaultValue).doubleValue();
     }
 
     /**
      * Get a long from the object
      *
-     * @param def The default value to return if the property was not found
-     * @return long with the specified key, or def if the property was not found
+     * @return The long value associated with the {@code key}, or {@code defaultValue} if the value
+     * does not exist or isn't a long
      * @see #getProperty(String)
      */
-    public long getLongProperty(String key, long def) {
-        return getNumberProperty(key, def).longValue();
+    public long getLongProperty(String key, long defaultValue) {
+        return getNumberProperty(key, defaultValue).longValue();
     }
 
     /**
      * Get an integer from the object
      *
-     * @param def The default value to return if the property was not found
-     * @return int with the specified key, or def if the property was not found
+     * @return The int value associated with the {@code key}, or {@code defaultValue} if the value
+     * does not exist or isn't an int
      * @see #getProperty(String)
      */
-    public int getIntProperty(String key, int def) {
-        return getNumberProperty(key, def).intValue();
+    public int getIntProperty(String key, int defaultValue) {
+        return getNumberProperty(key, defaultValue).intValue();
     }
 
     /**
      * Get a Number property from the object
      *
-     * @param def The default value to return if the property was not found
-     * @return Number with the specified key, or def if the property was not found
+     * @return The numeric value associated with the {@code key}, or {@code defaultValue} if the
+     * value does not exist or isn't a number
      * @see #getProperty(String)
      */
-    public Number getNumberProperty(String key, Number def) {
+    public Number getNumberProperty(String key, Number defaultValue) {
         JsonElement value = getProperty(key);
         if (value == null
             || !value.isJsonPrimitive()
             || !value.getAsJsonPrimitive().isNumber()) {
-            return def;
+            return defaultValue;
         }
         return value.getAsJsonPrimitive().getAsNumber();
     }
@@ -116,16 +117,16 @@ public abstract class UnstableHypixelObject {
     /**
      * Get a boolean from the object
      *
-     * @param def The default value to return if the property was not found.
-     * @return boolean with the specified key, or def if the property was not found
+     * @return The boolean value associated with the {@code key}, or {@code defaultValue} if the
+     * value does not exist or isn't a boolean
      * @see #getProperty(String)
      */
-    public boolean getBoolProperty(String key, boolean def) {
+    public boolean getBooleanProperty(String key, boolean defaultValue) {
         JsonElement value = getProperty(key);
         if (value == null
             || !value.isJsonPrimitive()
             || !value.getAsJsonPrimitive().isBoolean()) {
-            return def;
+            return defaultValue;
         }
         return value.getAsJsonPrimitive().getAsBoolean();
     }
@@ -133,13 +134,14 @@ public abstract class UnstableHypixelObject {
     /**
      * Get a JsonArray property from the object
      *
-     * @return JsonArray with the specified key, or null if no such JsonArray was found
+     * @return The JSON array associated with the {@code key}, or an empty array if the value does
+     * not exist or isn't an array
      * @see #getProperty(String)
      */
     public JsonArray getArrayProperty(String key) {
         JsonElement result = getProperty(key);
         if (result == null || !result.isJsonArray()) {
-            return null;
+            return new JsonArray();
         }
         return result.getAsJsonArray();
     }
@@ -147,7 +149,8 @@ public abstract class UnstableHypixelObject {
     /**
      * Get a JsonObject property from the object
      *
-     * @return JsonObject with the specified key, or null if no such JsonObject was found
+     * @return The JSON object associated with the {@code key}, or {@code null} if the value does
+     * not exist or isn't a JSON object
      * @see #getProperty(String)
      */
     public JsonObject getObjectProperty(String key) {
@@ -162,7 +165,8 @@ public abstract class UnstableHypixelObject {
      * Read a property from the object returned by the API
      *
      * @param key Dot-notation path to the desired field (e.g. {@code "stats.SkyWars.deaths"})
-     * @return The value of the specified property, or null if it does not exist
+     * @return The value associated with the specified property, or {@code null} if no value is set
+     * for that property.
      */
     public JsonElement getProperty(String key) {
         if (key == null) {

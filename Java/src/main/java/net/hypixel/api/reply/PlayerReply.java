@@ -196,8 +196,8 @@ public class PlayerReply extends AbstractReply {
          * Build Team</a>
          */
         public boolean isOnBuildTeam() {
-            return getBoolProperty("buildTeam", false)
-                || getBoolProperty("buildTeamAdmin", false);
+            return getBooleanProperty("buildTeam", false)
+                   || getBooleanProperty("buildTeamAdmin", false);
         }
 
         /**
