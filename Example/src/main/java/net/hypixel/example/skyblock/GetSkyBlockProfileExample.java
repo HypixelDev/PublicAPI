@@ -20,7 +20,7 @@ public class GetSkyBlockProfileExample {
 
             // Get all of the player's profiles.
             JsonObject profiles = reply.getPlayer().getObjectProperty("stats.SkyBlock.profiles");
-            if (profiles == null) {
+            if (profiles == null || profiles.entrySet().isEmpty()) {
                 System.out.println("Player has no SkyBlock profiles");
                 System.exit(0);
                 return;

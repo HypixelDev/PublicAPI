@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.UUID;
 import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.pets.PetStats;
-import net.hypixel.api.util.UnstableHypixelObject;
 import net.hypixel.api.util.GameType;
 import net.hypixel.api.util.ILeveling;
+import net.hypixel.api.util.UnstableHypixelObject;
 import net.hypixel.api.util.Utilities;
 
 public class PlayerReply extends AbstractReply {
@@ -28,8 +28,8 @@ public class PlayerReply extends AbstractReply {
     @Override
     public String toString() {
         return "PlayerReply{" +
-            "player=" + player +
-            "} " + super.toString();
+               "player=" + player +
+               "} " + super.toString();
     }
 
     public static class Player extends UnstableHypixelObject {
