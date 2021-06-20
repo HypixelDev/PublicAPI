@@ -182,16 +182,14 @@ public abstract class UnstableHypixelObject {
             if (i + 1 == tokens.length) {
                 // No more tokens; current child must be the output.
                 return child;
-            } else {
-                // More tokens follow; child must be an object to continue.
-                if (child instanceof JsonObject) {
-                    parent = child.getAsJsonObject();
-                    continue;
-                }
-
-                // No child matching token.
-                return null;
             }
+
+            // More tokens follow; child must be an object to continue.
+            if (child instanceof JsonObject) {
+                parent = child.getAsJsonObject();
+                continue;
+            }
+            break;
         }
 
         return null;
