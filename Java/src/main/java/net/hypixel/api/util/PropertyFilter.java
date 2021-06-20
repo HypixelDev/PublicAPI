@@ -252,10 +252,7 @@ public class PropertyFilter {
                 throw new IllegalArgumentException("Property key cannot be null");
             }
             this.full = full;
-
-            // Tokenize the key at un-escaped dots.
-            // The negative-lookbehind ensures that dots are not preceded by a backslash.
-            tokens = full.split("(?<!\\\\)\\.");
+            tokens = Utilities.tokenizeKey(full);
         }
 
         /**

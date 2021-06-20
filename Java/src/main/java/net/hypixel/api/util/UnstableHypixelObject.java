@@ -172,9 +172,7 @@ public abstract class UnstableHypixelObject {
             return raw;
         }
 
-        // Tokenize the key at un-escaped dots.
-        // The negative-lookbehind ensures that dots are not preceded by a backslash.
-        String[] tokens = key.split("(?<!\\\\)\\.");
+        String[] tokens = Utilities.tokenizeKey(key);
 
         JsonObject parent = getRaw();
         for (int i = 0; i < tokens.length; i++) {
