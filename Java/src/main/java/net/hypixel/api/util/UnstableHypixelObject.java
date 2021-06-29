@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
+import java.util.Map.Entry;
+import net.hypixel.api.util.PropertyFilter.PropertyKey;
 
 /**
  * An object returned from the Hypixel API that lacks a defined structure.
@@ -34,6 +36,67 @@ public abstract class UnstableHypixelObject {
      */
     public boolean hasProperty(String key) {
         return getProperty(key) != null;
+    }
+
+    /**
+     * Strips the object of any properties that haven't explicitly been allowed via the filter's
+     * {@link PropertyFilter#include(String...) include()} method or the {@link
+     * PropertyFilter#including(String...) including()} constructor.
+     * <p><br>
+     * The resulting object will (at most) only contain the properties returned by {@link
+     * PropertyFilter#getIncluded() filter#getIncluded()}. If the object does not already have any
+     * of the included keys, they will not be added.
+     *
+     * @throws IllegalArgumentException If the {@code filter} is {@code null}.
+     */
+    public void filter(PropertyFilter filter) {
+        if (filter == null) {
+            throw new IllegalArgumentException("Cannot use a null filter");
+        } else if (raw.entrySet().isEmpty()) {
+            // Ignore empty objects.
+            return;
+        }
+
+        JsonObject temp = new JsonObject();
+        for (PropertyKey key : filter.allowedKeys) {
+            JsonElement value = getProperty(key.toString());
+            if (value == null) {
+                // Ignore null properties.
+                continue;
+            }
+
+            // Create any required parents for the property, similar to File#mkdirs().
+            JsonObject parent = temp;
+            String[] tokens = key.tokens;
+            for (int i = 0; i < tokens.length; i++) {
+                String token = tokens[i];
+                String escapedToken = token.replace("\\.", ".");
+
+                if (i < tokens.length - 1) {
+
+                    // Use the existing child object (if one exists).
+                    JsonElement existingChild = parent.get(token);
+                    if (existingChild instanceof JsonObject) {
+                        parent = (JsonObject) existingChild;
+                        continue;
+                    }
+
+                    // Create a new child object if one doesn't exist.
+                    JsonObject child = new JsonObject();
+                    parent.add(escapedToken, child);
+                    parent = child;
+                } else {
+                    // Set the final value of the property.
+                    parent.add(escapedToken, value);
+                }
+            }
+        }
+
+        // Replace the contents of the original object.
+        raw.entrySet().clear();
+        for (Entry<String, JsonElement> property : temp.entrySet()) {
+            raw.add(property.getKey(), property.getValue());
+        }
     }
 
     /**

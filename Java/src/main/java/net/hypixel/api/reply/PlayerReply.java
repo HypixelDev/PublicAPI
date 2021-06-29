@@ -17,12 +17,10 @@ import net.hypixel.api.util.Utilities;
 
 public class PlayerReply extends AbstractReply {
 
-    private static final Player BLANK_PLAYER = new Player(null);
-
     private Player player;
 
     public Player getPlayer() {
-        return player == null ? BLANK_PLAYER : player;
+        return player;
     }
 
     @Override
@@ -220,8 +218,7 @@ public class PlayerReply extends AbstractReply {
                 return null;
             }
 
-            Type statsObjectType = new TypeToken<Map<String, Map<String, Object>>>() {
-            }.getType();
+            Type statsObjectType = new TypeToken<Map<String, Map<String, Object>>>(){}.getType();
             return new PetStats(Utilities.GSON.fromJson(petStats, statsObjectType));
         }
 

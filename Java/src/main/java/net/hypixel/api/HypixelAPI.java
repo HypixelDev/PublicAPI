@@ -253,7 +253,7 @@ public class HypixelAPI {
      */
     private CompletableFuture<PlayerReply> applyFilterFuture(CompletableFuture<PlayerReply> future, PropertyFilter filter) {
         return future.thenApply(reply -> {
-            filter.applyTo(reply.getPlayer());
+            reply.getPlayer().filter(filter);
             return reply;
         });
     }
