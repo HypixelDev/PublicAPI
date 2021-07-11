@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.UUID;
 import net.hypixel.api.HypixelAPI;
@@ -99,29 +99,28 @@ public class PlayerReply extends AbstractReply {
             return getLongProperty("karma", 0);
         }
 
-        // TODO: 7/11/21 Use ZonedDateTime instead of Date (for consistency with other endpoints).
-
         /**
-         * @return The date when the player first connected to Hypixel
+         * @return The date when the player first connected to Hypixel. Defaults to the unix epoch
+         * when unknown.
          */
-        public Date getFirstLoginDate() {
-            return new Date(getLongProperty("firstLogin", 0));
+        public ZonedDateTime getFirstLoginDate() {
+            return getTimestamp("firstLogin");
         }
 
         /**
          * @return The last known time when the player connected to the main Hypixel network.
          * Defaults to the unix epoch when unknown.
          */
-        public Date getLastLoginDate() {
-            return new Date(getLongProperty("lastLogin", 0));
+        public ZonedDateTime getLastLoginDate() {
+            return getTimestamp("lastLogin");
         }
 
         /**
          * @return The last known time when the player disconnected from the main Hypixel network.
          * Defaults to the unix epoch when unknown.
          */
-        public Date getLastLogoutDate() {
-            return new Date(getLongProperty("lastLogout", 0));
+        public ZonedDateTime getLastLogoutDate() {
+            return getTimestamp("lastLogout");
         }
 
         /**
@@ -259,13 +258,25 @@ public class PlayerReply extends AbstractReply {
         /**
          * Helper method for checking if a rank-related field contains a non-default rank.
          *
-         * @param name Name/json-path of the field to check.
+         * @param name The name/json-path of the field to check.
          * @return Whether or not the field contains a non-default rank value.
          * @implNote {@code false} if {@code null}, {@code NONE}, or {@code NORMAL}
          */
         protected boolean hasRankInField(String name) {
             String value = getStringProperty(name, DEFAULT_RANK);
             return !value.isEmpty() && !value.equals("NONE") && !value.equals("NORMAL");
+        }
+
+        /**
+         * Helper method for deserializing unix timestamp fields, in milliseconds.
+         *
+         * @param name The name/json-path of the field to check.
+         * @return The date represented by the timestamp, or the unix epoch if the field cannot be
+         * found.
+         */
+        protected ZonedDateTime getTimestamp(String name) {
+            long timestamp = getLongProperty(name, 0);
+            return Utilities.getDateTime(timestamp);
         }
     }
 }
