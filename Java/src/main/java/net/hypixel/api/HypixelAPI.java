@@ -1,39 +1,39 @@
 package net.hypixel.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import net.hypixel.api.adapters.BoostersTypeAdapterFactory;
-import net.hypixel.api.adapters.DateTimeTypeAdapter;
-import net.hypixel.api.adapters.GameTypeTypeAdapter;
-import net.hypixel.api.adapters.UUIDTypeAdapter;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import net.hypixel.api.exceptions.APIThrottleException;
 import net.hypixel.api.exceptions.HypixelAPIException;
-import net.hypixel.api.reply.*;
-import net.hypixel.api.reply.skyblock.*;
-import net.hypixel.api.util.GameType;
+import net.hypixel.api.reply.AbstractReply;
+import net.hypixel.api.reply.BoostersReply;
+import net.hypixel.api.reply.FindGuildReply;
+import net.hypixel.api.reply.FriendsReply;
+import net.hypixel.api.reply.GameCountsReply;
+import net.hypixel.api.reply.GuildReply;
+import net.hypixel.api.reply.KeyReply;
+import net.hypixel.api.reply.LeaderboardsReply;
+import net.hypixel.api.reply.PlayerCountReply;
+import net.hypixel.api.reply.PlayerReply;
+import net.hypixel.api.reply.RecentGamesReply;
+import net.hypixel.api.reply.StatusReply;
+import net.hypixel.api.reply.WatchdogStatsReply;
+import net.hypixel.api.reply.skyblock.BazaarReply;
+import net.hypixel.api.reply.skyblock.ResourceReply;
+import net.hypixel.api.reply.skyblock.SkyBlockAuctionsReply;
+import net.hypixel.api.reply.skyblock.SkyBlockNewsReply;
+import net.hypixel.api.reply.skyblock.SkyBlockProfileReply;
+import net.hypixel.api.util.PropertyFilter;
 import net.hypixel.api.util.ResourceType;
+import net.hypixel.api.util.Utilities;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
-import java.time.ZonedDateTime;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class HypixelAPI {
-
-    private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
-            .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
-            .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
-
-            .registerTypeAdapterFactory(new BoostersTypeAdapterFactory<>(BoostersReply.Booster.class))
-
-            .create();
     private static final String BASE_URL = "https://api.hypixel.net/";
 
     private final UUID apiKey;
@@ -97,6 +97,31 @@ public class HypixelAPI {
     @Deprecated
     public CompletableFuture<PlayerReply> getPlayerByName(String player) {
         return get(PlayerReply.class, "player", "name", player);
+    }
+
+    /**
+     * Same as {@link #getPlayerByUuid(UUID)}, but the resulting player object will only contain
+     * properties explicitly included via a {@link PropertyFilter filter}.
+     */
+    public CompletableFuture<PlayerReply> getPlayerByUuid(UUID player, PropertyFilter filter) {
+        return applyFilterFuture(getPlayerByUuid(player), filter);
+    }
+
+    /**
+     * Same as {@link #getPlayerByUuid(String)}, but the resulting player object will only contain
+     * properties explicitly included via a {@link PropertyFilter filter}.
+     */
+    public CompletableFuture<PlayerReply> getPlayerByUuid(String player, PropertyFilter filter) {
+        return applyFilterFuture(getPlayerByUuid(player), filter);
+    }
+
+    /**
+     * Same as {@link #getPlayerByName(String)}, but the resulting player object will only contain
+     * properties explicitly included via a {@link PropertyFilter filter}.
+     */
+    @Deprecated
+    public CompletableFuture<PlayerReply> getPlayerByName(String player, PropertyFilter filter) {
+        return applyFilterFuture(getPlayerByName(player), filter);
     }
 
     public CompletableFuture<FriendsReply> getFriends(UUID player) {
@@ -224,6 +249,16 @@ public class HypixelAPI {
     }
 
     /**
+     * Applies a {@code filter} to a player object when it is received in an API response.
+     */
+    private CompletableFuture<PlayerReply> applyFilterFuture(CompletableFuture<PlayerReply> future, PropertyFilter filter) {
+        return future.thenApply(reply -> {
+            reply.getPlayer().filter(filter);
+            return reply;
+        });
+    }
+
+    /**
      * Execute Request asynchronously, executes Callback when finished
      *
      * @param request Request to get
@@ -249,9 +284,9 @@ public class HypixelAPI {
                     R response = httpClient.execute(new HttpGet(url.toString()), obj -> {
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
                         if (clazz == ResourceReply.class) {
-                            return (R) new ResourceReply(GSON.fromJson(content, JsonObject.class));
+                            return (R) new ResourceReply(Utilities.GSON.fromJson(content, JsonObject.class));
                         } else {
-                            return GSON.fromJson(content, clazz);
+                            return Utilities.GSON.fromJson(content, clazz);
                         }
                     });
 
@@ -278,7 +313,7 @@ public class HypixelAPI {
                 try {
                     ResourceReply response = httpClient.execute(new HttpGet(url.toString()), obj -> {
                         String content = EntityUtils.toString(obj.getEntity(), "UTF-8");
-                        return new ResourceReply(GSON.fromJson(content, JsonObject.class));
+                        return new ResourceReply(Utilities.GSON.fromJson(content, JsonObject.class));
                     });
 
                     checkReply(response);
