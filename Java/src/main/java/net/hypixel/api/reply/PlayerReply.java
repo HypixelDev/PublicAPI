@@ -255,7 +255,9 @@ public class PlayerReply extends AbstractReply {
 
         @Override
         public String toString() {
-            return "Player" + raw;
+            return exists()
+                ? "Player" + raw
+                : "Player{exists=false}";
         }
 
         /**
