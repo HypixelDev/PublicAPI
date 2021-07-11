@@ -17,6 +17,8 @@ import net.hypixel.api.util.Utilities;
 
 public class PlayerReply extends AbstractReply {
 
+    // Suppressed because this field is dynamically assigned by Gson using reflection.
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     private Player player;
 
     public Player getPlayer() {
