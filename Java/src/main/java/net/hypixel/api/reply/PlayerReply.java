@@ -40,7 +40,8 @@ public class PlayerReply extends AbstractReply {
         private static final String DEFAULT_RANK = "NONE";
 
         /**
-         * @param raw A JSON object representing a Hypixel player, as returned from the API
+         * @param raw A JSON object representing a Hypixel player, as returned from the API. If this
+         *            object is valid, it can be retrieved later via {@link #getRaw()}.
          */
         public Player(JsonElement raw) {
             super(raw);
