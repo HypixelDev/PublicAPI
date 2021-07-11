@@ -30,6 +30,11 @@ public class PlayerReply extends AbstractReply {
                "} " + super.toString();
     }
 
+    /**
+     * Information and statistics for a player on the Hypixel network.
+     * <p><br>
+     * If the player does not {@link #exists() exist}, methods may return unexpected results.
+     */
     public static class Player extends UnstableHypixelObject {
 
         private static final String DEFAULT_RANK = "NONE";
@@ -42,7 +47,8 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The player's Minecraft UUID
+         * @return The player's Minecraft UUID, or {@code null} if the player does not {@link
+         * #exists() exist}.
          */
         public UUID getUuid() {
             String uuidStr = getStringProperty("uuid", null);
@@ -50,7 +56,8 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The Minecraft username the player had when they last connected to Hypixel
+         * @return The Minecraft username that the player had when they last connected to Hypixel.
+         * {@code null} if the player's name is unknown.
          */
         public String getName() {
             // Attempt to get their display name
@@ -70,7 +77,7 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The total amount of network experience earned by this player
+         * @return The total amount of network experience earned by the player.
          */
         public long getNetworkExp() {
             long exp = getLongProperty("networkExp", 0);
@@ -79,18 +86,20 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The player's precise network level (including progress)
+         * @return The player's precise network level, including their progress to the next level.
          */
         public double getNetworkLevel() {
             return ILeveling.getExactLevel(getNetworkExp());
         }
 
         /**
-         * @return The total amount of karma points earned by this player
+         * @return The total amount of karma points earned by the player.
          */
         public long getKarma() {
             return getLongProperty("karma", 0);
         }
+
+        // TODO: 7/11/21 Use ZonedDateTime instead of Date (for consistency with other endpoints).
 
         /**
          * @return The date when the player first connected to Hypixel
@@ -100,24 +109,27 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The date when the player most recently connected to Hypixel
+         * @return The last known time when the player connected to the main Hypixel network.
+         * Defaults to the unix epoch when unknown.
          */
         public Date getLastLoginDate() {
             return new Date(getLongProperty("lastLogin", 0));
         }
 
         /**
-         * @return The date when the player more recently disconnected from Hypixel
+         * @return The last known time when the player disconnected from the main Hypixel network.
+         * Defaults to the unix epoch when unknown.
          */
         public Date getLastLogoutDate() {
             return new Date(getLongProperty("lastLogout", 0));
         }
 
         /**
-         * @return Whether or not the player is currently connected to the Hypixel network
+         * @return {@code true} if the player is currently connected to the Hypixel network. {@code
+         * false} otherwise, or if the player's online status is hidden in the API.
          * @see HypixelAPI#getStatus(UUID)
          * @deprecated The <code>status</code> endpoint ({@link HypixelAPI#getStatus(UUID)}) is
-         * recommended for checking a player's online status
+         * recommended for checking a player's online status.
          */
         @Deprecated
         public boolean isOnline() {
@@ -126,30 +138,38 @@ public class PlayerReply extends AbstractReply {
 
         /**
          * @return The color of the player's "+"s if they have MVP+ or MVP++. If they do not have
-         * either rank, or if they have not selected a color, "RED" is returned as the default
+         * either rank, or if they have not selected a color, {@code RED} is returned as the
+         * default.
          */
         public String getSelectedPlusColor() {
             return getStringProperty("rankPlusColor", "RED");
         }
 
         /**
-         * @return The color of the player's tag if they have MVP++; defaults to "GOLD"
+         * Note, returned colors use the names seen in <a href=https://minecraft.fandom.com/wiki/Formatting_codes#Color_codes>this
+         * table</a>, in all uppercase. For example, {@code DARK_BLUE} and {@code GRAY}.
+         *
+         * @return The color of the player's name tag if they have MVP++. Defaults to {@code GOLD}.
          */
         public String getSuperstarTagColor() {
             return getStringProperty("monthlyRankColor", "GOLD");
         }
 
         /**
-         * The highest network rank that this player has; prefixes are not taken into consideration
-         * <p>
+         * Returns the most privileged network rank that the player has.
+         * <p><br>
          * Example: If... <ul>
-         * <li>A player's base rank is MVP+</li>
-         * <li>They have a subscription for MVP++</li>
-         * <li>They are a staff member with the HELPER rank</li>
+         * <li>A player's base rank is MVP+ ({@code MVP_PLUS})</li>
+         * <li>They have a subscription for MVP++ ({@code SUPERSTAR})</li>
+         * <li>They are a staff member with the moderator rank ({@code MODERATOR})</li>
          * </ul>
-         * ...then this method will return "HELPER".
+         * ...then this method will return {@code MODERATOR}, because it has the highest permission
+         * level of the three ranks.
          *
-         * @return This player's highest network rank, or "NONE" if they do not have any
+         * @return The most privileged network rank that the player has, or {@code NONE} if they do
+         * not have any.
+         * @apiNote Display prefixes are not considered, as they have no effect on permissions.
+         * Examples include "OWNER" and "MOJANG".
          * @see <a href=https://github.com/HypixelDev/PublicAPI/wiki/Common-Questions#how-do-i-get-a-players-rank-prefix>"How
          * do I get a player's rank prefix?"</a>
          */
@@ -171,27 +191,18 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return Whether or not this user has a network rank (e.g. VIP, MVP++, MODERATOR, etc)
+         * @return {@code true} if the player has a network rank (e.g. {@code VIP}, {@code MVP++},
+         * {@code MODERATOR}, etc).
+         * @apiNote Display prefixes are not considered, as they are technically not ranks. Examples
+         * include "OWNER" and "MOJANG".
          */
         public boolean hasRank() {
             return !getHighestRank().equals(DEFAULT_RANK);
         }
 
         /**
-         * Utility method for checking if a rank-related field contains a non-default rank (value is
-         * not null, "NONE", or "NORMAL")
-         *
-         * @param name Name/dot-path of the field to check
-         * @return Whether or not the field contains a non-default rank value
-         */
-        protected boolean hasRankInField(String name) {
-            String value = getStringProperty(name, DEFAULT_RANK);
-            return !value.isEmpty() && !value.equals("NONE") && !value.equals("NORMAL");
-        }
-
-        /**
-         * @return Whether or not this player is a member of the <a href=https://twitter.com/hypixelbuilders>Hypixel
-         * Build Team</a>
+         * @return {@code true} if the player is a member of the <a href=https://twitter.com/hypixelbuilders>Hypixel
+         * Build Team</a>. Otherwise {@code false}.
          */
         public boolean isOnBuildTeam() {
             return getBooleanProperty("buildTeam", false)
@@ -199,7 +210,8 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The player's most recently played {@link GameType}, or null if it is unknown
+         * @return The player's most recently played {@link GameType}, or {@code null} if it is
+         * unknown.
          */
         public GameType getMostRecentGameType() {
             try {
@@ -210,7 +222,7 @@ public class PlayerReply extends AbstractReply {
         }
 
         /**
-         * @return The player's pet stats, or null if they have none
+         * @return Information about the player's lobby pets, or {@code null} if they have none.
          */
         public PetStats getPetStats() {
             JsonObject petStats = getObjectProperty("petStats");
@@ -218,20 +230,22 @@ public class PlayerReply extends AbstractReply {
                 return null;
             }
 
-            Type statsObjectType = new TypeToken<Map<String, Map<String, Object>>>(){}.getType();
+            Type statsObjectType = new TypeToken<Map<String, Map<String, Object>>>() {
+            }.getType();
             return new PetStats(Utilities.GSON.fromJson(petStats, statsObjectType));
         }
 
         /**
-         * @return The last Minecraft version that the player used to connect to Hypixel, or null if
-         * it is unknown
+         * @return The last Minecraft version that the player used to connect to Hypixel, or {@code
+         * null} if it is unknown.
          */
         public String getLastKnownMinecraftVersion() {
             return getStringProperty("mcVersionRp", null);
         }
 
         /**
-         * @return Whether or not the API returned null for this player
+         * @return {@code true} if the player could be identified by the API. Otherwise {@code
+         * false}.
          */
         public boolean exists() {
             return getUuid() != null;
@@ -240,6 +254,18 @@ public class PlayerReply extends AbstractReply {
         @Override
         public String toString() {
             return "Player" + raw;
+        }
+
+        /**
+         * Helper method for checking if a rank-related field contains a non-default rank.
+         *
+         * @param name Name/json-path of the field to check.
+         * @return Whether or not the field contains a non-default rank value.
+         * @implNote {@code false} if {@code null}, {@code NONE}, or {@code NORMAL}
+         */
+        protected boolean hasRankInField(String name) {
+            String value = getStringProperty(name, DEFAULT_RANK);
+            return !value.isEmpty() && !value.equals("NONE") && !value.equals("NORMAL");
         }
     }
 }
