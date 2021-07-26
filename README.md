@@ -1,5 +1,7 @@
 Hypixel Public API (Java)
 ======
+[![Maven Package](https://github.com/HypixelDev/PublicAPI/actions/workflows/maven.yml/badge.svg)](https://github.com/HypixelDev/PublicAPI/actions/workflows/maven.yml)
+
 This is a Java implementation of the Hypixel API. For discussing the API, requesting help or suggestions you can use the
 GitHub [Discussions](https://github.com/HypixelDev/PublicAPI/discussions).
 
