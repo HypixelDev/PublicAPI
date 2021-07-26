@@ -3,6 +3,25 @@ Hypixel Public API (Java)
 This is a Java implementation of the Hypixel API. For discussing the API, requesting help or suggestions you can use the
 GitHub [Discussions](https://github.com/HypixelDev/PublicAPI/discussions).
 
+## Note:
+
+We are currently in the process of merging and prepping to release the Public API 4.0 client. Until then, you should
+continue to use 3.0.0 with the following:
+
+```xml
+
+<repository>
+    <id>Hypixel</id>
+    <url>https://repo.hypixel.net/repository/Hypixel/</url>
+</repository>
+
+<dependency>
+<groupId>net.hypixel</groupId>
+<artifactId>HypixelAPI</artifactId>
+<version>3.0.0</version>
+</dependency>
+```
+
 ### Documentation
 
 Hypixel Public API documentation can be found at [https://api.hypixel.net/](https://api.hypixel.net/). Java

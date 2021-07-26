@@ -7,7 +7,7 @@ Hypixel Public API - Apache Transport
 <dependency>
     <groupId>net.hypixel</groupId>
     <artifactId>hypixel-api-transport-apache</artifactId>
-    <version>4.0.0</version>
+    <version>4.0</version>
 </dependency>
 ```
 
@@ -15,7 +15,7 @@ Can also be included with Gradle.
 
 ```gradle
 dependencies {
-    implementation 'net.hypixel:hypixel-api-transport-apache:4.0.0'
+    implementation 'net.hypixel:hypixel-api-transport-apache:4.0'
 }
 ```
 
