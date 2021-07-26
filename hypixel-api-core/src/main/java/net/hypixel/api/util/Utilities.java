@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.hypixel.api.adapters.*;
 import net.hypixel.api.data.type.GameType;
+import net.hypixel.api.data.type.ServerType;
 import net.hypixel.api.reply.BoostersReply;
 import net.hypixel.api.reply.PlayerReply.Player;
 
@@ -19,6 +20,7 @@ public final class Utilities {
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
             .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
+            .registerTypeAdapter(ServerType.class, new ServerTypeTypeAdapter())
             .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
             .registerTypeAdapter(Player.class, new PlayerTypeAdapter())
             .registerTypeAdapterFactory(new BoostersTypeAdapterFactory<>(BoostersReply.Booster.class))
