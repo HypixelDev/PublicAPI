@@ -4,6 +4,7 @@ Hypixel Public API - Unirest Transport
 ### Usage
 
 ```xml
+
 <dependency>
     <groupId>net.hypixel</groupId>
     <artifactId>hypixel-api-transport-unirest</artifactId>

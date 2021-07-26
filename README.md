@@ -40,6 +40,7 @@ the [Example Code](https://github.com/HypixelDev/PublicAPI/tree/master/hypixel-a
 #### Hypixel Maven Repo
 
 ```xml
+
 <repository>
     <id>Hypixel</id>
     <url>https://repo.hypixel.net/repository/Hypixel/</url>

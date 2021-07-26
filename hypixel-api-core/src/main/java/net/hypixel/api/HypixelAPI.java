@@ -1,12 +1,7 @@
 package net.hypixel.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.hypixel.api.adapters.*;
-import net.hypixel.api.data.type.GameType;
-import net.hypixel.api.data.type.ServerType;
 import net.hypixel.api.exceptions.BadResponseException;
 import net.hypixel.api.exceptions.BadStatusCodeException;
 import net.hypixel.api.http.HTTPQueryParams;
@@ -14,21 +9,14 @@ import net.hypixel.api.http.HypixelHttpClient;
 import net.hypixel.api.http.HypixelHttpResponse;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
+import net.hypixel.api.util.PropertyFilter;
 import net.hypixel.api.util.ResourceType;
+import net.hypixel.api.util.Utilities;
 
-import java.time.ZonedDateTime;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class HypixelAPI {
-
-    private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
-            .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
-            .registerTypeAdapter(ServerType.class, new ServerTypeTypeAdapter())
-            .registerTypeAdapter(ZonedDateTime.class, new DateTimeTypeAdapter())
-            .registerTypeAdapterFactory(new BoostersTypeAdapterFactory<>(BoostersReply.Booster.class))
-            .create();
     private static final String BASE_URL = "https://api.hypixel.net/";
 
     private final HypixelHttpClient httpClient;
@@ -79,6 +67,31 @@ public class HypixelAPI {
                 HTTPQueryParams.create()
                         .add("uuid", player)
         );
+    }
+
+    /**
+     * Same as {@link #getPlayerByUuid(UUID)}, but the resulting player object will only contain
+     * properties explicitly included via a {@link PropertyFilter filter}.
+     */
+    public CompletableFuture<PlayerReply> getPlayerByUuid(UUID player, PropertyFilter filter) {
+        return applyFilterFuture(getPlayerByUuid(player), filter);
+    }
+
+    /**
+     * Same as {@link #getPlayerByUuid(String)}, but the resulting player object will only contain
+     * properties explicitly included via a {@link PropertyFilter filter}.
+     */
+    public CompletableFuture<PlayerReply> getPlayerByUuid(String player, PropertyFilter filter) {
+        return applyFilterFuture(getPlayerByUuid(player), filter);
+    }
+
+    /**
+     * Same as {@link #getPlayerByName(String)}, but the resulting player object will only contain
+     * properties explicitly included via a {@link PropertyFilter filter}.
+     */
+    @Deprecated
+    public CompletableFuture<PlayerReply> getPlayerByName(String player, PropertyFilter filter) {
+        return applyFilterFuture(getPlayerByName(player), filter);
     }
 
     /**
@@ -257,6 +270,16 @@ public class HypixelAPI {
         return get(SkyBlockBazaarReply.class, "skyblock/bazaar");
     }
 
+    /**
+     * Applies a {@code filter} to a player object when it is received in an API response.
+     */
+    private CompletableFuture<PlayerReply> applyFilterFuture(CompletableFuture<PlayerReply> future, PropertyFilter filter) {
+        return future.thenApply(reply -> {
+            reply.getPlayer().filter(filter);
+            return reply;
+        });
+    }
+
     private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request) {
         return get(clazz, request, null);
     }
@@ -270,16 +293,16 @@ public class HypixelAPI {
                 .thenApply(this::checkResponse)
                 .thenApply(response -> {
                     if (clazz == ResourceReply.class) {
-                        return checkReply((R) new ResourceReply(GSON.fromJson(response.getBody(), JsonObject.class)));
+                        return checkReply((R) new ResourceReply(Utilities.GSON.fromJson(response.getBody(), JsonObject.class)));
                     }
-                    return checkReply(GSON.fromJson(response.getBody(), clazz));
+                    return checkReply(Utilities.GSON.fromJson(response.getBody(), clazz));
                 });
     }
 
     private CompletableFuture<ResourceReply> requestResource(String resource) {
         return httpClient.makeRequest(BASE_URL + "resources/" + resource)
                 .thenApply(this::checkResponse)
-                .thenApply(response -> checkReply(new ResourceReply(GSON.fromJson(response.getBody(), JsonObject.class))));
+                .thenApply(response -> checkReply(new ResourceReply(Utilities.GSON.fromJson(response.getBody(), JsonObject.class))));
     }
 
     /**
@@ -292,7 +315,7 @@ public class HypixelAPI {
 
         String cause;
         try {
-            cause = GSON.fromJson(response.getBody(), JsonObject.class).get("cause").getAsString();
+            cause = Utilities.GSON.fromJson(response.getBody(), JsonObject.class).get("cause").getAsString();
         } catch (JsonSyntaxException ignored) {
             cause = "Unknown (body is not json)";
         }

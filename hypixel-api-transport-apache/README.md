@@ -4,6 +4,7 @@ Hypixel Public API - Apache Transport
 ### Usage
 
 ```xml
+
 <dependency>
     <groupId>net.hypixel</groupId>
     <artifactId>hypixel-api-transport-apache</artifactId>
