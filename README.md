@@ -55,11 +55,12 @@ repositories {
 
 #### Transports
 
-We include two built in options communicating with the Hypixel API, you can include either of these or even include the
+We include three built-in options for communicating with the Hypixel API, you can include either of these or even include the
 core API directly and create your own instance of HypixelHTTPClient.
 
 * [Apache HttpClient Transport](hypixel-api-transport-apache/README.md)
 * [Unirest Java Transport](hypixel-api-transport-unirest/README.md)
+* [Project Reactor Transport](hypixel-api-transport-reactor/README.md) (automatic rate-limiting by default)
 
 ### Dependencies
 
