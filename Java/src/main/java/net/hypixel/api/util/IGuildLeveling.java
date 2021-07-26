@@ -19,21 +19,21 @@ public interface IGuildLeveling {
      * any levels after that.
      */
     List<Integer> EXP_NEEDED = Collections.unmodifiableList(Arrays.asList(
-        100000, // Lvl 0 -> Lvl 1
-        150000, // Lvl 1 -> Lvl 2
-        250000, // Lvl 2 -> Lvl 3
-        500000, // Etc
-        750000,
-        1000000,
-        1250000,
-        1500000,
-        2000000,
-        2500000,
-        2500000,
-        2500000,
-        2500000,
-        2500000,
-        3000000
+            100000, // Lvl 0 -> Lvl 1
+            150000, // Lvl 1 -> Lvl 2
+            250000, // Lvl 2 -> Lvl 3
+            500000, // Etc
+            750000,
+            1000000,
+            1250000,
+            1500000,
+            2000000,
+            2500000,
+            2500000,
+            2500000,
+            2500000,
+            2500000,
+            3000000
     ));
 
     /**

@@ -37,8 +37,8 @@ Hypixel [Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
 You can use this API as a dependency via the public Hypixel maven repo. You can also use
 the [Example Code](https://github.com/HypixelDev/PublicAPI/tree/master/hypixel-api-example) as a good starting point.
 
-
 #### Hypixel Maven Repo
+
 ```xml
 <repository>
     <id>Hypixel</id>
@@ -47,6 +47,7 @@ the [Example Code](https://github.com/HypixelDev/PublicAPI/tree/master/hypixel-a
 ```
 
 This repo can also be used with Gradle.
+
 ```gradle
 repositories {
     maven { url 'https://repo.hypixel.net/repository/Hypixel/' }
@@ -55,8 +56,8 @@ repositories {
 
 #### Transports
 
-We include three built-in options for communicating with the Hypixel API, you can include either of these or even include the
-core API directly and create your own instance of HypixelHTTPClient.
+We include three built-in options for communicating with the Hypixel API, you can include either of these or even
+include the core API directly and create your own instance of HypixelHTTPClient.
 
 * [Apache HttpClient Transport](hypixel-api-transport-apache/README.md)
 * [Unirest Java Transport](hypixel-api-transport-unirest/README.md)
@@ -69,7 +70,6 @@ The Hypixel API Core implementation has the following dependencies:
 * [Google Gson library - 2.8.6](https://mvnrepository.com/artifact/com.google.code.gson/gson)
 
 Transports will also have dependencies where required.
-
 
 ### Contributing
 

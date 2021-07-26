@@ -45,9 +45,9 @@ public class ReactorHttpClient implements HypixelHttpClient {
     /**
      * Constructs a new instance of this client using the specified API key.
      *
-     * @param apiKey the key associated with this connection
+     * @param apiKey                  the key associated with this connection
      * @param minDelayBetweenRequests minimum time between sending requests (in ms) default is 8
-     * @param bufferCapacity fixed size of blockingQueue
+     * @param bufferCapacity          fixed size of blockingQueue
      */
     public ReactorHttpClient(UUID apiKey, long minDelayBetweenRequests, int bufferCapacity) {
         this.apiKey = apiKey;
@@ -76,18 +76,15 @@ public class ReactorHttpClient implements HypixelHttpClient {
         }).subscribeOn(Schedulers.boundedElastic()).delayElements(Duration.ofMillis(minDelayBetweenRequests), Schedulers.boundedElastic()).subscribe(RequestCallback::sendRequest);
     }
 
-    public ReactorHttpClient(UUID apiKey, long minDelayBetweenRequests)
-    {
+    public ReactorHttpClient(UUID apiKey, long minDelayBetweenRequests) {
         this(apiKey, minDelayBetweenRequests, 500);
     }
 
-    public ReactorHttpClient(UUID apiKey, int bufferCapacity)
-    {
+    public ReactorHttpClient(UUID apiKey, int bufferCapacity) {
         this(apiKey, 8, bufferCapacity);
     }
 
-    public ReactorHttpClient(UUID apiKey)
-    {
+    public ReactorHttpClient(UUID apiKey) {
         this(apiKey, 8, 500);
     }
 
@@ -120,7 +117,8 @@ public class ReactorHttpClient implements HypixelHttpClient {
     /**
      * Makes a request to the Hypixel api and returns a {@link Mono<Tuple2<String, Integer>>} containing
      * the response body and status code, canceling this mono will prevent the request from being sent if possible
-     * @param path full url
+     *
+     * @param path            full url
      * @param isAuthenticated whether to enable authentication or not
      */
     public Mono<Tuple2<String, Integer>> makeRequest(String path, boolean isAuthenticated) {
@@ -140,7 +138,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
      * Reads response status and retries error 429 (too many requests)
      * The first request after every limit reset will be used to schedule the next limit reset
      *
-     * @param response the {@link HttpClientResponse} from our request
+     * @param response        the {@link HttpClientResponse} from our request
      * @param requestCallback the callback controlling our request
      * @return whether to return the request body or wait for a retry
      */
