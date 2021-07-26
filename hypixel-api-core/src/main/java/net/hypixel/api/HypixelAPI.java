@@ -60,7 +60,7 @@ public class HypixelAPI {
         return get(PunishmentStatsReply.class, "punishmentstats");
     }
 
-    // We want to internally cache this imo, this is more for testing
+    // TODO: We want an actual "Manager" sort of util for this, so we can getByKey, getById, etc. Maybe we just link it with GameType in some way?
     public CompletableFuture<Set<Game>> getGames() {
         return getResource(ResourceType.GAMES).thenApply(reply -> {
             JsonElement games = reply.getResponse().get("games");
