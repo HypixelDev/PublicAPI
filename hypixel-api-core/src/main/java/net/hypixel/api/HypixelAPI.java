@@ -1,7 +1,11 @@
 package net.hypixel.api;
 
+import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import net.hypixel.api.data.Game;
 import net.hypixel.api.exceptions.BadResponseException;
 import net.hypixel.api.exceptions.BadStatusCodeException;
 import net.hypixel.api.http.HTTPQueryParams;
@@ -13,13 +17,22 @@ import net.hypixel.api.util.PropertyFilter;
 import net.hypixel.api.util.ResourceType;
 import net.hypixel.api.util.Utilities;
 
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class HypixelAPI {
     private static final String BASE_URL = "https://api.hypixel.net/";
 
     private final HypixelHttpClient httpClient;
+
+    // Internal Cache for resources
+    private final AsyncLoadingCache<String, ResourceReply> resourceCache = Caffeine.newBuilder()
+            .expireAfterAccess(5, TimeUnit.MINUTES) // TODO: Could be added as config options somewhere?
+            .expireAfterWrite(15, TimeUnit.MINUTES)
+            .buildAsync((resource, executor) -> requestResource(resource));
 
     /**
      * @param httpClient a {@link HypixelHttpClient} that implements the HTTP behaviour for communicating with the API
@@ -45,6 +58,16 @@ public class HypixelAPI {
 
     public CompletableFuture<PunishmentStatsReply> getPunishmentStats() {
         return get(PunishmentStatsReply.class, "punishmentstats");
+    }
+
+    // We want to internally cache this imo, this is more for testing
+    public CompletableFuture<Set<Game>> getGames() {
+        return getResource(ResourceType.GAMES).thenApply(reply -> {
+            JsonElement games = reply.getResponse().get("games");
+            return games.getAsJsonObject().entrySet().stream()
+                    .map(entry -> Game.fromJson(entry.getKey(), entry.getValue()))
+                    .collect(Collectors.toSet());
+        });
     }
 
     /**
@@ -218,7 +241,7 @@ public class HypixelAPI {
     }
 
     public CompletableFuture<ResourceReply> getResource(String resource) {
-        return requestResource(resource);
+        return resourceCache.get(resource);
     }
 
     public CompletableFuture<SkyBlockProfileReply> getSkyBlockProfile(String profile) {
