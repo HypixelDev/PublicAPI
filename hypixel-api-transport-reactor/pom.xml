@@ -12,7 +12,6 @@
     <artifactId>hypixel-api-transport-reactor</artifactId>
 
     <properties>
-        <maven.deploy.skip>false</maven.deploy.skip>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>

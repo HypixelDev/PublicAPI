@@ -9,10 +9,6 @@
     <packaging>pom</packaging>
     <version>4.0</version>
 
-    <properties>
-        <maven.deploy.skip>true</maven.deploy.skip>
-    </properties>
-
     <modules>
         <module>hypixel-api-core</module>
         <module>hypixel-api-example</module>
