@@ -139,7 +139,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
             while (this.actionsLeftThisMinute <= 0) {
                 this.limitResetCondition.await();
             }
-            this.actionsLeftThisMinute = Math.max(0, this.actionsLeftThisMinute--);
+            this.actionsLeftThisMinute--;
         } finally {
             this.lock.unlock();
         }
@@ -192,7 +192,6 @@ public class ReactorHttpClient implements HypixelHttpClient {
         if (this.firstRequestReturned.compareAndSet(false, true)) {
             int timeRemaining = Math.max(1, response.responseHeaders().getInt("ratelimit-reset", 10));
             int requestsRemaining = response.responseHeaders().getInt("ratelimit-remaining", 110);
-
 
             this.setActionsLeftThisMinute(requestsRemaining);
 
