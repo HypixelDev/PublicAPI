@@ -14,9 +14,7 @@ import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 import java.util.UUID;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -36,6 +34,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
 
     // For shutting down the flux that emits request callbacks
     private final Disposable requestCallbackFluxDisposable;
+    private final ExecutorService requestCallbackFluxExecutorService = Executors.newSingleThreadExecutor();
 
     private final ReentrantLock lock = new ReentrantLock(true);
     private final Condition limitResetCondition = lock.newCondition();
@@ -72,7 +71,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
             } catch (InterruptedException e) {
                 throw new AssertionError("This should not have been possible", e);
             }
-        }).subscribeOn(Schedulers.boundedElastic()).delayElements(Duration.ofMillis(minDelayBetweenRequests), Schedulers.boundedElastic()).subscribe(RequestCallback::sendRequest);
+        }).subscribeOn(Schedulers.fromExecutorService(this.requestCallbackFluxExecutorService)).delayElements(Duration.ofMillis(minDelayBetweenRequests), Schedulers.boundedElastic()).subscribe(RequestCallback::sendRequest);
     }
 
     public ReactorHttpClient(UUID apiKey, long minDelayBetweenRequests) {
@@ -111,6 +110,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
     @Override
     public void shutdown() {
         this.requestCallbackFluxDisposable.dispose();
+        this.requestCallbackFluxExecutorService.shutdown();
     }
 
     /**
@@ -121,7 +121,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
      * @param isAuthenticated whether to enable authentication or not
      */
     public Mono<Tuple2<String, Integer>> makeRequest(String path, boolean isAuthenticated) {
-        return Mono.<Tuple2<String, Integer>>create(sink -> {
+        return Mono.create(sink -> {
             RequestCallback callback = new RequestCallback(path, sink, isAuthenticated, this);
 
             try {
@@ -130,7 +130,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
                 sink.error(e);
                 throw new AssertionError("Queue insertion interrupted. This should not have been possible", e);
             }
-        }).subscribeOn(Schedulers.boundedElastic());
+        });
     }
 
     private void decrementActionsOrWait() throws InterruptedException {
