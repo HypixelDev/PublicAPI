@@ -17,6 +17,7 @@ public class ExampleUtil {
     }
 
     public static final UUID HYPIXEL = UUID.fromString("f7c77d99-9f15-4a66-a87d-c4a51ef30d19");
+    public static final String GUILD_ID = "53bd67d7ed503e868873eceb";
 
     /**
      * Keep the program alive till we explicitly exit.
