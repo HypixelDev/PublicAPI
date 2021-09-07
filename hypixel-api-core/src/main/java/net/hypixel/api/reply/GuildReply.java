@@ -58,7 +58,7 @@ public class GuildReply extends AbstractReply {
         private Map<GuildAchievement, Integer> achievements;
         private int coins;
         private int coinsEver;
-        private int legacyRanking;
+        private Integer legacyRanking; // Nullable so that non-ranked guilds don't appear as #1.
 
         /**
          * The unique BSON ObjectId that represents the guild. This should not change during the
@@ -309,15 +309,19 @@ public class GuildReply extends AbstractReply {
 
         /**
          * The guild's ranking, out of all guilds, in terms of {@link #getCoins() coins} earned
-         * before the 2018 guild update. This defaults to {@code 0} for guilds created after that
-         * update.
+         * before the 2018 guild update. The lowest place is {@code 1} (meaning 1st place) for
+         * guilds that this applies to. For guilds created after the update, {@code -1} is
+         * returned.
          *
-         * @return the guild's position on the legacy coin leaderboard.
+         * @return the guild's position on the legacy coin leaderboard, or {@code -1} if the guild
+         * was created after the guild update.
          * @see #getCoins()
          * @see #getCoinsEver()
          */
         public int getLegacyRanking() {
-            return legacyRanking;
+            return Optional.ofNullable(legacyRanking)
+                .map(ranking -> ranking + 1)
+                .orElse(-1);
         }
 
         @Override
