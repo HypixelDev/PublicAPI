@@ -144,10 +144,13 @@ public class GetGuildExample {
         }
         System.out.println();
 
+        int guildLevel = (int) IGuildLeveling.getLevel(guild.getExperience());
+
         System.out.println("\tID:          " + guild.getId());
-        System.out.println("\tLevel:       " + IGuildLeveling.getExactLevel(guild.getExperience()));
+        System.out.println("\tLevel:       " + guildLevel);
         System.out.println("\tCreated At:  " + guild.getCreationDate());
         System.out.println("\tDescription: \"" + guild.getDescription() + '"');
+        System.out.println("\tGames:       " + guild.getPreferredGames());
         System.out.println("\tBanner:      " + guild.getBanner());
     }
 
