@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.data.type.GameType;
+import net.hypixel.api.data.type.GuildAchievement;
 import net.hypixel.api.reply.GuildReply;
 import net.hypixel.api.reply.GuildReply.Guild;
 import net.hypixel.api.reply.GuildReply.Guild.Member;
@@ -102,6 +103,12 @@ public class GetGuildExample {
         System.out.println();
 
         /*
+         * After that, we'll print the guild's high-score for each tiered guild achievement.
+         */
+        printAchievementScores(guild);
+        System.out.println();
+
+        /*
          * Then we'll display how much experience the guild has earned from each game on Hypixel,
          * as well as an overall total.
          */
@@ -144,6 +151,20 @@ public class GetGuildExample {
         System.out.println("\tBanner:      " + guild.getBanner());
     }
 
+    private static void printAchievementScores(Guild guild) {
+        System.out.println("Guild Achievement High-Scores");
+
+        /*
+         * Displays the guild's high-score for each tiered achievement. The meaning of "score"
+         * varies between achievements, but an explanation for each can be found in the
+         * `GuildAchievement` class.
+         */
+        for (GuildAchievement achievement : GuildAchievement.values()) {
+            int highScore = guild.getAchievementHighScore(achievement);
+            System.out.println("\t" + achievement + ": " + highScore);
+        }
+    }
+
     private static void printGuildXpPerGame(Guild guild) {
         System.out.println("Guild XP Breakdown");
 
@@ -156,8 +177,8 @@ public class GetGuildExample {
          * Then we loop through each game and see how much experience the guild's earned from it.
          */
         for (GameType game : GameType.values()) {
-            // "<game name>: <experience amount>"
-            System.out.println("\t" + game.getName() + ": " + guild.getExperienceForGame(game));
+            int experienceForGame = guild.getExperienceForGame(game);
+            System.out.println("\t" + game.getName() + ": " + experienceForGame);
         }
     }
 

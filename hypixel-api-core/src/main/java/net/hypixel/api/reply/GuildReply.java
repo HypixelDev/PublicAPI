@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import net.hypixel.api.data.type.GameType;
+import net.hypixel.api.data.type.GuildAchievement;
 import net.hypixel.api.reply.PlayerReply.Player;
 import net.hypixel.api.util.Banner;
 
@@ -54,6 +55,7 @@ public class GuildReply extends AbstractReply {
         private List<Rank> ranks;
         private List<GameType> preferredGames;
         private Map<GameType, Integer> guildExpByGameType;
+        private Map<GuildAchievement, Integer> achievements;
         private int coins;
         private int coinsEver;
         private int legacyRanking;
@@ -207,6 +209,23 @@ public class GuildReply extends AbstractReply {
 
             return Optional.ofNullable(guildExpByGameType)
                 .map(expByGame -> expByGame.get(game))
+                .orElse(0);
+        }
+
+        /**
+         * Retrieves the guild's high-score for a specific guild achievement. The meaning of "score"
+         * varies between achievements, and can be found in the documentation for the desired {@link
+         * GuildAchievement}.
+         *
+         * @param achievement the achievement to get the high-score of.
+         * @return the guild's high-score for the provided achievement.
+         */
+        public int getAchievementHighScore(GuildAchievement achievement) {
+            if (achievement == null) {
+                throw new IllegalArgumentException("Cannot get high-score for null achievement");
+            }
+            return Optional.ofNullable(achievements)
+                .map(highScores -> highScores.get(achievement))
                 .orElse(0);
         }
 
