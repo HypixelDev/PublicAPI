@@ -1,6 +1,7 @@
 package net.hypixel.api.reply;
 
 import com.google.gson.annotations.SerializedName;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
@@ -237,7 +238,7 @@ public class GuildReply extends AbstractReply {
          */
         public int getExperienceForGame(GameType game) {
             if (game == null) {
-                throw new IllegalArgumentException("Cannot get experience for null GameType");
+                throw new IllegalArgumentException("Cannot get XP for null GameType");
             }
 
             return Optional.ofNullable(guildExpByGameType)
@@ -329,6 +330,8 @@ public class GuildReply extends AbstractReply {
             private String rank;
             @SerializedName("joined")
             private ZonedDateTime joinDate;
+            @SerializedName("expHistory")
+            private Map<String, Integer> weeklyExperience;
 
             /**
              * The player's Minecraft identifier (version 4 UUID), assigned by Mojang.
@@ -357,6 +360,25 @@ public class GuildReply extends AbstractReply {
              */
             public ZonedDateTime getJoinDate() {
                 return joinDate;
+            }
+
+            /**
+             * Retrieves the amount of guild experience earned by the player on a particular date.
+             * Daily XP information is typically only kept for one week, so results may not be found
+             * for earlier dates.
+             *
+             * @param date The date to get the member's experience earnings for.
+             * @return the amount of guild experience earned by the player on the {@code date}, or
+             * {@code -1} if no total is kept for that day.
+             */
+            public int getExperienceEarned(LocalDate date) {
+                if (date == null) {
+                    throw new IllegalArgumentException("Cannot get XP for null date");
+                }
+
+                return Optional.ofNullable(weeklyExperience)
+                    .map(expByDate -> expByDate.get(date.toString()))
+                    .orElse(-1);
             }
 
             /**
