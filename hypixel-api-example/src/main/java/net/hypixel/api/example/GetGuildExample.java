@@ -138,9 +138,10 @@ public class GetGuildExample {
         System.out.println();
 
         System.out.println("\tID:          " + guild.getId());
+        System.out.println("\tLevel:       " + IGuildLeveling.getExactLevel(guild.getExperience()));
         System.out.println("\tCreated At:  " + guild.getCreationDate());
         System.out.println("\tDescription: \"" + guild.getDescription() + '"');
-        System.out.println("\tLevel:       " + IGuildLeveling.getExactLevel(guild.getExperience()));
+        System.out.println("\tBanner:      " + guild.getBanner());
     }
 
     private static void printGuildXpPerGame(Guild guild) {

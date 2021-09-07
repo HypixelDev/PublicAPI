@@ -139,7 +139,7 @@ public class GuildReply extends AbstractReply {
         }
 
         /**
-         * The Minecraft-style banner displayed on the guild's hypixel.net website profile
+         * The Minecraft-style banner displayed on the guild's hypixel.net website profile.
          *
          * @return the guild's banner, or {@code null} if none has been set.
          */
