@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.UUID;
 import net.hypixel.api.util.Banner;
 
+// Suppressed because most fields are assigned by Gson via reflection.
+@SuppressWarnings({"unused", "RedundantSuppression"})
 public class GuildReply extends AbstractReply {
 
     private Guild guild;
