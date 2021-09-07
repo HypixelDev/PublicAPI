@@ -146,7 +146,15 @@ public class GetGuildExample {
 
     private static void printGuildXpPerGame(Guild guild) {
         System.out.println("Guild XP Breakdown");
+
+        /*
+         * This line prints the guild's total experience from all games.
+         */
         System.out.println("\tOVERALL: " + guild.getExperience());
+
+        /*
+         * Then we loop through each game and see how much experience the guild's earned from it.
+         */
         for (GameType game : GameType.values()) {
             // "<game name>: <experience amount>"
             System.out.println("\t" + game.getName() + ": " + guild.getExperienceForGame(game));
