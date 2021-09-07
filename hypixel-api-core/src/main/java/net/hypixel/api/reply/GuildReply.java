@@ -3,6 +3,7 @@ package net.hypixel.api.reply;
 import com.google.gson.annotations.SerializedName;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import net.hypixel.api.reply.PlayerReply.Player;
 import net.hypixel.api.util.Banner;
 
 // Suppressed because most fields are assigned by Gson via reflection.
-@SuppressWarnings({"unused", "RedundantSuppression"})
+@SuppressWarnings({"unused", "RedundantSuppression", "MismatchedQueryAndUpdateOfCollection"})
 public class GuildReply extends AbstractReply {
 
     private Guild guild;
@@ -51,6 +52,7 @@ public class GuildReply extends AbstractReply {
         private Banner banner;
         private List<Member> members;
         private List<Rank> ranks;
+        private List<GameType> preferredGames;
         private Map<GameType, Integer> guildExpByGameType;
         private int coins;
         private int coinsEver;
@@ -149,16 +151,18 @@ public class GuildReply extends AbstractReply {
          * Information about the Hypixel players who are currently members of the guild (at the time
          * the {@code Guild} object was fetched from the API).
          *
-         * @return all of the guild's members.
+         * @return an immutable list of all of the guild's members.
          */
         public List<Member> getMembers() {
-            return members;
+            return members == null
+                ? Collections.emptyList()
+                : Collections.unmodifiableList(members);
         }
 
         /**
          * A list of permission groups created within the guild.
          *
-         * @return the guild's ranks, or {@code null} if none have been created.
+         * @return an immutable list of the guild's ranks. May be empty.
          * @apiNote This list may not be exhaustive, and typically only includes user-generated
          * ranks. Built-in ranks, and pre-guild-update ranks may not be included in this list,
          * despite being valid values for a member's {@link Member#getRank() rank} field. Extraneous
@@ -171,7 +175,39 @@ public class GuildReply extends AbstractReply {
          * </ul>
          */
         public List<Rank> getRanks() {
-            return ranks;
+            return ranks == null
+                ? Collections.emptyList()
+                : Collections.unmodifiableList(ranks);
+        }
+
+        /**
+         * A list of games that can be used to search for the guild via the in-game guild finder.
+         * Typically, this list represents the games that the guild considers their main focus.
+         *
+         * @return an immutable list of the guild's preferred games. May be empty.
+         */
+        public List<GameType> getPreferredGames() {
+            return preferredGames == null
+                ? Collections.emptyList()
+                : Collections.unmodifiableList(preferredGames);
+        }
+
+        /**
+         * Retrieves the total amount of {@link #getExperience() experience} that the guild has
+         * earned from a particular game.
+         *
+         * @param game The game to retrieve experience for.
+         * @return the amount of XP earned by the guild for the specified {@code game}.
+         * @throws IllegalArgumentException if the provided {@code game} is {@code null}.
+         */
+        public int getExperienceForGame(GameType game) {
+            if (game == null) {
+                throw new IllegalArgumentException("Cannot get XP for null GameType");
+            }
+
+            return Optional.ofNullable(guildExpByGameType)
+                .map(expByGame -> expByGame.get(game))
+                .orElse(0);
         }
 
         /**
@@ -226,24 +262,6 @@ public class GuildReply extends AbstractReply {
         @Deprecated
         public Boolean getJoinable() {
             return isJoinable();
-        }
-
-        /**
-         * Retrieves the total amount of {@link #getExperience() experience} that the guild has
-         * earned from a particular game.
-         *
-         * @param game The game to retrieve experience for.
-         * @return the amount of XP earned by the guild for the specified {@code game}.
-         * @throws IllegalArgumentException if the provided {@code game} is {@code null}.
-         */
-        public int getExperienceForGame(GameType game) {
-            if (game == null) {
-                throw new IllegalArgumentException("Cannot get XP for null GameType");
-            }
-
-            return Optional.ofNullable(guildExpByGameType)
-                .map(expByGame -> expByGame.get(game))
-                .orElse(0);
         }
 
         /**

@@ -1,6 +1,7 @@
 package net.hypixel.api.example;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -157,7 +158,11 @@ public class GetGuildExample {
         /*
          * This just sorts the list in reverse order by priority, so that higher-level ranks (like
          * officer) are printed before lower-level ones (like member).
+         *
+         * The first line copies the list beforehand, because `Guild.getRanks()` returns an
+         * immutable (unmodifiable) list that can't be altered (including sorting).
          */
+        ranks = new ArrayList<>(ranks);
         ranks.sort(Comparator.comparingInt(Rank::getPriority).reversed());
 
         for (Rank rank : ranks) {
