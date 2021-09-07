@@ -3,10 +3,12 @@ package net.hypixel.api.reply;
 import com.google.gson.annotations.SerializedName;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import net.hypixel.api.util.Banner;
 
 public class GuildReply extends AbstractReply {
+
     private Guild guild;
 
     public Guild getGuild() {
@@ -16,64 +18,139 @@ public class GuildReply extends AbstractReply {
     @Override
     public String toString() {
         return "GuildReply{" +
-                "guild=" + guild +
-                "} " + super.toString();
+               "guild=" + guild +
+               "} " + super.toString();
     }
 
     public static class Guild {
-        private String _id;
 
-        private String name;
-        private String description;
-        private String tag;
-        private String tagColor;
-        private Boolean publiclyListed;
-        private Banner banner;
+        // Unclear/unconventionally named fields.
+        @SerializedName("_id")
+        private String        id;
+        @SerializedName("created")
+        private ZonedDateTime creationDate;
+        @SerializedName("exp")
+        private long          experience;
+        @SerializedName("publiclyListed")
+        private boolean       isPubliclyListed;
+        @SerializedName("joinable")
+        private boolean       isJoinable;
+
+        // If any of these variables change names, make sure to include a @SerializedName("...").
+        private String       name;
+        private String       description;
+        private String       tag;
+        private String       tagColor;
+        private Banner       banner;
         private List<Member> members;
-        private List<Rank> ranks;
-        private int coins;
-        private int coinsEver;
-        private ZonedDateTime created;
-        private Boolean joinable;
-        private long exp;
-        private int legacyRanking;
+        private List<Rank>   ranks;
+        private int          coins;
+        private int          coinsEver;
+        private int          legacyRanking;
 
-        public String get_id() {
-            return _id;
+        /**
+         * The unique BSON ObjectId that represents the guild. This should not change during the
+         * guild's lifetime.
+         *
+         * @return the guild's main identifier.
+         * @see <a href=https://docs.mongodb.com/manual/reference/bson-types/#objectid>ObjectId</a>
+         */
+        public String getId() {
+            return id;
         }
 
+        /**
+         * @deprecated Renamed to {@link #getId()}.
+         */
+        @Deprecated
+        public String get_id() {
+            return getId();
+        }
+
+        /**
+         * The guild's main display name. This is subject to change at any time.
+         *
+         * @return the guild's display name.
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * A short, optional string set by a privileged member of the guild, and displayed in the
+         * in-game guild finder.
+         *
+         * @return the guild's description, or {@code null} if none has been set.
+         */
         public String getDescription() {
             return description;
         }
 
+        /**
+         * The date when the guild was created. If the guild has been disbanded and recreated in the
+         * past, this is the date when the guild was most recently created.
+         *
+         * @return the date when the guild was created.
+         */
+        public ZonedDateTime getCreationDate() {
+            return creationDate;
+        }
+
+        /**
+         * @deprecated Renamed to {@link #getCreationDate()}.
+         */
+        @Deprecated
+        public ZonedDateTime getCreated() {
+            return getCreationDate();
+        }
+
+        /**
+         * A short string displayed in-game after the names of members of the guild.
+         *
+         * @return the guild's tag, or {@code null} if the guild does not have one (or if it has not
+         * been set).
+         */
         public String getTag() {
             return tag;
         }
 
+        /**
+         * A Minecraft color code indicating the color of the guild's {@link #getTag() tag}. If this
+         * returns {@code null} but the guild does have a tag, then the color is assumed to be
+         * "{@code GRAY}" (without quotes).
+         *
+         * @return the name of a Minecraft color code (all uppercase), or {@code null} if the guild
+         * has never changed its tag's color.
+         * @see <a href=https://minecraft.fandom.com/wiki/Formatting_codes#Color_codes>Color codes
+         * table</a> (uses lowercase names)
+         */
         public String getTagColor() {
             return tagColor;
         }
 
-        public Boolean getPubliclyListed() {
-            return publiclyListed;
-        }
-
+        /**
+         * The Minecraft-style banner displayed on the guild's hypixel.net website profile
+         *
+         * @return the guild's banner, or {@code null} if none has been set.
+         */
         public Banner getBanner() {
             return banner;
         }
 
+        /**
+         * Information about the Hypixel players who are currently members of the guild (at the time
+         * the {@code Guild} object was fetched from the API).
+         *
+         * @return all of the guild's members.
+         */
         public List<Member> getMembers() {
             return members;
         }
 
         /**
-         * Retrieves a list of permission groups created within the guild.
+         * A list of permission groups created within the guild.
          *
-         * @return the guild's ranks.
+         * @return the guild's ranks, or {@code null} if none have been created.
          * @apiNote This list may not be exhaustive, and typically only includes user-generated
          * ranks. Built-in ranks, and pre-guild-update ranks may not be included in this list,
          * despite being valid values for a member's {@link Member#getRank() rank} field. Extraneous
@@ -89,26 +166,92 @@ public class GuildReply extends AbstractReply {
             return ranks;
         }
 
+        /**
+         * The total amount of experience earned by the guild's members. This is different from
+         * network experience, which is earned individually by all players.
+         *
+         * @return the guild's total experience count.
+         */
+        public long getExperience() {
+            return experience;
+        }
+
+        /**
+         * @deprecated Renamed to {@link #getExperience()}.
+         */
+        @Deprecated
+        public long getExp() {
+            return getExperience();
+        }
+
+        /**
+         * Whether or not the guild can be discovered via the in-game guild finder.
+         *
+         * @return whether or not the guild is listed publicly.
+         */
+        public boolean isPubliclyListed() {
+            return isPubliclyListed;
+        }
+
+        /**
+         * @deprecated Renamed to {@link #isPubliclyListed()}.
+         */
+        @Deprecated
+        public Boolean getPubliclyListed() {
+            return isPubliclyListed();
+        }
+
+        /**
+         * Whether or not players can request to join the guild. If {@code false}, players must be
+         * invited by a guild member with appropriate privileges.
+         *
+         * @return whether or not the guild can be joined without an invite.
+         */
+        public boolean isJoinable() {
+            return isJoinable;
+        }
+
+        /**
+         * @deprecated Renamed to {@link #isJoinable()}.
+         */
+        @Deprecated
+        public Boolean getJoinable() {
+            return isJoinable();
+        }
+
+        /**
+         * The number of coins that the guild had prior to the 2018 guild update (when they were
+         * replaced with {@link #getExperience() guild experience}). Coins were previously used to
+         * purchase cosmetics for guilds (member slots, tags, etc), but now are only stored for
+         * legacy purposes.
+         *
+         * @return the number of coins the guild has.
+         */
         public int getCoins() {
             return coins;
         }
 
+        /**
+         * The total number of coins earned by the guild prior to the 2018 guild update. Unlike
+         * {@link #getCoins()}, this number did not decrease when the guild purchased cosmetics
+         * using coins.
+         *
+         * @return the number of coins earned during the guild's lifetime.
+         * @see #getCoins()
+         */
         public int getCoinsEver() {
             return coinsEver;
         }
 
-        public ZonedDateTime getCreated() {
-            return created;
-        }
-
-        public Boolean getJoinable() {
-            return joinable;
-        }
-
-        public long getExp() {
-            return exp;
-        }
-
+        /**
+         * The guild's ranking, out of all guilds, in terms of {@link #getCoins() coins} earned
+         * before the 2018 guild update. This defaults to {@code 0} for guilds created after that
+         * update.
+         *
+         * @return the guild's position on the legacy coin leaderboard.
+         * @see #getCoins()
+         * @see #getCoinsEver()
+         */
         public int getLegacyRanking() {
             return legacyRanking;
         }
@@ -116,48 +259,112 @@ public class GuildReply extends AbstractReply {
         @Override
         public String toString() {
             return "Guild{" +
-                    "_id='" + _id + '\'' +
-                    ", name='" + name + '\'' +
-                    ", description='" + description + '\'' +
-                    ", tag='" + tag + '\'' +
-                    ", tagColor='" + tagColor + '\'' +
-                    ", publiclyListed=" + publiclyListed +
-                    ", banner=" + banner +
-                    ", members=" + members +
-                    ", ranks=" + ranks +
-                    ", coins=" + coins +
-                    ", coinsEver=" + coinsEver +
-                    ", created=" + created +
-                    ", joinable=" + joinable +
-                    ", exp=" + exp +
-                    ", legacyRanking=" + legacyRanking +
-                    '}';
+                   "id='" + id + '\'' +
+                   ", name='" + name + '\'' +
+                   ", description='" + description + '\'' +
+                   ", creationDate=" + creationDate +
+                   ", tag='" + tag + '\'' +
+                   ", tagColor='" + tagColor + '\'' +
+                   ", banner=" + banner +
+                   ", members=" + members +
+                   ", ranks=" + ranks +
+                   ", experience=" + experience +
+                   ", isPubliclyListed=" + isPubliclyListed +
+                   ", isJoinable=" + isJoinable +
+                   ", coins=" + coins +
+                   ", coinsEver=" + coinsEver +
+                   ", legacyRanking=" + legacyRanking +
+                   '}';
         }
 
-        public static class Member {
-            private UUID uuid;
-            private String rank;
-            private ZonedDateTime joined;
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Guild guild = (Guild) o;
+            return Objects.equals(id, guild.id);
+        }
 
+        @Override
+        public int hashCode() {
+            return Objects.hash(id);
+        }
+
+        /**
+         * Information about a Hypixel player pertaining to their guild.
+         */
+        public static class Member {
+
+            private UUID          uuid;
+            private String        rank;
+            @SerializedName("joined")
+            private ZonedDateTime joinDate;
+
+            /**
+             * The player's Minecraft identifier (version 4 UUID), assigned by Mojang.
+             *
+             * @return the player's UUID.
+             */
             public UUID getUuid() {
                 return uuid;
             }
 
+            /**
+             * The player's permission group in the guild. This rank name may not appear in the
+             * guild's rank list; see {@link Guild#getRanks() here} for details.
+             *
+             * @return the player's guild rank.
+             */
             public String getRank() {
                 return rank;
             }
 
+            /**
+             * The date and time when the player joined the guild. If they have joined and left the
+             * guild previously, this will be the date when they most recently re-joined.
+             *
+             * @return the date when the player joined their guild.
+             */
+            public ZonedDateTime getJoinDate() {
+                return joinDate;
+            }
+
+            /**
+             * @deprecated Renamed to {@link #getJoinDate()}.
+             */
+            @Deprecated
             public ZonedDateTime getJoined() {
-                return joined;
+                return getJoinDate();
             }
 
             @Override
             public String toString() {
                 return "Member{" +
-                        "uuid=" + uuid +
-                        ", rank=" + rank +
-                        ", joined=" + joined +
-                        '}';
+                       "uuid=" + uuid +
+                       ", rank='" + rank + '\'' +
+                       ", joined=" + joinDate +
+                       '}';
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) {
+                    return true;
+                }
+                if (o == null || getClass() != o.getClass()) {
+                    return false;
+                }
+                Member member = (Member) o;
+                return Objects.equals(uuid, member.uuid);
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(uuid);
             }
         }
 
@@ -165,13 +372,14 @@ public class GuildReply extends AbstractReply {
          * A permission group that can be assigned to members of a Hypixel guild.
          */
         public static class Rank {
-            private String name;
-            private String tag;
+
+            private String        name;
+            private String        tag;
+            private int           priority;
             @SerializedName("default")
-            private boolean isDefault;
+            private boolean       isDefault;
             @SerializedName("created")
             private ZonedDateTime creationDate;
-            private int priority;
 
             /**
              * The rank's display name, as seen in guild chat and hypixel.net.
@@ -231,6 +439,24 @@ public class GuildReply extends AbstractReply {
                        ", creationDate=" + creationDate +
                        ", priority=" + priority +
                        '}';
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) {
+                    return true;
+                }
+                if (o == null || getClass() != o.getClass()) {
+                    return false;
+                }
+                Rank rank = (Rank) o;
+                return Objects.equals(name, rank.name) &&
+                       Objects.equals(creationDate, rank.creationDate);
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(name, creationDate);
             }
         }
     }
