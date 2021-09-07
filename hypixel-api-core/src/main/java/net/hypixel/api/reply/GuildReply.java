@@ -3,8 +3,12 @@ package net.hypixel.api.reply;
 import com.google.gson.annotations.SerializedName;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
+import net.hypixel.api.data.type.GameType;
+import net.hypixel.api.reply.PlayerReply.Player;
 import net.hypixel.api.util.Banner;
 
 // Suppressed because most fields are assigned by Gson via reflection.
@@ -28,27 +32,28 @@ public class GuildReply extends AbstractReply {
 
         // Unclear/unconventionally named fields.
         @SerializedName("_id")
-        private String        id;
+        private String id;
         @SerializedName("created")
         private ZonedDateTime creationDate;
         @SerializedName("exp")
-        private long          experience;
+        private long experience;
         @SerializedName("publiclyListed")
-        private boolean       isPubliclyListed;
+        private boolean isPubliclyListed;
         @SerializedName("joinable")
-        private boolean       isJoinable;
+        private boolean isJoinable;
 
         // If any of these variables change names, make sure to include a @SerializedName("...").
-        private String       name;
-        private String       description;
-        private String       tag;
-        private String       tagColor;
-        private Banner       banner;
+        private String name;
+        private String description;
+        private String tag;
+        private String tagColor;
+        private Banner banner;
         private List<Member> members;
-        private List<Rank>   ranks;
-        private int          coins;
-        private int          coinsEver;
-        private int          legacyRanking;
+        private List<Rank> ranks;
+        private Map<GameType, Integer> guildExpByGameType;
+        private int coins;
+        private int coinsEver;
+        private int legacyRanking;
 
         /**
          * The unique BSON ObjectId that represents the guild. This should not change during the
@@ -169,8 +174,9 @@ public class GuildReply extends AbstractReply {
         }
 
         /**
-         * The total amount of experience earned by the guild's members. This is different from
-         * network experience, which is earned individually by all players.
+         * The total amount of experience earned by the guild's members. This is different from a
+         * player's {@link Player#getNetworkExp() network experience}, which is independent of the
+         * guild system.
          *
          * @return the guild's total experience count.
          */
@@ -219,6 +225,24 @@ public class GuildReply extends AbstractReply {
         @Deprecated
         public Boolean getJoinable() {
             return isJoinable();
+        }
+
+        /**
+         * Retrieves the total amount of {@link #getExperience() experience} that the guild has
+         * earned from a particular game.
+         *
+         * @param game The game to retrieve experience for.
+         * @return the amount of XP earned by the guild for the specified {@code game}.
+         * @throws IllegalArgumentException if the provided {@code game} is {@code null}.
+         */
+        public int getExperienceForGame(GameType game) {
+            if (game == null) {
+                throw new IllegalArgumentException("Cannot get experience for null GameType");
+            }
+
+            return Optional.ofNullable(guildExpByGameType)
+                .map(expByGame -> expByGame.get(game))
+                .orElse(0);
         }
 
         /**
@@ -301,8 +325,8 @@ public class GuildReply extends AbstractReply {
          */
         public static class Member {
 
-            private UUID          uuid;
-            private String        rank;
+            private UUID uuid;
+            private String rank;
             @SerializedName("joined")
             private ZonedDateTime joinDate;
 
@@ -375,11 +399,11 @@ public class GuildReply extends AbstractReply {
          */
         public static class Rank {
 
-            private String        name;
-            private String        tag;
-            private int           priority;
+            private String name;
+            private String tag;
+            private int priority;
             @SerializedName("default")
-            private boolean       isDefault;
+            private boolean isDefault;
             @SerializedName("created")
             private ZonedDateTime creationDate;
 
