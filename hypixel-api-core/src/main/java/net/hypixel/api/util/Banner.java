@@ -116,7 +116,7 @@ public class Banner {
          * each type's identifier.
          *
          * @return the pattern's type identifier.
-         * @see <a href="https://minecraft.fandom.com/wiki/Banner/Patterns>Pattern identifiers</a>
+         * @see <a href="https://minecraft.fandom.com/wiki/Banner/Patterns">Pattern identifiers</a>
          */
         public String getType() {
             return type;
