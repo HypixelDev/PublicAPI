@@ -5,7 +5,7 @@
     <parent>
         <artifactId>hypixel-api</artifactId>
         <groupId>net.hypixel</groupId>
-        <version>4.0</version>
+        <version>4.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>net.hypixel</groupId>
             <artifactId>hypixel-api-core</artifactId>
-            <version>4.0</version>
+            <version>4.1</version>
         </dependency>
         <dependency>
             <groupId>com.konghq</groupId>

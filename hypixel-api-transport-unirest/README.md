@@ -8,7 +8,7 @@ Hypixel Public API - Unirest Transport
 <dependency>
     <groupId>net.hypixel</groupId>
     <artifactId>hypixel-api-transport-unirest</artifactId>
-    <version>4.0</version>
+    <version>4.1</version>
 </dependency>
 ```
 
@@ -16,7 +16,7 @@ Can also be included with Gradle.
 
 ```gradle
 dependencies {
-    implementation 'net.hypixel:hypixel-api-transport-unirest:4.0'
+    implementation 'net.hypixel:hypixel-api-transport-unirest:4.1'
 }
 ```
 

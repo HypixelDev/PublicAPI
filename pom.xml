@@ -7,7 +7,7 @@
     <groupId>net.hypixel</groupId>
     <artifactId>hypixel-api</artifactId>
     <packaging>pom</packaging>
-    <version>4.0</version>
+    <version>4.1</version>
 
     <modules>
         <module>hypixel-api-core</module>
