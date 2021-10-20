@@ -18,7 +18,7 @@ public interface ILeveling {
 
     /**
      * This method returns the level of a player calculated by the current experience gathered. The result is
-     * a precise level of the player The value is not zero-indexed and represents the absolute visible level
+     * a precise level of the player. The value is not zero-indexed and represents the absolute visible level
      * for the player.
      * The result can't be smaller than 1 and negative experience results in level 1.
      * <p>
@@ -38,7 +38,7 @@ public interface ILeveling {
 
     /**
      * This method returns the level of a player calculated by the current experience gathered. The result is
-     * a precise level of the player The value is not zero-indexed and represents the visible level
+     * a precise level of the player. The value is not zero-indexed and represents the visible level
      * for the player.
      * The result can't be smaller than 1 and negative experience results in level 1.
      * <p>
