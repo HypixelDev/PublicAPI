@@ -1,66 +1,54 @@
 package net.hypixel.api.reply;
 
-import net.hypixel.api.data.type.GameType;
+import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-public class LeaderboardsReply extends AbstractReply {
-    private Map<GameType, List<Leaderboard>> leaderboards;
+public class KeyReply extends AbstractReply {
+  private Key record;
 
-    public Map<GameType, List<Leaderboard>> getLeaderboards() {
-        return leaderboards;
+  public Key getRecord() {
+    return record;
+  }
+
+  @Override
+  public String toString() {
+    return "KeyReply{" +
+      "record=" + record +
+      "} " + super.toString();
+  }
+
+  public class Key {
+    private UUID key;
+    @SerializedName("owner")
+    private UUID ownerUuid;
+    private int totalQueries;
+    private int queriesInPastMin;
+
+    public UUID getKey() {
+      return key;
+    }
+
+    public UUID getOwnerUuid() {
+      return ownerUuid;
+    }
+
+    public int getTotalQueries() {
+      return totalQueries;
+    }
+
+    public int getQueriesInPastMin() {
+      return queriesInPastMin;
     }
 
     @Override
     public String toString() {
-        return "LeaderboardsReply{" +
-                "leaderboards=" + leaderboards +
-                "} " + super.toString();
+      return "Key{" +
+        "key=" + key +
+        ", ownerUuid=" + ownerUuid +
+        ", totalQueries=" + totalQueries +
+        ", queriesInPastMin=" + queriesInPastMin +
+        '}';
     }
-
-    public class Leaderboard {
-
-        private String path;
-        private String prefix;
-        private int count;
-        private List<UUID> leaders;
-        private String title;
-
-        public Leaderboard() {
-        }
-
-        public String getPath() {
-            return path;
-        }
-
-        public String getPrefix() {
-            return prefix;
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        public List<UUID> getLeaders() {
-            return leaders;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        @Override
-        public String toString() {
-            return "Leaderboard{" +
-                    "path='" + path + '\'' +
-                    ", prefix='" + prefix + '\'' +
-                    ", count=" + count +
-                    ", leaders=" + leaders +
-                    ", title='" + title + '\'' +
-                    '}';
-        }
-    }
-
+  }
 }
