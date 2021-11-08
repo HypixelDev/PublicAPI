@@ -2,6 +2,9 @@ package net.hypixel.api.util;
 
 public enum Rarity {
 
-    COMMON, RARE, EPIC, LEGENDARY
+  COMMON,
+  RARE,
+  EPIC,
+  LEGENDARY
 
 }
