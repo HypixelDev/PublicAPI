@@ -195,7 +195,7 @@ public class HypixelAPI {
     }
 
     /**
-     * Gets up to 100 of the player's most recently played games. Games are removed from this list after 3 days.
+     * Gets up to 100 of the player's most recently played games.
      *
      * @param uuid of player
      * @return {@link CompletableFuture} containing {@link RecentGamesReply}
