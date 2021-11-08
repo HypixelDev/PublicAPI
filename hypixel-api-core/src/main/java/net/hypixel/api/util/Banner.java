@@ -38,133 +38,133 @@ import java.util.Objects;
  */
 public class Banner {
 
-    @SerializedName("Base")
-    private String baseColor;
-    @SerializedName("Patterns")
-    private List<Pattern> patterns;
+  @SerializedName("Base")
+  private String baseColor;
+  @SerializedName("Patterns")
+  private List < Pattern > patterns;
+
+  /**
+   * An integer (wrapped in a string) indicating the background/base color of the banner. See the
+   * linked cheat-sheet for a list of possible values.
+   *
+   * @return the banner's background color.
+   * @see <a href="#color_codes">Color code cheat-sheet</a>
+   */
+  public String getBaseColor() {
+    return baseColor;
+  }
+
+  /**
+   * @deprecated Renamed to {@link #getBaseColor()}.
+   */
+  @Deprecated
+  public String getBase() {
+    return getBaseColor();
+  }
+
+  /**
+   * The shapes that compose the banner, minus the {@link #getBaseColor() base/background layer}.
+   * Patterns in the list are ordered from background to foreground, meaning that the last pattern
+   * in the list will always be displayed on top.
+   *
+   * @return an immutable list of the banner's layers.
+   */
+  public List < Pattern > getPatterns() {
+    return patterns == null ?
+      Collections.emptyList() :
+      Collections.unmodifiableList(patterns);
+  }
+
+  @Override
+  public String toString() {
+    return "Banner{" +
+      "baseColor='" + baseColor + '\'' +
+      ", patterns=" + patterns +
+      '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Banner banner = (Banner) o;
+    return Objects.equals(baseColor, banner.baseColor) &&
+      Objects.equals(patterns, banner.patterns);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(baseColor, patterns);
+  }
+
+  /**
+   * A colored shape that makes up a layer of a {@link Banner} design.
+   */
+  public static class Pattern {
+
+    @SerializedName("Pattern")
+    private String type;
+    @SerializedName("Color")
+    private String color;
 
     /**
-     * An integer (wrapped in a string) indicating the background/base color of the banner. See the
-     * linked cheat-sheet for a list of possible values.
+     * A short identifier indicating the shape to be used for the layer. See the link below for
+     * each type's identifier.
      *
-     * @return the banner's background color.
-     * @see <a href="#color_codes">Color code cheat-sheet</a>
+     * @return the pattern's type identifier.
+     * @see <a href="https://minecraft.fandom.com/wiki/Banner/Patterns">Pattern identifiers</a>
      */
-    public String getBaseColor() {
-        return baseColor;
+    public String getType() {
+      return type;
     }
 
     /**
-     * @deprecated Renamed to {@link #getBaseColor()}.
+     * @deprecated Renamed to {@link #getType()}.
      */
     @Deprecated
-    public String getBase() {
-        return getBaseColor();
+    public String getPattern() {
+      return getType();
     }
 
     /**
-     * The shapes that compose the banner, minus the {@link #getBaseColor() base/background layer}.
-     * Patterns in the list are ordered from background to foreground, meaning that the last pattern
-     * in the list will always be displayed on top.
+     * An integer (wrapped in a string) indicating the color used to draw the pattern's shape.
+     * See the linked cheat-sheet for a list of possible values.
      *
-     * @return an immutable list of the banner's layers.
+     * @return the pattern's color.
+     * @see Banner Color code cheat-sheet
      */
-    public List<Pattern> getPatterns() {
-        return patterns == null
-            ? Collections.emptyList()
-            : Collections.unmodifiableList(patterns);
+    public String getColor() {
+      return color;
     }
 
     @Override
     public String toString() {
-        return "Banner{" +
-               "baseColor='" + baseColor + '\'' +
-               ", patterns=" + patterns +
-               '}';
+      return "Pattern{" +
+        "type='" + type + '\'' +
+        ", color='" + color + '\'' +
+        '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Banner banner = (Banner) o;
-        return Objects.equals(baseColor, banner.baseColor) &&
-               Objects.equals(patterns, banner.patterns);
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      Pattern pattern = (Pattern) o;
+      return Objects.equals(type, pattern.type) &&
+        Objects.equals(color, pattern.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(baseColor, patterns);
+      return Objects.hash(type, color);
     }
-
-    /**
-     * A colored shape that makes up a layer of a {@link Banner} design.
-     */
-    public static class Pattern {
-
-        @SerializedName("Pattern")
-        private String type;
-        @SerializedName("Color")
-        private String color;
-
-        /**
-         * A short identifier indicating the shape to be used for the layer. See the link below for
-         * each type's identifier.
-         *
-         * @return the pattern's type identifier.
-         * @see <a href="https://minecraft.fandom.com/wiki/Banner/Patterns">Pattern identifiers</a>
-         */
-        public String getType() {
-            return type;
-        }
-
-        /**
-         * @deprecated Renamed to {@link #getType()}.
-         */
-        @Deprecated
-        public String getPattern() {
-            return getType();
-        }
-
-        /**
-         * An integer (wrapped in a string) indicating the color used to draw the pattern's shape.
-         * See the linked cheat-sheet for a list of possible values.
-         *
-         * @return the pattern's color.
-         * @see Banner Color code cheat-sheet
-         */
-        public String getColor() {
-            return color;
-        }
-
-        @Override
-        public String toString() {
-            return "Pattern{" +
-                   "type='" + type + '\'' +
-                   ", color='" + color + '\'' +
-                   '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Pattern pattern = (Pattern) o;
-            return Objects.equals(type, pattern.type) &&
-                   Objects.equals(color, pattern.color);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(type, color);
-        }
-    }
+  }
 }
