@@ -8,7 +8,9 @@ public enum ResourceType {
     GUILDS_ACHIEVEMENTS("guilds/achievements"),
     GUILDS_PERMISSION("guilds/permissions"),
     SKYBLOCK_COLLECTIONS("skyblock/collections"),
-    SKYBLOCK_SKILLS("skyblock/skills");
+    SKYBLOCK_SKILLS("skyblock/skills"),
+    PETS("vanity/pets"),
+    COMPANIONS("vanity/companions");
 
     /**
      * Path to resource
