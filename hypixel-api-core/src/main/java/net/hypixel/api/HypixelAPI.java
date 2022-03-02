@@ -9,6 +9,7 @@ import net.hypixel.api.http.HypixelHttpClient;
 import net.hypixel.api.http.HypixelHttpResponse;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
+import net.hypixel.api.reply.skyblock.bingo.SkyBlockBingoDataReply;
 import net.hypixel.api.util.PropertyFilter;
 import net.hypixel.api.util.ResourceType;
 import net.hypixel.api.util.Utilities;
@@ -245,6 +246,32 @@ public class HypixelAPI {
      */
     public CompletableFuture<SkyBlockProfilesReply> getSkyBlockProfiles(String player) {
         return get(SkyBlockProfilesReply.class, "skyblock/profiles",
+                HTTPQueryParams.create()
+                        .add("uuid", player)
+        );
+    }
+
+    /**
+     * Request the bingo data of a provided player. See <a href="https://api.hypixel.net/#tag/SkyBlock/paths/~1skyblock~1bingo/get">/skyblock/bingo</a>
+     *
+     * @param player uuid of a player.
+     * @return CompletableFuture containing a {@link SkyBlockBingoDataReply}
+     */
+    public CompletableFuture<SkyBlockBingoDataReply> getSkyblockBingoData(UUID player) {
+        return get(SkyBlockBingoDataReply.class, "skyblock/bingo",
+                HTTPQueryParams.create()
+                        .add("uuid", player)
+        );
+    }
+
+    /**
+     * Request the bingo data of a provided player. See <a href="https://api.hypixel.net/#tag/SkyBlock/paths/~1skyblock~1bingo/get">/skyblock/bingo</a>
+     *
+     * @param player uuid of a player in string format, can be both dashed or undashed.
+     * @return CompletableFuture containing a {@link SkyBlockBingoDataReply}
+     */
+    public CompletableFuture<SkyBlockBingoDataReply> getSkyblockBingoData(String player) {
+        return get(SkyBlockBingoDataReply.class, "skyblock/bingo",
                 HTTPQueryParams.create()
                         .add("uuid", player)
         );
