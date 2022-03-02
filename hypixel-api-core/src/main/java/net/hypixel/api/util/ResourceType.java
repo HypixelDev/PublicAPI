@@ -6,14 +6,19 @@ public enum ResourceType {
     CHALLENGES("challenges"),
     QUEST("quests"),
     GUILDS_ACHIEVEMENTS("guilds/achievements"),
-    GUILDS_PERMISSION("guilds/permissions"),
+    VANITY_PETS("vanity/pets"),
+    VANITY_COMPANIONS("vanity/companions"),
     SKYBLOCK_COLLECTIONS("skyblock/collections"),
-    SKYBLOCK_SKILLS("skyblock/skills");
+    SKYBLOCK_SKILLS("skyblock/skills"),
+    SKYBLOCK_ITEMS("skyblock/items"),
+    SKYBLOCK_ELECTION("skyblock/election"),
+    SKYBLOCK_BINGO("skyblock/bingo"),
+    ;
 
     /**
      * Path to resource
      */
-    private String path;
+    private final String path;
 
     ResourceType(String path) {
         this.path = path;
