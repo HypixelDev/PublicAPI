@@ -42,7 +42,7 @@ public class Main {
 
 This transport depends on the following:
 
-* [Google Gson library - 2.8.6](https://mvnrepository.com/artifact/com.google.code.gson/gson) (for hypixel-api-core)
+* [Google Gson library - 2.9.0](https://mvnrepository.com/artifact/com.google.code.gson/gson) (for hypixel-api-core)
 * [Reactor Core 3.4.5](https://mvnrepository.com/artifact/io.projectreactor/reactor-core) (for reactor netty)
 * Reactor Netty [(project-reactor)](https://projectreactor.io/docs):
     * [Netty Core 1.0.6](https://mvnrepository.com/artifact/io.projectreactor.netty/reactor-netty-core)
