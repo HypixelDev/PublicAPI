@@ -21,7 +21,7 @@ public class TestResources {
     @ParameterizedTest
     @MethodSource("getResourceTypes")
     void testResource(ResourceType resourceType) {
-        String url = String.format("%s/resources/%s", HypixelAPI.BASE_URL, resourceType.getPath());
+        String url = String.format("%sresources/%s", HypixelAPI.BASE_URL, resourceType.getPath());
         HttpResponse<JsonNode> response = Unirest.get(url).asJson();
         Assertions.assertEquals(200, response.getStatus(), String.format("Got an invalid status code for %s", resourceType));
     }
