@@ -180,7 +180,7 @@ public class GetGuildExample {
          * Then we loop through each game and see how much experience the guild's earned from it.
          */
         for (GameType game : GameType.values()) {
-            double experienceForGame = guild.getExperienceForGame(game);
+            long experienceForGame = guild.getExperienceForGame(game);
             System.out.println("\t" + game.getName() + ": " + experienceForGame);
         }
     }
