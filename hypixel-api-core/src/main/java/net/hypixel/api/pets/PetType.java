@@ -2,7 +2,8 @@ package net.hypixel.api.pets;
 
 import net.hypixel.api.util.Rarity;
 
-public enum PetType {
+@Deprecated
+public enum PetType implements IPetType {
 
     CAT_BLACK("Cat: Black", Rarity.COMMON),
     CAT_RED("Cat: Red", Rarity.COMMON),
@@ -127,6 +128,7 @@ public enum PetType {
 
     public static final PetType[] VALUES = values();
 
+    private final String key;
     private final String name;
     private final Rarity rarity;
 
@@ -135,15 +137,28 @@ public enum PetType {
     }
 
     PetType(String name, Rarity rarity) {
+        this.key = name();
         this.name = name;
         this.rarity = rarity;
     }
 
+    @Override
+    public String getKey() {
+        return key;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public Rarity getRarity() {
         return rarity;
+    }
+
+    @Override
+    public String getPackage() {
+        return null;
     }
 }

@@ -13,7 +13,7 @@ public class Pet {
             23210, 23750, 24280, 24830, 25380, 25930, 26500, 27070, 27640, 28220, 28810, 29400, 30000
     };
 
-    private Map<String, Object> stats;
+    private final Map<String, Object> stats;
     private int level;
     private int experience;
     private String name;

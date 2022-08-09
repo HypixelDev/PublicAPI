@@ -7,6 +7,8 @@ import net.hypixel.api.exceptions.BadStatusCodeException;
 import net.hypixel.api.http.HTTPQueryParams;
 import net.hypixel.api.http.HypixelHttpClient;
 import net.hypixel.api.http.HypixelHttpResponse;
+import net.hypixel.api.pets.IPetRepository;
+import net.hypixel.api.pets.impl.PetRepositoryImpl;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
 import net.hypixel.api.reply.skyblock.bingo.SkyBlockBingoDataReply;
@@ -220,6 +222,11 @@ public class HypixelAPI {
 
     public CompletableFuture<ResourceReply> getResource(String resource) {
         return requestResource(resource);
+    }
+
+    public CompletableFuture<IPetRepository> getPetRepository() {
+        return getResource(ResourceType.VANITY_PETS)
+                .thenApply(PetRepositoryImpl::new);
     }
 
     public CompletableFuture<SkyBlockProfileReply> getSkyBlockProfile(String profile) {
