@@ -54,7 +54,7 @@ public class GuildReply extends AbstractReply {
         private List<Member> members;
         private List<Rank> ranks;
         private List<GameType> preferredGames;
-        private Map<GameType, Integer> guildExpByGameType;
+        private Map<GameType, Long> guildExpByGameType;
         private Map<GuildAchievement, Integer> achievements;
         private int coins;
         private int coinsEver;
@@ -202,14 +202,14 @@ public class GuildReply extends AbstractReply {
          * @return the amount of XP earned by the guild for the specified {@code game}.
          * @throws IllegalArgumentException if the provided {@code game} is {@code null}.
          */
-        public int getExperienceForGame(GameType game) {
+        public long getExperienceForGame(GameType game) {
             if (game == null) {
                 throw new IllegalArgumentException("Cannot get XP for null GameType");
             }
 
             return Optional.ofNullable(guildExpByGameType)
                 .map(expByGame -> expByGame.get(game))
-                .orElse(0);
+                .orElse(0L);
         }
 
         /**
