@@ -16,18 +16,31 @@ public class RateLimit {
         this.resetAt = new Date(System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(reset));
     }
 
+    /**
+     * @return the total limit allowed for the used API key per interval
+     */
     public int getLimit() {
         return limit;
     }
 
+    /**
+     * @return the remaining amount of requests for the used API key during this interval
+     */
     public int getRemaining() {
         return remaining;
     }
 
+    /**
+     * @return the time in seconds until the limit interval resets
+     */
     public int getReset() {
         return reset;
     }
 
+    /**
+     * @return the date at which time the limit interval resets, this date won't be accurate to the millisecond due to
+     * the only context being in seconds
+     */
     public Date getResetAt() {
         return resetAt;
     }
