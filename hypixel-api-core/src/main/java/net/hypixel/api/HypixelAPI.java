@@ -154,6 +154,10 @@ public class HypixelAPI {
         );
     }
 
+    /**
+     * @deprecated Endpoint is deprecated and will be removed on 14th August 2023.
+     */
+    @Deprecated
     public CompletableFuture<KeyReply> getKey() {
         return get(KeyReply.class, "key");
     }
@@ -304,7 +308,13 @@ public class HypixelAPI {
                     if (clazz == ResourceReply.class) {
                         return checkReply((R) new ResourceReply(Utilities.GSON.fromJson(response.getBody(), JsonObject.class)));
                     }
-                    return checkReply(Utilities.GSON.fromJson(response.getBody(), clazz));
+
+                    R reply = Utilities.GSON.fromJson(response.getBody(), clazz);
+                    if (reply instanceof RateLimitedReply) {
+                        ((RateLimitedReply) reply).setRateLimit(response.getRateLimit());
+                    }
+
+                    return checkReply(reply);
                 });
     }
 

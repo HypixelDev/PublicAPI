@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class LeaderboardsReply extends AbstractReply {
+public class LeaderboardsReply extends RateLimitedReply {
     private Map<GameType, List<Leaderboard>> leaderboards;
 
     public Map<GameType, List<Leaderboard>> getLeaderboards() {

@@ -16,7 +16,7 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-public class PlayerReply extends AbstractReply {
+public class PlayerReply extends RateLimitedReply {
 
     // Suppressed because this field is dynamically assigned by Gson using reflection.
     @SuppressWarnings({"unused", "RedundantSuppression"})

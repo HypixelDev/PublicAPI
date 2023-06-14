@@ -2,6 +2,7 @@ package net.hypixel.api.apache;
 
 import net.hypixel.api.http.HypixelHttpClient;
 import net.hypixel.api.http.HypixelHttpResponse;
+import net.hypixel.api.http.RateLimit;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -31,7 +32,7 @@ public class ApacheHttpClient implements HypixelHttpClient {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 HttpResponse response = this.httpClient.execute(new HttpGet(url));
-                return new HypixelHttpResponse(response.getStatusLine().getStatusCode(), EntityUtils.toString(response.getEntity(), "UTF-8"));
+                return new HypixelHttpResponse(response.getStatusLine().getStatusCode(), EntityUtils.toString(response.getEntity(), "UTF-8"), null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -45,11 +46,22 @@ public class ApacheHttpClient implements HypixelHttpClient {
             request.addHeader("API-Key", this.apiKey.toString());
             try {
                 HttpResponse response = this.httpClient.execute(request);
-                return new HypixelHttpResponse(response.getStatusLine().getStatusCode(), EntityUtils.toString(response.getEntity(), "UTF-8"));
+                return new HypixelHttpResponse(response.getStatusLine().getStatusCode(), EntityUtils.toString(response.getEntity(), "UTF-8"), createRateLimitResponse(response));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }, this.executorService);
+    }
+
+    private RateLimit createRateLimitResponse(HttpResponse response) {
+        if (response.getStatusLine().getStatusCode() != 200) {
+            return null;
+        }
+
+        int limit = Integer.parseInt(response.getFirstHeader("RateLimit-Limit").getValue());
+        int remaining = Integer.parseInt(response.getFirstHeader("RateLimit-Remaining").getValue());
+        int reset = Integer.parseInt(response.getFirstHeader("RateLimit-Reset").getValue());
+        return new RateLimit(limit, remaining, reset);
     }
 
     @Override
