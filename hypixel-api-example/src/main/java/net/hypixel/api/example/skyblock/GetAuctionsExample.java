@@ -2,7 +2,7 @@ package net.hypixel.api.example.skyblock;
 
 import net.hypixel.api.example.ExampleUtil;
 
-public class GetSkyBlockAuctionsExample {
+public class GetAuctionsExample {
     public static void main(String[] args) {
         ExampleUtil.API.getSkyBlockAuctions(0).whenComplete((page0, throwable) -> {
             if (throwable != null) {
