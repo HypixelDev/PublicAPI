@@ -110,24 +110,6 @@ public class HypixelAPI {
         );
     }
 
-    public CompletableFuture<FriendsReply> getFriends(UUID player) {
-        return get(FriendsReply.class, "friends",
-                HTTPQueryParams.create()
-                        .add("uuid", player)
-        );
-    }
-
-    /**
-     * @param player uuid of a player in string format, can be both dashed or undashed
-     * @return {@link CompletableFuture} containing {@link FriendsReply}
-     */
-    public CompletableFuture<FriendsReply> getFriends(String player) {
-        return get(FriendsReply.class, "friends",
-                HTTPQueryParams.create()
-                        .add("uuid", player)
-        );
-    }
-
     /**
      * @param player uuid of a player
      * @return {@link CompletableFuture} containing {@link GuildReply}
