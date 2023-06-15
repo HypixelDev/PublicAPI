@@ -35,6 +35,8 @@ public class GetPetsExample {
                         System.out.println("\t\tRarity: " + type.getRarity());
                     }
 
+                    System.out.println();
+
                     api.getPlayerByUuid(ExampleUtil.HYPIXEL)
                             .exceptionally(throwable -> {
                                 throwable.printStackTrace();
@@ -61,6 +63,15 @@ public class GetPetsExample {
                                         System.out.println("\t" + entry.getKey().getKey() + ": " + entry.getValue().getLevel());
                                     }
                                 }
+
+                                IPetType catBlack = petRepository.getTypeByKey("CAT_BLACK");
+                                IPetType blaze = petRepository.getTypeByKey("BLAZE");
+
+                                System.out.println();
+                                System.out.println("Does " + player.getName() + " have the " + catBlack.getName() +
+                                        " pet? " + (petRepository.hasPlayerUnlocked(catBlack, player) ? "Yes." : "No."));
+                                System.out.println("Does " + player.getName() + " have the " + blaze.getName() +
+                                        " pet? " + (petRepository.hasPlayerUnlocked(blaze, player) ? "Yes." : "No."));
 
                                 System.exit(0);
                             });
