@@ -304,6 +304,8 @@ public class HypixelAPI {
                     if (clazz == ResourceReply.class) {
                         return checkReply((R) new ResourceReply(Utilities.GSON.fromJson(response.getBody(), JsonObject.class)));
                     }
+                    System.out.println(response.getStatusCode());
+                    System.out.println(response.getBody());
                     return checkReply(Utilities.GSON.fromJson(response.getBody(), clazz));
                 });
     }
