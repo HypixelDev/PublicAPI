@@ -28,7 +28,6 @@ public class TestAuthenticatedEndpoints {
     void punishmentStats() throws ExecutionException, InterruptedException, TimeoutException {
         PunishmentStatsReply response = ExampleUtil.API.getPunishmentStats().get(5, TimeUnit.SECONDS);
 
-        System.out.println(response);
         Assertions.assertTrue(response.isSuccess());
     }
 
