@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.hypixel.api.pets.IPetRarity;
-import net.hypixel.api.pets.IPetRepository;
 import net.hypixel.api.pets.IPetType;
 import net.hypixel.api.reply.ResourceReply;
 
@@ -14,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
-public class PetRepositoryImpl implements IPetRepository {
+public class PetRepositoryImpl extends AbstractPetRepositoryImpl {
 
     private final ResourceReply reply;
 

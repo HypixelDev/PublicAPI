@@ -57,7 +57,7 @@ public class GetPetsExample {
                                 if (petStats == null) {
                                     System.out.println("No pet stats found for player.");
                                 } else {
-                                    for (Map.Entry<IPetType, Pet> entry : petStats.getAllPets().entrySet()) {
+                                    for (Map.Entry<IPetType, Pet> entry : petStats.listAllPets().entrySet()) {
                                         System.out.println("\t" + entry.getKey().getKey() + ": " + entry.getValue().getLevel());
                                     }
                                 }

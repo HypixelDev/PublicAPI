@@ -1,9 +1,9 @@
 package net.hypixel.api.pets.impl.compatibility;
 
 import net.hypixel.api.pets.IPetRarity;
-import net.hypixel.api.pets.IPetRepository;
 import net.hypixel.api.pets.IPetType;
 import net.hypixel.api.pets.PetType;
+import net.hypixel.api.pets.impl.AbstractPetRepositoryImpl;
 import net.hypixel.api.util.Rarity;
 
 import java.util.Arrays;
@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BackwardsCompatibilityPetRepositoryImpl implements IPetRepository {
+public class BackwardsCompatibilityPetRepositoryImpl extends AbstractPetRepositoryImpl {
 
     public static final BackwardsCompatibilityPetRepositoryImpl INSTANCE = new BackwardsCompatibilityPetRepositoryImpl();
 
@@ -24,9 +24,9 @@ public class BackwardsCompatibilityPetRepositoryImpl implements IPetRepository {
     }
 
     @Override
-    public IPetType getTypeByKey(String type) {
+    public IPetType getTypeByKey(String key) {
         for (IPetType petType : types) {
-            if (petType.getKey().equals(type)) {
+            if (petType.getKey().equals(key)) {
                 return petType;
             }
         }

@@ -228,6 +228,7 @@ public class PlayerReply extends AbstractReply {
 
         /**
          * @return Information about the player's lobby pets, or {@code null} if they have none.
+         * @deprecated Use {@link #getPetStats(IPetRepository)} instead
          */
         @Deprecated
         public PetStats getPetStats() {

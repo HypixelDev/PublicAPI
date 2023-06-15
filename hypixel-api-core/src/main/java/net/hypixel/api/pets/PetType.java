@@ -2,6 +2,10 @@ package net.hypixel.api.pets;
 
 import net.hypixel.api.util.Rarity;
 
+/**
+ * The old and deprecated enum for the pet types
+ * @deprecated Consider using the {@link IPetRepository}
+ */
 @Deprecated
 public enum PetType implements IPetType {
 
@@ -162,3 +166,4 @@ public enum PetType implements IPetType {
         return null;
     }
 }
+
