@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public class GetSkyBlockProfileExample {
+public class GetProfileExample {
 
     public static void main(String[] args) {
         ExampleUtil.API.getPlayerByUuid(ExampleUtil.HYPIXEL).whenComplete((reply, error) -> {

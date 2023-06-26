@@ -5,7 +5,7 @@ import net.hypixel.api.data.type.GameType;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-public class RecentGamesReply extends AbstractReply {
+public class RecentGamesReply extends RateLimitedReply {
 
     private List<GameSession> games;
 

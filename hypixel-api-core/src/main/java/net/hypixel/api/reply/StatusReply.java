@@ -3,7 +3,7 @@ package net.hypixel.api.reply;
 import com.google.gson.annotations.SerializedName;
 import net.hypixel.api.data.type.ServerType;
 
-public class StatusReply extends AbstractReply {
+public class StatusReply extends RateLimitedReply {
 
     /**
      * {@link StatusReply.Session} instance of player

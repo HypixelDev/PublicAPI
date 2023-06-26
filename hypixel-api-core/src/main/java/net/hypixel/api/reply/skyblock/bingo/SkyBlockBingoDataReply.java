@@ -1,10 +1,10 @@
 package net.hypixel.api.reply.skyblock.bingo;
 
-import net.hypixel.api.reply.AbstractReply;
+import net.hypixel.api.reply.RateLimitedReply;
 
 import java.util.List;
 
-public class SkyBlockBingoDataReply extends AbstractReply {
+public class SkyBlockBingoDataReply extends RateLimitedReply {
     private List<BingoEventData> events;
 
     public List<BingoEventData> getEvents() {

@@ -13,7 +13,7 @@ public class Pet {
             23210, 23750, 24280, 24830, 25380, 25930, 26500, 27070, 27640, 28220, 28810, 29400, 30000
     };
 
-    private Map<String, Object> stats;
+    private final Map<String, Object> stats;
     private int level;
     private int experience;
     private String name;
@@ -33,10 +33,20 @@ public class Pet {
         updateLevel();
     }
 
+    /**
+     * Gets the custom name of the pet, if present
+     *
+     * @return {@code null} if no custom name has been set for the pet, otherwise returns the custom name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the average happiness, what we mean by "average happiness" is the mean value of all the {@link PetAttribute}
+     *
+     * @return the average happiness, with a min value of {@code 0.0}
+     */
     public double getAverageHappiness() {
         double attributeAverage = 0;
         for (PetAttribute attribute : PetAttribute.values()) {
@@ -46,6 +56,12 @@ public class Pet {
         return attributeAverage / PetAttribute.values().length;
     }
 
+    /**
+     * Gets the value associated with the attribute
+     *
+     * @param attribute the attribute
+     * @return the value associated with the value, or {@code 1} if not found or not a number
+     */
     public int getAttribute(PetAttribute attribute) {
         @SuppressWarnings("unchecked")
         Map<String, Object> attributeObject = (Map<String, Object>) stats.get(attribute.name());
@@ -71,6 +87,11 @@ public class Pet {
         return Math.max(0, Math.round(value - iterations * attribute.getDecay()));
     }
 
+    /**
+     * Updates the cached level based on the experience
+     *
+     * @return {@code false} no matter what
+     */
     public boolean updateLevel() {
         int xp = experience;
         int level = 1;
@@ -86,10 +107,21 @@ public class Pet {
         return false;
     }
 
+    /**
+     * Gets the level of this pet
+     *
+     * @return the level
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * Gets the experience required to level up to the provided level
+     *
+     * @param level the target level
+     * @return the experience amount required to reach the provided level
+     */
     public int getExperienceUntilLevel(int level) {
         int xp = 0;
         for (int i = 0; i < Math.min(level - 1, 100); i++) {
@@ -98,6 +130,11 @@ public class Pet {
         return xp;
     }
 
+    /**
+     * Gets the experience amount starting from the current level
+     *
+     * @return the current experience starting from the current level
+     */
     public int getLevelProgress() {
         return experience - getExperienceUntilLevel(level);
     }

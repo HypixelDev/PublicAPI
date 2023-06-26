@@ -2,7 +2,7 @@ package net.hypixel.api.reply;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PunishmentStatsReply extends AbstractReply {
+public class PunishmentStatsReply extends RateLimitedReply {
     @SerializedName("staff_rollingDaily")
     private int staffRollingDaily;
     @SerializedName("staff_total")

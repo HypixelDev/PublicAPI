@@ -1,22 +1,18 @@
 package net.hypixel.api.reply;
 
 import com.google.gson.annotations.SerializedName;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 import net.hypixel.api.data.type.GameType;
 import net.hypixel.api.data.type.GuildAchievement;
 import net.hypixel.api.reply.PlayerReply.Player;
 import net.hypixel.api.util.Banner;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.*;
+
 // Suppressed because most fields are assigned by Gson via reflection.
 @SuppressWarnings({"unused", "RedundantSuppression", "MismatchedQueryAndUpdateOfCollection"})
-public class GuildReply extends AbstractReply {
+public class GuildReply extends RateLimitedReply {
 
     private Guild guild;
 

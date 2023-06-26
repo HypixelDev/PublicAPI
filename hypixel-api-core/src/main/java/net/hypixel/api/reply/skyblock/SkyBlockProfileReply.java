@@ -2,9 +2,9 @@ package net.hypixel.api.reply.skyblock;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.hypixel.api.reply.AbstractReply;
+import net.hypixel.api.reply.RateLimitedReply;
 
-public class SkyBlockProfileReply extends AbstractReply {
+public class SkyBlockProfileReply extends RateLimitedReply {
     private JsonElement profile;
 
     public JsonObject getProfile() {
