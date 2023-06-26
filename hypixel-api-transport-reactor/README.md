@@ -16,7 +16,7 @@ Can also be included with Gradle.
 
 ```gradle
 dependencies {
-    implementation 'net.hypixel:hypixel-api-transport-reactor:4.2.1'
+    implementation 'net.hypixel:hypixel-api-transport-reactor:4.3'
 }
 ```
 
