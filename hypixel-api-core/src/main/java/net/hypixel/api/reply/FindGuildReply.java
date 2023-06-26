@@ -1,6 +1,6 @@
 package net.hypixel.api.reply;
 
-public class FindGuildReply extends AbstractReply {
+public class FindGuildReply extends RateLimitedReply {
     private String guild;
 
     /**

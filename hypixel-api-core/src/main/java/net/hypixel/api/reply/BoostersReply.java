@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public class BoostersReply extends AbstractReply {
+public class BoostersReply extends RateLimitedReply {
     private List<Booster> boosters;
     private BoosterState boosterState;
 

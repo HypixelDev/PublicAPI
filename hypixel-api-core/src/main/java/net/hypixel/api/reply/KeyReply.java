@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.UUID;
 
-public class KeyReply extends AbstractReply {
+public class KeyReply extends RateLimitedReply {
     private Key record;
 
     public Key getRecord() {

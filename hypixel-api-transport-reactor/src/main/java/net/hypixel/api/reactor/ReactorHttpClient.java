@@ -3,6 +3,7 @@ package net.hypixel.api.reactor;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import net.hypixel.api.http.HypixelHttpClient;
 import net.hypixel.api.http.HypixelHttpResponse;
+import net.hypixel.api.http.RateLimit;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -10,7 +11,7 @@ import reactor.core.publisher.MonoSink;
 import reactor.core.scheduler.Schedulers;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientResponse;
-import reactor.util.function.Tuple2;
+import reactor.util.function.Tuple3;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -102,8 +103,8 @@ public class ReactorHttpClient implements HypixelHttpClient {
         return toHypixelResponseFuture(makeRequest(url, true));
     }
 
-    private static CompletableFuture<HypixelHttpResponse> toHypixelResponseFuture(Mono<Tuple2<String, Integer>> result) {
-        return result.map(tuple -> new HypixelHttpResponse(tuple.getT2(), tuple.getT1()))
+    private static CompletableFuture<HypixelHttpResponse> toHypixelResponseFuture(Mono<Tuple3<String, Integer, RateLimit>> result) {
+        return result.map(tuple -> new HypixelHttpResponse(tuple.getT2(), tuple.getT1(), tuple.getT3()))
                 .toFuture();
     }
 
@@ -120,7 +121,7 @@ public class ReactorHttpClient implements HypixelHttpClient {
      * @param path            full url
      * @param isAuthenticated whether to enable authentication or not
      */
-    public Mono<Tuple2<String, Integer>> makeRequest(String path, boolean isAuthenticated) {
+    public Mono<Tuple3<String, Integer, RateLimit>> makeRequest(String path, boolean isAuthenticated) {
         return Mono.create(sink -> {
             RequestCallback callback = new RequestCallback(path, sink, isAuthenticated, this);
 
@@ -186,18 +187,20 @@ public class ReactorHttpClient implements HypixelHttpClient {
 
             // execute this last to prevent a possible exception from messing up our clock synchronization
             this.blockingQueue.put(requestCallback);
-            return new ResponseHandlingResult(false, response.status().code());
+            return new ResponseHandlingResult(false, response.status().code(), null);
         }
+
+        int limit = Math.max(1, response.responseHeaders().getInt("ratelimit-limit", 10));
+        int timeRemaining = Math.max(1, response.responseHeaders().getInt("ratelimit-reset", 10));
+        int requestsRemaining = response.responseHeaders().getInt("ratelimit-remaining", 110);
+        RateLimit rateLimit = new RateLimit(limit, requestsRemaining, timeRemaining);
 
         if (this.firstRequestReturned.compareAndSet(false, true)) {
-            int timeRemaining = Math.max(1, response.responseHeaders().getInt("ratelimit-reset", 10));
-            int requestsRemaining = response.responseHeaders().getInt("ratelimit-remaining", 110);
-
             this.setActionsLeftThisMinute(requestsRemaining);
-
             resetForFirstRequest(timeRemaining);
         }
-        return new ResponseHandlingResult(true, response.status().code());
+
+        return new ResponseHandlingResult(true, response.status().code(), rateLimit);
     }
 
     /**
@@ -219,13 +222,13 @@ public class ReactorHttpClient implements HypixelHttpClient {
      */
     private static class RequestCallback {
         private final String url;
-        private final MonoSink<Tuple2<String, Integer>> requestResultSink;
+        private final MonoSink<Tuple3<String, Integer, RateLimit>> requestResultSink;
         private final ReactorHttpClient requestRateLimiter;
         private final boolean isAuthenticated;
         private final ReentrantLock lock = new ReentrantLock();
         private boolean isCanceled = false;
 
-        private RequestCallback(String url, MonoSink<Tuple2<String, Integer>> requestResultSink, boolean isAuthenticated, ReactorHttpClient requestRateLimiter) {
+        private RequestCallback(String url, MonoSink<Tuple3<String, Integer, RateLimit>> requestResultSink, boolean isAuthenticated, ReactorHttpClient requestRateLimiter) {
             this.url = url;
             this.requestResultSink = requestResultSink;
             this.requestRateLimiter = requestRateLimiter;
@@ -263,9 +266,8 @@ public class ReactorHttpClient implements HypixelHttpClient {
                     .responseSingle((response, body) -> {
                         try {
                             ResponseHandlingResult result = requestRateLimiter.handleResponse(response, this);
-
                             if (result.allowToPass) {
-                                return body.asString().zipWith(Mono.just(result.statusCode));
+                                return Mono.zip(body.asString(), Mono.just(result.statusCode), Mono.just(result.rateLimit));
                             }
                             return Mono.empty();
                         } catch (InterruptedException e) {
@@ -282,10 +284,12 @@ public class ReactorHttpClient implements HypixelHttpClient {
     private static class ResponseHandlingResult {
         public final boolean allowToPass;
         public final int statusCode;
+        public final RateLimit rateLimit;
 
-        public ResponseHandlingResult(boolean allowToPass, int statusCode) {
+        public ResponseHandlingResult(boolean allowToPass, int statusCode, RateLimit rateLimit) {
             this.allowToPass = allowToPass;
             this.statusCode = statusCode;
+            this.rateLimit = rateLimit;
         }
     }
 }

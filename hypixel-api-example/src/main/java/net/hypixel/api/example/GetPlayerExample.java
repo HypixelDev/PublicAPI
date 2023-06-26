@@ -121,5 +121,11 @@ public class GetPlayerExample {
          * `.getRaw()` method.
          */
         System.out.println("Raw JSON ------> " + player.getRaw());
+
+        /*
+         * RateLimit object is available to any reply from a request to an authenticated endpoint and returns context
+         * to the rate limit of the used API key.
+         */
+        System.out.println("Rate Limit ----> " + apiReply.getRateLimit());
     }
 }
