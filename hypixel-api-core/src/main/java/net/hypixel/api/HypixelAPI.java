@@ -12,6 +12,7 @@ import net.hypixel.api.pets.impl.PetRepositoryImpl;
 import net.hypixel.api.reply.*;
 import net.hypixel.api.reply.skyblock.*;
 import net.hypixel.api.reply.skyblock.bingo.SkyBlockBingoDataReply;
+import net.hypixel.api.reply.skyblock.firesales.SkyBlockFireSalesReply;
 import net.hypixel.api.util.PropertyFilter;
 import net.hypixel.api.util.ResourceType;
 import net.hypixel.api.util.Utilities;
@@ -39,15 +40,15 @@ public class HypixelAPI {
     }
 
     public CompletableFuture<BoostersReply> getBoosters() {
-        return get(BoostersReply.class, "boosters");
+        return get(true, BoostersReply.class, "boosters");
     }
 
     public CompletableFuture<LeaderboardsReply> getLeaderboards() {
-        return get(LeaderboardsReply.class, "leaderboards");
+        return get(true, LeaderboardsReply.class, "leaderboards");
     }
 
     public CompletableFuture<PunishmentStatsReply> getPunishmentStats() {
-        return get(PunishmentStatsReply.class, "punishmentstats");
+        return get(true, PunishmentStatsReply.class, "punishmentstats");
     }
 
     /**
@@ -55,7 +56,7 @@ public class HypixelAPI {
      * @return {@link CompletableFuture} containing {@link PlayerReply}
      */
     public CompletableFuture<PlayerReply> getPlayerByUuid(UUID player) {
-        return get(PlayerReply.class, "player",
+        return get(true, PlayerReply.class, "player",
                 HTTPQueryParams.create()
                         .add("uuid", player)
         );
@@ -66,7 +67,7 @@ public class HypixelAPI {
      * @return {@link CompletableFuture} containing {@link PlayerReply}
      */
     public CompletableFuture<PlayerReply> getPlayerByUuid(String player) {
-        return get(PlayerReply.class, "player",
+        return get(true, PlayerReply.class, "player",
                 HTTPQueryParams.create()
                         .add("uuid", player)
         );
@@ -106,7 +107,7 @@ public class HypixelAPI {
      */
     @Deprecated
     public CompletableFuture<PlayerReply> getPlayerByName(String player) {
-        return get(PlayerReply.class, "player",
+        return get(true, PlayerReply.class, "player",
                 HTTPQueryParams.create()
                         .add("name", player)
         );
@@ -117,7 +118,7 @@ public class HypixelAPI {
      * @return {@link CompletableFuture} containing {@link GuildReply}
      */
     public CompletableFuture<GuildReply> getGuildByPlayer(UUID player) {
-        return get(GuildReply.class, "guild",
+        return get(true, GuildReply.class, "guild",
                 HTTPQueryParams.create()
                         .add("player", player)
         );
@@ -128,7 +129,7 @@ public class HypixelAPI {
      * @return {@link CompletableFuture} containing {@link GuildReply}
      */
     public CompletableFuture<GuildReply> getGuildByPlayer(String player) {
-        return get(GuildReply.class, "guild",
+        return get(true, GuildReply.class, "guild",
                 HTTPQueryParams.create()
                         .add("player", player)
         );
@@ -139,7 +140,7 @@ public class HypixelAPI {
      * @return {@link CompletableFuture} containing {@link GuildReply}
      */
     public CompletableFuture<GuildReply> getGuildByName(String name) {
-        return get(GuildReply.class, "guild",
+        return get(true, GuildReply.class, "guild",
                 HTTPQueryParams.create()
                         .add("name", name)
         );
@@ -150,7 +151,7 @@ public class HypixelAPI {
      * @return {@link CompletableFuture} containing {@link GuildReply}
      */
     public CompletableFuture<GuildReply> getGuildById(String id) {
-        return get(GuildReply.class, "guild",
+        return get(true, GuildReply.class, "guild",
                 HTTPQueryParams.create()
                         .add("id", id)
         );
@@ -161,11 +162,11 @@ public class HypixelAPI {
      */
     @Deprecated
     public CompletableFuture<KeyReply> getKey() {
-        return get(KeyReply.class, "key");
+        return get(true, KeyReply.class, "key");
     }
 
     public CompletableFuture<CountsReply> getCounts() {
-        return get(CountsReply.class, "counts");
+        return get(true, CountsReply.class, "counts");
     }
 
     /**
@@ -177,7 +178,7 @@ public class HypixelAPI {
      * @return {@link CompletableFuture} containing {@link StatusReply}
      */
     public CompletableFuture<StatusReply> getStatus(UUID uuid) {
-        return get(StatusReply.class, "status",
+        return get(true, StatusReply.class, "status",
                 HTTPQueryParams.create()
                         .add("uuid", uuid)
         );
@@ -190,7 +191,7 @@ public class HypixelAPI {
      * @return {@link CompletableFuture} containing {@link RecentGamesReply}
      */
     public CompletableFuture<RecentGamesReply> getRecentGames(UUID uuid) {
-        return get(RecentGamesReply.class, "recentGames",
+        return get(true, RecentGamesReply.class, "recentGames",
                 HTTPQueryParams.create()
                         .add("uuid", uuid)
         );
@@ -216,7 +217,7 @@ public class HypixelAPI {
     }
 
     public CompletableFuture<SkyBlockProfileReply> getSkyBlockProfile(String profile) {
-        return get(SkyBlockProfileReply.class, "skyblock/profile",
+        return get(true, SkyBlockProfileReply.class, "skyblock/profile",
                 HTTPQueryParams.create()
                         .add("profile", profile)
         );
@@ -227,7 +228,7 @@ public class HypixelAPI {
      * @return the future
      */
     public CompletableFuture<SkyBlockProfilesReply> getSkyBlockProfiles(UUID player) {
-        return get(SkyBlockProfilesReply.class, "skyblock/profiles",
+        return get(true, SkyBlockProfilesReply.class, "skyblock/profiles",
                 HTTPQueryParams.create()
                         .add("uuid", player)
         );
@@ -238,7 +239,7 @@ public class HypixelAPI {
      * @return the future
      */
     public CompletableFuture<SkyBlockProfilesReply> getSkyBlockProfiles(String player) {
-        return get(SkyBlockProfilesReply.class, "skyblock/profiles",
+        return get(true, SkyBlockProfilesReply.class, "skyblock/profiles",
                 HTTPQueryParams.create()
                         .add("uuid", player)
         );
@@ -251,7 +252,7 @@ public class HypixelAPI {
      * @return CompletableFuture containing a {@link SkyBlockBingoDataReply}
      */
     public CompletableFuture<SkyBlockBingoDataReply> getSkyblockBingoData(UUID player) {
-        return get(SkyBlockBingoDataReply.class, "skyblock/bingo",
+        return get(true, SkyBlockBingoDataReply.class, "skyblock/bingo",
                 HTTPQueryParams.create()
                         .add("uuid", player)
         );
@@ -264,18 +265,18 @@ public class HypixelAPI {
      * @return CompletableFuture containing a {@link SkyBlockBingoDataReply}
      */
     public CompletableFuture<SkyBlockBingoDataReply> getSkyblockBingoData(String player) {
-        return get(SkyBlockBingoDataReply.class, "skyblock/bingo",
+        return get(true, SkyBlockBingoDataReply.class, "skyblock/bingo",
                 HTTPQueryParams.create()
                         .add("uuid", player)
         );
     }
 
     public CompletableFuture<SkyBlockNewsReply> getSkyBlockNews() {
-        return get(SkyBlockNewsReply.class, "skyblock/news");
+        return get(true, SkyBlockNewsReply.class, "skyblock/news");
     }
 
     public CompletableFuture<SkyBlockAuctionsReply> getSkyBlockAuctions(int page) {
-        return get(SkyBlockAuctionsReply.class, "skyblock/auctions",
+        return get(false, SkyBlockAuctionsReply.class, "skyblock/auctions",
                 HTTPQueryParams.create()
                         .add("page", page)
         );
@@ -287,7 +288,11 @@ public class HypixelAPI {
      * @return {@link CompletableFuture} containing {@link SkyBlockBazaarReply}
      */
     public CompletableFuture<SkyBlockBazaarReply> getSkyBlockBazaar() {
-        return get(SkyBlockBazaarReply.class, "skyblock/bazaar");
+        return get(false, SkyBlockBazaarReply.class, "skyblock/bazaar");
+    }
+
+    public CompletableFuture<SkyBlockFireSalesReply> getSkyBlockFireSales() {
+        return get(false, SkyBlockFireSalesReply.class, "skyblock/firesales");
     }
 
     /**
@@ -300,16 +305,18 @@ public class HypixelAPI {
         });
     }
 
-    private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request) {
-        return get(clazz, request, null);
+    private <R extends AbstractReply> CompletableFuture<R> get(boolean authenticated, Class<R> clazz, String request) {
+        return get(authenticated, clazz, request, null);
     }
 
-    private <R extends AbstractReply> CompletableFuture<R> get(Class<R> clazz, String request, HTTPQueryParams params) {
+    private <R extends AbstractReply> CompletableFuture<R> get(boolean authenticated, Class<R> clazz, String request, HTTPQueryParams params) {
         String url = BASE_URL + request;
         if (params != null) {
             url = params.getAsQueryString(url);
         }
-        return httpClient.makeAuthenticatedRequest(url)
+
+        CompletableFuture<HypixelHttpResponse> future = authenticated ? httpClient.makeAuthenticatedRequest(url) : httpClient.makeRequest(url);
+        return future
                 .thenApply(this::checkResponse)
                 .thenApply(response -> {
                     if (clazz == ResourceReply.class) {
