@@ -6,7 +6,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.data.type.GameType;
+import net.hypixel.api.pets.IPetRepository;
 import net.hypixel.api.pets.PetStats;
+import net.hypixel.api.pets.impl.compatibility.BackwardsCompatibilityPetRepositoryImpl;
 import net.hypixel.api.util.ILeveling;
 import net.hypixel.api.util.UnstableHypixelObject;
 import net.hypixel.api.util.Utilities;
@@ -226,8 +228,17 @@ public class PlayerReply extends AbstractReply {
 
         /**
          * @return Information about the player's lobby pets, or {@code null} if they have none.
+         * @deprecated Use {@link #getPetStats(IPetRepository)} instead
          */
+        @Deprecated
         public PetStats getPetStats() {
+            return getPetStats(BackwardsCompatibilityPetRepositoryImpl.INSTANCE);
+        }
+
+        /**
+         * @return Information about the player's lobby pets, or {@code null} if they have none.
+         */
+        public PetStats getPetStats(IPetRepository petRepository) {
             JsonObject petStats = getObjectProperty("petStats");
             if (petStats == null) {
                 return null;
@@ -235,7 +246,7 @@ public class PlayerReply extends AbstractReply {
 
             Type statsObjectType = new TypeToken<Map<String, Map<String, Object>>>() {
             }.getType();
-            return new PetStats(Utilities.GSON.fromJson(petStats, statsObjectType));
+            return new PetStats(petRepository, Utilities.GSON.fromJson(petStats, statsObjectType));
         }
 
         /**
