@@ -51,7 +51,7 @@ include the core API directly and create your own instance of HypixelHTTPClient.
 
 The Hypixel API Core implementation has the following dependencies:
 
-* [Google Gson library - 2.9.0](https://mvnrepository.com/artifact/com.google.code.gson/gson)
+* [Google Gson library - 2.10.1](https://mvnrepository.com/artifact/com.google.code.gson/gson)
 
 Transports will also have dependencies where required.
 
