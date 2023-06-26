@@ -8,7 +8,7 @@ Hypixel Public API - Apache Transport
 <dependency>
     <groupId>net.hypixel</groupId>
     <artifactId>hypixel-api-transport-apache</artifactId>
-    <version>4.2.1</version>
+    <version>4.3</version>
 </dependency>
 ```
 
@@ -42,5 +42,5 @@ public class Main {
 
 This transport depends on the following:
 
-* [Google Gson library - 2.9.0](https://mvnrepository.com/artifact/com.google.code.gson/gson) (for hypixel-api-core)
-* [Apache HttpClient - 4.5.13](https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient)
+* [Google Gson library - 2.10.1](https://mvnrepository.com/artifact/com.google.code.gson/gson) (for hypixel-api-core)
+* [Apache HttpClient - 4.5.14](https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient)
