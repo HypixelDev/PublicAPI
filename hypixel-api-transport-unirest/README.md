@@ -8,7 +8,7 @@ Hypixel Public API - Unirest Transport
 <dependency>
     <groupId>net.hypixel</groupId>
     <artifactId>hypixel-api-transport-unirest</artifactId>
-    <version>4.2.1</version>
+    <version>4.3</version>
 </dependency>
 ```
 

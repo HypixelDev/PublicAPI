@@ -8,7 +8,7 @@ Hypixel Public API - Reactive Transport
 <dependency>
     <groupId>net.hypixel</groupId>
   <artifactId>hypixel-api-transport-reactor</artifactId>
-  <version>4.2.1</version>
+  <version>4.3</version>
 </dependency>
 ```
 
