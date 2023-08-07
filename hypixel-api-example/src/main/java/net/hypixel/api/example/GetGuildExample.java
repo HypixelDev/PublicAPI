@@ -22,7 +22,7 @@ public class GetGuildExample {
     public static void main(String[] args) {
         /*
          * Make sure you have a HypixelAPI object set up. You can see how this is done by going to
-         * the ExampleUtil class.
+         * the ExampleUtil class (ExampleUtil.java) .
          *
          * See the finally{} block below for how to shutdown this API once you're all done.
          */
@@ -36,17 +36,17 @@ public class GetGuildExample {
         try {
             /*
              * We'll be fetching the guild's stats using its ID for this example, but guilds can
-             * also be looked up using their name, or one of their members' Minecraft UUIDs.
+             * also be looked up by their name, or one of their member's Minecraft UUIDs.
              *  - HypixelAPI.getGuildByName(String)
              *  - HypixelAPI.getGuildByPlayer(UUID)
              */
             String guildId = ExampleUtil.GUILD_ID;
 
             /*
-             * Here, we store the response from the API in our variable.
+             * Here, we store the response from the API.
              *
              * We call `.get()` at the end so that we can use the reply in the same thread.
-             * The downside is that the current thread freezes (or "blocks") until the API responds.
+             * The downside is that this is synchronous operation.
              * If this is a problem for you, instead use:
              *
              *     .whenComplete((apiReply, error) -> {
@@ -61,7 +61,7 @@ public class GetGuildExample {
             System.err.println("Oh no, our API request failed!");
 
             /*
-             * If an ExecutionException is thrown, it's typically because of an API error.
+             * If an ExecutionException is an arbitary error, typically because of an API error.
              * Use `getCause()` to determine what the actual problem is.
              */
             e.getCause().printStackTrace();
@@ -127,8 +127,8 @@ public class GetGuildExample {
         /*
          * Finally, we'll print some information about each member in the guild.
          *
-         * This might print out A LOT, so you may want to comment the following line out if you're
-         * focusing on some of the guild's other info.
+         * This might print out upto 125 seperate usernames, so you may want to comment the following line out if you're
+         * focusing on other info.
          */
         printGuildMembers(guild.getMembers());
     }
