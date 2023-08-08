@@ -35,7 +35,7 @@ public class GetGuildExample {
         try {
             /*
              * We'll be fetching the guild's stats using its ID for this example, but guilds can
-             * also be looked up by their name, or one of their member's Minecraft UUIDs.
+             * also be looked up by their name, or one of their members' Minecraft UUIDs.
              *  - HypixelAPI.getGuildByName(String)
              *  - HypixelAPI.getGuildByPlayer(UUID)
              */
@@ -45,7 +45,7 @@ public class GetGuildExample {
              * Here, we store the response from the API.
              *
              * We call `.get()` at the end so that we can use the reply in the same thread.
-             * The downside is that this is synchronous operation.
+             * The downside is that this is synchronous, and blocks the thread untill the API responds.
              * If this is a problem for you, instead use:
              *
              *     .whenComplete((apiReply, error) -> {
