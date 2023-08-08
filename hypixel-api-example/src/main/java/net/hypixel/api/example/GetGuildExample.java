@@ -125,7 +125,7 @@ public class GetGuildExample {
 
         /*
          * Finally, we'll print some information about each member in the guild.
-         * This could potentially potentially print out A LOT(based on the size of the guild in question)
+         * This could potentially potentially print out A LOT(depending on the guild's size)
          * You may want to comment this out if you're focusing on other information.
          */
         printGuildMembers(guild.getMembers());
