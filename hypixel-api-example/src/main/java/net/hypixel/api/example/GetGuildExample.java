@@ -21,8 +21,7 @@ public class GetGuildExample {
 
     public static void main(String[] args) {
         /*
-         * Make sure you have a HypixelAPI object set up. You can see how this is done by going to
-         * the ExampleUtil class (ExampleUtil.java) .
+         * Make sure you have a HypixelAPI object set up. You can see how this is done in the ExampleUtil class.
          *
          * See the finally{} block below for how to shutdown this API once you're all done.
          */
