@@ -127,8 +127,9 @@ public class GetGuildExample {
         /*
          * Finally, we'll print some information about each member in the guild.
          *
-         * This might print out upto 125 seperate usernames, so you may want to comment the following line out if you're
-         * focusing on other info.
+         * This might print out a lot usernames(in theory infinity, 
+         * practically upto 125, the *current* in game member limit),
+         * so you may want to comment the following line out if you're focusing on other info.
          */
         printGuildMembers(guild.getMembers());
     }
