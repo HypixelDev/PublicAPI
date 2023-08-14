@@ -157,14 +157,6 @@ public class HypixelAPI {
         );
     }
 
-    /**
-     * @deprecated Endpoint is deprecated and will be removed on 14th August 2023.
-     */
-    @Deprecated
-    public CompletableFuture<KeyReply> getKey() {
-        return get(true, KeyReply.class, "key");
-    }
-
     public CompletableFuture<CountsReply> getCounts() {
         return get(true, CountsReply.class, "counts");
     }
