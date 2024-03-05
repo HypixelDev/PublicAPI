@@ -129,7 +129,7 @@ public class GuildReply extends RateLimitedReply {
          *
          * @return the name of a Minecraft color code (all uppercase), or {@code null} if the guild
          * has never changed its tag's color.
-         * @see <a href=https://minecraft.fandom.com/wiki/Formatting_codes#Color_codes>Color codes
+         * @see <a href=https://minecraft.wiki/w/Formatting_codes#Color_codes>Color codes
          * table</a> (uses lowercase names)
          */
         public String getTagColor() {

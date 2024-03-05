@@ -151,7 +151,7 @@ public class PlayerReply extends RateLimitedReply {
         }
 
         /**
-         * Note, returned colors use the names seen in <a href=https://minecraft.fandom.com/wiki/Formatting_codes#Color_codes>this
+         * Note, returned colors use the names seen in <a href=https://minecraft.wiki/w/Formatting_codes#Color_codes>this
          * table</a>, in all uppercase. For example, {@code DARK_BLUE} and {@code GRAY}.
          *
          * @return The color of the player's name tag if they have MVP++. Defaults to {@code GOLD}.
