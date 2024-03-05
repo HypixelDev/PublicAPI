@@ -34,7 +34,7 @@ import java.util.Objects;
  *     <li>{@link Pattern#getColor()}</li>
  * </ul>
  *
- * @see <a href="https://minecraft.fandom.com/wiki/Banner">Banner</a> (Minecraft Wiki)
+ * @see <a href="https://minecraft.wiki/w/Banner">Banner</a> (Minecraft Wiki)
  */
 public class Banner {
 
@@ -116,7 +116,7 @@ public class Banner {
          * each type's identifier.
          *
          * @return the pattern's type identifier.
-         * @see <a href="https://minecraft.fandom.com/wiki/Banner/Patterns">Pattern identifiers</a>
+         * @see <a href="https://minecraft.wiki/w/Banner/Patterns">Pattern identifiers</a>
          */
         public String getType() {
             return type;

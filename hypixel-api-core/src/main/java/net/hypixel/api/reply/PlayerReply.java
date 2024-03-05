@@ -151,7 +151,7 @@ public class PlayerReply extends RateLimitedReply {
         }
 
         /**
-         * Note, returned colors use the names seen in <a href=https://minecraft.fandom.com/wiki/Formatting_codes#Color_codes>this
+         * Note, returned colors use the names seen in <a href=https://minecraft.wiki/w/Formatting_codes#Color_codes>this
          * table</a>, in all uppercase. For example, {@code DARK_BLUE} and {@code GRAY}.
          *
          * @return The color of the player's name tag if they have MVP++. Defaults to {@code GOLD}.
@@ -247,14 +247,6 @@ public class PlayerReply extends RateLimitedReply {
             Type statsObjectType = new TypeToken<Map<String, Map<String, Object>>>() {
             }.getType();
             return new PetStats(petRepository, Utilities.GSON.fromJson(petStats, statsObjectType));
-        }
-
-        /**
-         * @return The last Minecraft version that the player used to connect to Hypixel, or {@code
-         * null} if it is unknown.
-         */
-        public String getLastKnownMinecraftVersion() {
-            return getStringProperty("mcVersionRp", null);
         }
 
         /**

@@ -21,7 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class HypixelAPI {
-    static final String BASE_URL = "https://api.hypixel.net/";
+    static final String BASE_URL = "https://api.hypixel.net/v2/";
 
     private final HypixelHttpClient httpClient;
 
@@ -155,14 +155,6 @@ public class HypixelAPI {
                 HTTPQueryParams.create()
                         .add("id", id)
         );
-    }
-
-    /**
-     * @deprecated Endpoint is deprecated and will be removed on 14th August 2023.
-     */
-    @Deprecated
-    public CompletableFuture<KeyReply> getKey() {
-        return get(true, KeyReply.class, "key");
     }
 
     public CompletableFuture<CountsReply> getCounts() {
