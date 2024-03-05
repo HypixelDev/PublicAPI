@@ -21,7 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class HypixelAPI {
-    static final String BASE_URL = "https://api.hypixel.net/";
+    static final String BASE_URL = "https://api.hypixel.net/v2/";
 
     private final HypixelHttpClient httpClient;
 
