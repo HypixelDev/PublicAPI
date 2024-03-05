@@ -92,7 +92,6 @@ public class GetPlayerExample {
         System.out.println("Exact Level ---> " + player.getNetworkLevel());
         System.out.println("Experience ----> " + player.getNetworkExp());
         System.out.println("Karma ---------> " + player.getKarma());
-        System.out.println("MC Version ----> " + player.getLastKnownMinecraftVersion());
         System.out.println("Last Game Type > " + player.getMostRecentGameType());
 
         /*

@@ -250,14 +250,6 @@ public class PlayerReply extends RateLimitedReply {
         }
 
         /**
-         * @return The last Minecraft version that the player used to connect to Hypixel, or {@code
-         * null} if it is unknown.
-         */
-        public String getLastKnownMinecraftVersion() {
-            return getStringProperty("mcVersionRp", null);
-        }
-
-        /**
          * @return {@code true} if the player could be identified by the API. Otherwise {@code
          * false}.
          */
