@@ -101,7 +101,7 @@ public class GetPlayerExample {
          * If you also know what type of property it is (like a string or number), you can use more
          * specific methods, like `getStringProperty(...)`, `getIntProperty(...)`, and so on.
          */
-        System.out.println("Previous Names > " + player.getArrayProperty("knownAliases"));
+        System.out.println("Language ------> " + player.getStringProperty("userLanguage", null));
 
         /*
          * Some of the property methods also accept a default value, which gets returned if the
