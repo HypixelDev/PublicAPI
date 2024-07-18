@@ -1,8 +1,8 @@
 package net.hypixel.api.adapters;
 
 import com.google.gson.*;
-import net.hypixel.api.data.type.GameType;
-import net.hypixel.api.data.type.ServerType;
+import net.hypixel.data.type.GameType;
+import net.hypixel.data.type.ServerType;
 
 import java.lang.reflect.Type;
 
@@ -17,10 +17,10 @@ public class ServerTypeTypeAdapter implements JsonDeserializer<ServerType>, Json
     public ServerType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         String raw = json.getAsString();
         try {
-            return GameType.fromId(Integer.parseInt(raw));
+            return GameType.getById(Integer.parseInt(raw)).orElse(null);
         } catch (NumberFormatException ignored) {
         }
-        return ServerType.valueOf(raw);
+        return ServerType.valueOf(raw).orElse(null);
     }
 
 }

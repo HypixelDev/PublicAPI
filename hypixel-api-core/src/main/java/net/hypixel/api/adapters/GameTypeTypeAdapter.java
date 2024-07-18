@@ -1,7 +1,7 @@
 package net.hypixel.api.adapters;
 
 import com.google.gson.*;
-import net.hypixel.api.data.type.GameType;
+import net.hypixel.data.type.GameType;
 
 import java.lang.reflect.Type;
 
@@ -19,17 +19,22 @@ public class GameTypeTypeAdapter implements JsonDeserializer<GameType>, JsonSeri
     @Override
     public GameType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isNumber()) {
-            return GameType.fromId(json.getAsInt());
+            return GameType.getById(json.getAsInt()).orElse(null);
         }
 
         String raw = json.getAsString();
         try {
-            return GameType.fromId(Integer.parseInt(raw));
+            return GameType.getById(Integer.parseInt(raw)).orElse(null);
         } catch (NumberFormatException ignored) {
         }
 
         try {
             return GameType.valueOf(raw);
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            return GameType.getByDatabaseName(raw).orElse(null);
         } catch (IllegalArgumentException ignored) {
         }
 

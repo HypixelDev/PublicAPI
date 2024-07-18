@@ -1,7 +1,7 @@
 package net.hypixel.api.reply;
 
 import com.google.gson.annotations.SerializedName;
-import net.hypixel.api.data.type.ServerType;
+import net.hypixel.data.type.ServerType;
 
 public class StatusReply extends RateLimitedReply {
 

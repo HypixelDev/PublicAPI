@@ -1,6 +1,6 @@
 package net.hypixel.api.reply;
 
-import net.hypixel.api.data.type.GameType;
+import net.hypixel.data.type.GameType;
 
 import java.time.ZonedDateTime;
 import java.util.List;

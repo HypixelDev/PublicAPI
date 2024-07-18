@@ -5,13 +5,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import net.hypixel.api.HypixelAPI;
-import net.hypixel.api.data.type.GameType;
 import net.hypixel.api.pets.IPetRepository;
 import net.hypixel.api.pets.PetStats;
 import net.hypixel.api.pets.impl.compatibility.BackwardsCompatibilityPetRepositoryImpl;
 import net.hypixel.api.util.ILeveling;
 import net.hypixel.api.util.UnstableHypixelObject;
 import net.hypixel.api.util.Utilities;
+import net.hypixel.data.type.GameType;
 
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
