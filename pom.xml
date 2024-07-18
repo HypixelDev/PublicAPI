@@ -24,6 +24,13 @@
         </repository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <id>Hypixel</id>
+            <url>https://repo.hypixel.net/repository/Hypixel/</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
