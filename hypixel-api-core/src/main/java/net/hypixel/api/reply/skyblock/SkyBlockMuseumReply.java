@@ -7,7 +7,7 @@ import net.hypixel.api.reply.RateLimitedReply;
 public class SkyBlockMuseumReply extends RateLimitedReply {
     private JsonElement museum;
 
-    public JsonObject getGarden() {
+    public JsonObject getMuseum() {
         if (museum == null || museum.isJsonNull()) {
             return null;
         } else {
