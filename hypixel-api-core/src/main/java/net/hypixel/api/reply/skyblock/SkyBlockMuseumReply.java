@@ -5,20 +5,20 @@ import com.google.gson.JsonObject;
 import net.hypixel.api.reply.RateLimitedReply;
 
 public class SkyBlockMuseumReply extends RateLimitedReply {
-    private JsonElement museum;
+    private JsonElement members;
 
     public JsonObject getMuseum() {
-        if (museum == null || museum.isJsonNull()) {
+        if (members == null || members.isJsonNull()) {
             return null;
         } else {
-            return museum.getAsJsonObject();
+            return members.getAsJsonObject();
         }
     }
 
     @Override
     public String toString() {
         return "SkyBlockMuseumReply{" +
-                "profile=" + museum +
+                "profile=" + members +
                 "} " + super.toString();
     }
 }
