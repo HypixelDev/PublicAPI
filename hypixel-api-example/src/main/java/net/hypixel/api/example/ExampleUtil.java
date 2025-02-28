@@ -2,7 +2,7 @@ package net.hypixel.api.example;
 
 import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.apache.ApacheHttpClient;
-import net.hypixel.api.example.config.ConfigManager;
+import net.hypixel.api.config.ConfigManager;
 import net.hypixel.api.reply.AbstractReply;
 
 import java.util.Properties;

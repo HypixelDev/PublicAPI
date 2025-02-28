@@ -1,4 +1,4 @@
-package net.hypixel.api.example.config;
+package net.hypixel.api.config;
 
 import java.io.InputStream;
 import java.util.Properties;
