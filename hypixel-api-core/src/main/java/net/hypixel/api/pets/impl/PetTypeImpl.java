@@ -1,6 +1,7 @@
 package net.hypixel.api.pets.impl;
 
 import com.google.gson.JsonObject;
+
 import net.hypixel.api.pets.IPetRarity;
 import net.hypixel.api.pets.IPetType;
 

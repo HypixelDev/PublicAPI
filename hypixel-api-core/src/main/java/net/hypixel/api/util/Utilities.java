@@ -2,6 +2,7 @@ package net.hypixel.api.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import net.hypixel.api.adapters.*;
 import net.hypixel.api.data.type.GameType;
 import net.hypixel.api.data.type.ServerType;

@@ -3,6 +3,7 @@ package net.hypixel.api.pets.impl;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import net.hypixel.api.pets.IPetRarity;
 import net.hypixel.api.pets.IPetType;
 import net.hypixel.api.reply.ResourceReply;
