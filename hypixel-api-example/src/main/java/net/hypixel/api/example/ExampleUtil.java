@@ -5,16 +5,15 @@ import net.hypixel.api.apache.ApacheHttpClient;
 import net.hypixel.api.config.ConfigManager;
 import net.hypixel.api.reply.AbstractReply;
 
-import java.util.Properties;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
 public class ExampleUtil {
 
-    private static final Properties config = ConfigManager.getInstance().getConfig();
+    private static final ConfigManager config = ConfigManager.getInstance();
 
     private static String getApiKey() {
-        return config.getProperty("HYPIXEL_API_KEY", "64bd424e-ccb0-42ed-8b66-6e42a135afb4");
+        return config.get("HYPIXEL_API_KEY");
     }
 
     public static final HypixelAPI API;
@@ -23,8 +22,8 @@ public class ExampleUtil {
         API = new HypixelAPI(new ApacheHttpClient(UUID.fromString(getApiKey())));
     }
 
-    public static final UUID HYPIXEL = UUID.fromString(config.getProperty("HYPIXEL", "f7c77d99-9f15-4a66-a87d-c4a51ef30d19"));
-    public static final String GUILD_ID = config.getProperty("GUILD_ID", "53bd67d7ed503e868873eceb");
+    public static final UUID HYPIXEL = UUID.fromString(config.get("HYPIXEL"));
+    public static final String GUILD_ID = config.get("GUILD_ID");
 
     /**
      * Keep the program alive till we explicitly exit.
