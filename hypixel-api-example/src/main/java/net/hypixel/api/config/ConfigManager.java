@@ -1,5 +1,7 @@
 package net.hypixel.api.config;
 
+import net.hypixel.api.config.exeption.ConfigValueNotFoundException;
+
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -29,7 +31,13 @@ public class ConfigManager {
         }
     }
 
-    public Properties getConfig() {
-        return config;
+    public String get(String key) {
+        String value = config.getProperty(key);
+        if (value == null) {
+            throw new ConfigValueNotFoundException(key);
+        }
+
+        return value;
     }
+
 }
