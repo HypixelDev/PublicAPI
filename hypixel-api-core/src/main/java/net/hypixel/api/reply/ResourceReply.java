@@ -1,7 +1,6 @@
 package net.hypixel.api.reply;
 
 import com.google.gson.JsonObject;
-import net.hypixel.api.reply.AbstractReply;
 
 public class ResourceReply extends AbstractReply {
 

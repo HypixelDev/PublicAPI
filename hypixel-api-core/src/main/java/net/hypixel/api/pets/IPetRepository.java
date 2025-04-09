@@ -46,7 +46,7 @@ public interface IPetRepository {
     /**
      * Gets if a player has unlocked the specified {@link IPetType}
      *
-     * @param type the pet type the player must have
+     * @param type   the pet type the player must have
      * @param player the player to check against
      * @return {@code true} if the player has unlocked the pet, otherwise {@code false}
      */

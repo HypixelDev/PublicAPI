@@ -2,8 +2,12 @@ package net.hypixel.api.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import net.hypixel.api.adapters.*;
+import net.hypixel.api.adapters.BoostersTypeAdapterFactory;
+import net.hypixel.api.adapters.DateTimeTypeAdapter;
+import net.hypixel.api.adapters.GameTypeTypeAdapter;
+import net.hypixel.api.adapters.PlayerTypeAdapter;
+import net.hypixel.api.adapters.ServerTypeTypeAdapter;
+import net.hypixel.api.adapters.UUIDTypeAdapter;
 import net.hypixel.api.data.type.GameType;
 import net.hypixel.api.data.type.ServerType;
 import net.hypixel.api.reply.BoostersReply;
@@ -17,7 +21,6 @@ import java.util.regex.Pattern;
 
 public final class Utilities {
 
-    private static final Pattern TOKEN_SPLITTER = Pattern.compile("(?<!\\\\)\\.");
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
             .registerTypeAdapter(GameType.class, new GameTypeTypeAdapter())
@@ -26,6 +29,11 @@ public final class Utilities {
             .registerTypeAdapter(Player.class, new PlayerTypeAdapter())
             .registerTypeAdapterFactory(new BoostersTypeAdapterFactory<>(BoostersReply.Booster.class))
             .create();
+    private static final Pattern TOKEN_SPLITTER = Pattern.compile("(?<!\\\\)\\.");
+
+    private Utilities() {
+        throw new UnsupportedOperationException("Helper class should not be instantiated");
+    }
 
     public static ZonedDateTime getDateTime(long timeStamp) {
         return Instant.ofEpochMilli(timeStamp).atZone(ZoneId.of("America/New_York"));
@@ -49,9 +57,5 @@ public final class Utilities {
 
         }
         return UUID.fromString(uuidStr);
-    }
-
-    private Utilities() {
-        throw new UnsupportedOperationException("Helper class should not be instantiated");
     }
 }

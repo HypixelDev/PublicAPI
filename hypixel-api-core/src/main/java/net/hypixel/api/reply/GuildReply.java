@@ -8,7 +8,12 @@ import net.hypixel.api.util.Banner;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 // Suppressed because most fields are assigned by Gson via reflection.
 @SuppressWarnings({"unused", "RedundantSuppression", "MismatchedQueryAndUpdateOfCollection"})
@@ -23,8 +28,8 @@ public class GuildReply extends RateLimitedReply {
     @Override
     public String toString() {
         return "GuildReply{" +
-               "guild=" + guild +
-               "} " + super.toString();
+                "guild=" + guild +
+                "} " + super.toString();
     }
 
     public static class Guild {
@@ -153,8 +158,8 @@ public class GuildReply extends RateLimitedReply {
          */
         public List<Member> getMembers() {
             return members == null
-                ? Collections.emptyList()
-                : Collections.unmodifiableList(members);
+                    ? Collections.emptyList()
+                    : Collections.unmodifiableList(members);
         }
 
         /**
@@ -174,8 +179,8 @@ public class GuildReply extends RateLimitedReply {
          */
         public List<Rank> getRanks() {
             return ranks == null
-                ? Collections.emptyList()
-                : Collections.unmodifiableList(ranks);
+                    ? Collections.emptyList()
+                    : Collections.unmodifiableList(ranks);
         }
 
         /**
@@ -186,8 +191,8 @@ public class GuildReply extends RateLimitedReply {
          */
         public List<GameType> getPreferredGames() {
             return preferredGames == null
-                ? Collections.emptyList()
-                : Collections.unmodifiableList(preferredGames);
+                    ? Collections.emptyList()
+                    : Collections.unmodifiableList(preferredGames);
         }
 
         /**
@@ -204,8 +209,8 @@ public class GuildReply extends RateLimitedReply {
             }
 
             return Optional.ofNullable(guildExpByGameType)
-                .map(expByGame -> expByGame.get(game))
-                .orElse(0L);
+                    .map(expByGame -> expByGame.get(game))
+                    .orElse(0L);
         }
 
         /**
@@ -221,8 +226,8 @@ public class GuildReply extends RateLimitedReply {
                 throw new IllegalArgumentException("Cannot get high-score for null achievement");
             }
             return Optional.ofNullable(achievements)
-                .map(highScores -> highScores.get(achievement))
-                .orElse(0);
+                    .map(highScores -> highScores.get(achievement))
+                    .orElse(0);
         }
 
         /**
@@ -316,29 +321,29 @@ public class GuildReply extends RateLimitedReply {
          */
         public int getLegacyRanking() {
             return Optional.ofNullable(legacyRanking)
-                .map(ranking -> ranking + 1)
-                .orElse(-1);
+                    .map(ranking -> ranking + 1)
+                    .orElse(-1);
         }
 
         @Override
         public String toString() {
             return "Guild{" +
-                   "id='" + id + '\'' +
-                   ", name='" + name + '\'' +
-                   ", description='" + description + '\'' +
-                   ", creationDate=" + creationDate +
-                   ", tag='" + tag + '\'' +
-                   ", tagColor='" + tagColor + '\'' +
-                   ", banner=" + banner +
-                   ", members=" + members +
-                   ", ranks=" + ranks +
-                   ", experience=" + experience +
-                   ", isPubliclyListed=" + isPubliclyListed +
-                   ", isJoinable=" + isJoinable +
-                   ", coins=" + coins +
-                   ", coinsEver=" + coinsEver +
-                   ", legacyRanking=" + legacyRanking +
-                   '}';
+                    "id='" + id + '\'' +
+                    ", name='" + name + '\'' +
+                    ", description='" + description + '\'' +
+                    ", creationDate=" + creationDate +
+                    ", tag='" + tag + '\'' +
+                    ", tagColor='" + tagColor + '\'' +
+                    ", banner=" + banner +
+                    ", members=" + members +
+                    ", ranks=" + ranks +
+                    ", experience=" + experience +
+                    ", isPubliclyListed=" + isPubliclyListed +
+                    ", isJoinable=" + isJoinable +
+                    ", coins=" + coins +
+                    ", coinsEver=" + coinsEver +
+                    ", legacyRanking=" + legacyRanking +
+                    '}';
         }
 
         @Override
@@ -414,8 +419,8 @@ public class GuildReply extends RateLimitedReply {
                 }
 
                 return Optional.ofNullable(weeklyExperience)
-                    .map(expByDate -> expByDate.get(date.toString()))
-                    .orElse(-1);
+                        .map(expByDate -> expByDate.get(date.toString()))
+                        .orElse(-1);
             }
 
             /**
@@ -429,10 +434,10 @@ public class GuildReply extends RateLimitedReply {
             @Override
             public String toString() {
                 return "Member{" +
-                       "uuid=" + uuid +
-                       ", rank='" + rank + '\'' +
-                       ", joined=" + joinDate +
-                       '}';
+                        "uuid=" + uuid +
+                        ", rank='" + rank + '\'' +
+                        ", joined=" + joinDate +
+                        '}';
             }
 
             @Override
@@ -518,12 +523,12 @@ public class GuildReply extends RateLimitedReply {
             @Override
             public String toString() {
                 return "Rank{" +
-                       "name='" + name + '\'' +
-                       ", tag='" + tag + '\'' +
-                       ", isDefault=" + isDefault +
-                       ", creationDate=" + creationDate +
-                       ", priority=" + priority +
-                       '}';
+                        "name='" + name + '\'' +
+                        ", tag='" + tag + '\'' +
+                        ", isDefault=" + isDefault +
+                        ", creationDate=" + creationDate +
+                        ", priority=" + priority +
+                        '}';
             }
 
             @Override
@@ -536,7 +541,7 @@ public class GuildReply extends RateLimitedReply {
                 }
                 Rank rank = (Rank) o;
                 return Objects.equals(name, rank.name) &&
-                       Objects.equals(creationDate, rank.creationDate);
+                        Objects.equals(creationDate, rank.creationDate);
             }
 
             @Override

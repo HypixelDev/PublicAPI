@@ -1,6 +1,11 @@
 package net.hypixel.api.example;
 
-import net.hypixel.api.reply.*;
+import net.hypixel.api.reply.BoostersReply;
+import net.hypixel.api.reply.CountsReply;
+import net.hypixel.api.reply.GuildReply;
+import net.hypixel.api.reply.LeaderboardsReply;
+import net.hypixel.api.reply.PlayerReply;
+import net.hypixel.api.reply.PunishmentStatsReply;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

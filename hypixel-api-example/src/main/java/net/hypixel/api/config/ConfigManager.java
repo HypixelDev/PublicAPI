@@ -8,15 +8,6 @@ import java.util.Properties;
 public class ConfigManager {
 
     private static ConfigManager instance;
-
-    public static ConfigManager getInstance() {
-        if (instance == null) {
-            instance = new ConfigManager();
-        }
-
-        return instance;
-    }
-
     private final Properties config = new Properties();
 
     private ConfigManager() {
@@ -29,6 +20,14 @@ public class ConfigManager {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static ConfigManager getInstance() {
+        if (instance == null) {
+            instance = new ConfigManager();
+        }
+
+        return instance;
     }
 
     public String get(String key) {

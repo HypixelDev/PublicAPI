@@ -21,6 +21,13 @@ import java.util.stream.Collectors;
  */
 public class PropertyFilter {
 
+    // Only these keys are allowed in objects passed through.
+    protected final Set<PropertyKey> allowedKeys;
+
+    public PropertyFilter() {
+        allowedKeys = new HashSet<>();
+    }
+
     /**
      * Shorthand for constructing a new filter that only allows the {@code includedKeys} to pass
      * through. See {@link #include(String...)} for the key syntax.
@@ -29,13 +36,6 @@ public class PropertyFilter {
         PropertyFilter filter = new PropertyFilter();
         filter.include(includedKeys);
         return filter;
-    }
-
-    // Only these keys are allowed in objects passed through.
-    protected final Set<PropertyKey> allowedKeys;
-
-    public PropertyFilter() {
-        allowedKeys = new HashSet<>();
     }
 
     /**

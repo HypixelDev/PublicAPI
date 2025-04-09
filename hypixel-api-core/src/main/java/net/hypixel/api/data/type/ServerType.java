@@ -2,10 +2,6 @@ package net.hypixel.api.data.type;
 
 public interface ServerType {
 
-    String name();
-
-    String getName();
-
     static ServerType valueOf(String value) {
         try {
             return GameType.valueOf(value);
@@ -21,5 +17,9 @@ public interface ServerType {
 
         return null;
     }
+
+    String name();
+
+    String getName();
 
 }

@@ -10,20 +10,18 @@ import java.util.function.BiConsumer;
 
 public class ExampleUtil {
 
-    private static final ConfigManager config = ConfigManager.getInstance();
-
-    private static String getApiKey() {
-        return config.get("HYPIXEL_API_KEY");
-    }
-
     public static final HypixelAPI API;
+    private static final ConfigManager config = ConfigManager.getInstance();
+    public static final UUID HYPIXEL = UUID.fromString(config.get("HYPIXEL"));
+    public static final String GUILD_ID = config.get("GUILD_ID");
 
     static {
         API = new HypixelAPI(new ApacheHttpClient(UUID.fromString(getApiKey())));
     }
 
-    public static final UUID HYPIXEL = UUID.fromString(config.get("HYPIXEL"));
-    public static final String GUILD_ID = config.get("GUILD_ID");
+    private static String getApiKey() {
+        return config.get("HYPIXEL_API_KEY");
+    }
 
     /**
      * Keep the program alive till we explicitly exit.

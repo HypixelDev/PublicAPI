@@ -1,6 +1,7 @@
 package net.hypixel.api.util;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -70,17 +71,12 @@ public class Banner {
      * @return an immutable list of the banner's layers.
      */
     public List<Pattern> getPatterns() {
-        return patterns == null
-            ? Collections.emptyList()
-            : Collections.unmodifiableList(patterns);
+        return patterns == null ? Collections.emptyList() : Collections.unmodifiableList(patterns);
     }
 
     @Override
     public String toString() {
-        return "Banner{" +
-               "baseColor='" + baseColor + '\'' +
-               ", patterns=" + patterns +
-               '}';
+        return "Banner{" + "baseColor='" + baseColor + '\'' + ", patterns=" + patterns + '}';
     }
 
     @Override
@@ -92,8 +88,7 @@ public class Banner {
             return false;
         }
         Banner banner = (Banner) o;
-        return Objects.equals(baseColor, banner.baseColor) &&
-               Objects.equals(patterns, banner.patterns);
+        return Objects.equals(baseColor, banner.baseColor) && Objects.equals(patterns, banner.patterns);
     }
 
     @Override
@@ -143,10 +138,7 @@ public class Banner {
 
         @Override
         public String toString() {
-            return "Pattern{" +
-                   "type='" + type + '\'' +
-                   ", color='" + color + '\'' +
-                   '}';
+            return "Pattern{" + "type='" + type + '\'' + ", color='" + color + '\'' + '}';
         }
 
         @Override
@@ -158,8 +150,7 @@ public class Banner {
                 return false;
             }
             Pattern pattern = (Pattern) o;
-            return Objects.equals(type, pattern.type) &&
-                   Objects.equals(color, pattern.color);
+            return Objects.equals(type, pattern.type) && Objects.equals(color, pattern.color);
         }
 
         @Override

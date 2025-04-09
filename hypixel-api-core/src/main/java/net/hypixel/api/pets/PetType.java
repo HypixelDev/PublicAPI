@@ -4,6 +4,7 @@ import net.hypixel.api.util.Rarity;
 
 /**
  * The old and deprecated enum for the pet types
+ *
  * @deprecated Consider using the {@link IPetRepository}
  */
 @Deprecated

@@ -1,10 +1,5 @@
 package net.hypixel.api.example;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 import net.hypixel.api.HypixelAPI;
 import net.hypixel.api.data.type.GameType;
 import net.hypixel.api.data.type.GuildAchievement;
@@ -13,6 +8,12 @@ import net.hypixel.api.reply.GuildReply.Guild;
 import net.hypixel.api.reply.GuildReply.Guild.Member;
 import net.hypixel.api.reply.GuildReply.Guild.Rank;
 import net.hypixel.api.util.IGuildLeveling;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A sample app for demonstrating how guilds can be fetched & used from the Hypixel API.

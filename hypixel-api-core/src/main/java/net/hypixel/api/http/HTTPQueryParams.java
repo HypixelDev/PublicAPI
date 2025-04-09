@@ -5,14 +5,14 @@ import java.util.Map;
 
 public class HTTPQueryParams {
 
-    public static HTTPQueryParams create() {
-        return new HTTPQueryParams();
-    }
-
     private final Map<String, Object> params = new HashMap<>();
 
     private HTTPQueryParams() {
 
+    }
+
+    public static HTTPQueryParams create() {
+        return new HTTPQueryParams();
     }
 
     public HTTPQueryParams add(String key, Object value) {

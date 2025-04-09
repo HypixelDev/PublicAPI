@@ -30,7 +30,7 @@ public class PetStats {
      *
      * <b>Note:</b> If this returns {@code null}, it <b>doesn't</b> mean that the player hasn't unlocked the pet.
      * What it does mean though, is that the player hasn't given any attributes nor a name to the pet
-     *
+     * <p>
      * To check if a player has unlocked a pet, use {@link IPetRepository#hasPlayerUnlocked(IPetType, PlayerReply.Player)}
      *
      * @param type the pet type to retrieve
