@@ -1,6 +1,6 @@
 package net.hypixel.api.reply;
 
-import net.hypixel.api.data.type.GameType;
+import net.hypixel.data.type.GameType;
 
 import java.util.List;
 import java.util.Map;

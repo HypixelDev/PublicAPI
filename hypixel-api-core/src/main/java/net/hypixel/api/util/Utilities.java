@@ -3,10 +3,10 @@ package net.hypixel.api.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.hypixel.api.adapters.*;
-import net.hypixel.api.data.type.GameType;
-import net.hypixel.api.data.type.ServerType;
 import net.hypixel.api.reply.BoostersReply;
 import net.hypixel.api.reply.PlayerReply.Player;
+import net.hypixel.data.type.GameType;
+import net.hypixel.data.type.ServerType;
 
 import java.time.Instant;
 import java.time.ZoneId;

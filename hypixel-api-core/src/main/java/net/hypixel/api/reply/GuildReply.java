@@ -1,10 +1,10 @@
 package net.hypixel.api.reply;
 
 import com.google.gson.annotations.SerializedName;
-import net.hypixel.api.data.type.GameType;
 import net.hypixel.api.data.type.GuildAchievement;
 import net.hypixel.api.reply.PlayerReply.Player;
 import net.hypixel.api.util.Banner;
+import net.hypixel.data.type.GameType;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
