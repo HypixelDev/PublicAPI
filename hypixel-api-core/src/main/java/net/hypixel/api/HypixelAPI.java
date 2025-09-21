@@ -208,6 +208,28 @@ public class HypixelAPI {
                 .thenApply(PetRepositoryImpl::new);
     }
 
+    /**
+     * @param profile Profile ID of which you are requesting the Garden for.
+     * @return the future
+     */
+    public CompletableFuture<SkyBlockGardenReply> getSkyBlockGarden(String profile) {
+        return get(true, SkyBlockGardenReply.class, "skyblock/garden",
+                HTTPQueryParams.create()
+                        .add("profile", profile)
+        );
+    }
+
+    /**
+     * @param profile Profile ID of which you are requesting the Museum for.
+     * @return the future
+     */
+    public CompletableFuture<SkyBlockMuseumReply> getSkyblockMuseum(String profile) {
+        return get(true, SkyBlockMuseumReply.class, "skyblock/museum",
+                HTTPQueryParams.create()
+                        .add("profile", profile)
+        );
+    }
+
     public CompletableFuture<SkyBlockProfileReply> getSkyBlockProfile(String profile) {
         return get(true, SkyBlockProfileReply.class, "skyblock/profile",
                 HTTPQueryParams.create()
