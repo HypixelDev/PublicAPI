@@ -10,10 +10,14 @@ GitHub [Discussions](https://github.com/HypixelDev/PublicAPI/discussions).
 Hypixel Public API documentation can be found at [https://api.hypixel.net/](https://api.hypixel.net/). Java
 documentation can be found in the code.
 
-### GitHub Issues
+### Issues
 
-GitHub issues should only be used to report bugs. Everything else should either be in GitHub discussions or use the
-Hypixel [Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
+GitHub issues should only be used to report bugs with the Java implementation of the Public API. If you have
+issues or questions with using the Public API, you should post in the GitHub discussions, or use the Hypixel
+[Code Creations](https://hypixel.net/forums/code-creations.65/) forum.
+
+If you have an issue with the Public API itself, such as an error when trying to use a specific endpoint, you
+can report this on the Hypixel Forums under the "Website" -> "Public API" option [here](https://hypixel.net/bug-reports/create).
 
 ### Usage
 
@@ -58,4 +62,5 @@ Transports will also have dependencies where required.
 ### Contributing
 
 When contributing changes to the Java API please provide as much detail on the changes and the reasons for them. We will
+
 not accept changes that have no meaningful contribution to the project.
