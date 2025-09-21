@@ -14,6 +14,14 @@ public class CountsReply extends RateLimitedReply {
         return playerCount;
     }
 
+    @Override
+    public String toString() {
+        return "GameCountsReply{" +
+                "games=" + games +
+                ", playerCount=" + playerCount +
+                "} " + super.toString();
+    }
+
     public static class GameCount {
         private Map<String, Integer> modes;
         private int players;
@@ -33,13 +41,5 @@ public class CountsReply extends RateLimitedReply {
                     ", players=" + players +
                     '}';
         }
-    }
-
-    @Override
-    public String toString() {
-        return "GameCountsReply{" +
-                "games=" + games +
-                ", playerCount=" + playerCount +
-                "} " + super.toString();
     }
 }

@@ -15,7 +15,11 @@ import reactor.util.function.Tuple3;
 
 import java.time.Duration;
 import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -87,6 +91,11 @@ public class ReactorHttpClient implements HypixelHttpClient {
         this(apiKey, 8, 500);
     }
 
+    private static CompletableFuture<HypixelHttpResponse> toHypixelResponseFuture(Mono<Tuple3<String, Integer, RateLimit>> result) {
+        return result.map(tuple -> new HypixelHttpResponse(tuple.getT2(), tuple.getT1(), tuple.getT3()))
+                .toFuture();
+    }
+
     /**
      * Canceling the returned future will result in canceling the sending of the request if still possible
      */
@@ -101,11 +110,6 @@ public class ReactorHttpClient implements HypixelHttpClient {
     @Override
     public CompletableFuture<HypixelHttpResponse> makeAuthenticatedRequest(String url) {
         return toHypixelResponseFuture(makeRequest(url, true));
-    }
-
-    private static CompletableFuture<HypixelHttpResponse> toHypixelResponseFuture(Mono<Tuple3<String, Integer, RateLimit>> result) {
-        return result.map(tuple -> new HypixelHttpResponse(tuple.getT2(), tuple.getT1(), tuple.getT3()))
-                .toFuture();
     }
 
     @Override
